@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -27,4 +29,9 @@ public class ReservationDto {
     private int discount = 0;
     //좌석 리스트...
 
+    //시간대...
+    private LocalDateTime dateTime;
+
+    //지불 금액
+    private int payment;
 }

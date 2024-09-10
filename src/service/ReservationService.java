@@ -27,7 +27,9 @@ import Container.Container;
 import classLoader.Connect;
 import dto.ReservationDto;
 
-import java.sql.Connection;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class ReservationService {
     /*
@@ -47,10 +49,126 @@ public class ReservationService {
         int adult = reservationDto.getAdult();
         int old = reservationDto.getOld();
         int treatment = reservationDto.getTreatment();
+        LocalDateTime localDateTime = LocalDateTime.now();
         String sql = "insert into reservation (payment, discount, date, play_info_id, phone, saving) values (?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            //TODO 적립금액 설정하기...
+            int cost = getCost(reservationDto);
+            pstmt.setInt(1, cost);
+            pstmt.setInt(2, discount);
+            pstmt.setTimestamp(3,Timestamp.valueOf(localDateTime.toString()));
+            pstmt.setInt(4, playInfoId);
+            pstmt.setString(5, phoneNumber);
+            //적립 금액 ... 설정하기
+            if(reservationDto.isSave()){
+                int save = (int)(cost * 0.05);
+                pstmt.setInt(6, save);
+            }
+            else{
+                pstmt.setInt(6 ,0);
+            }
+        }catch (Exception e){
+
+        }
         return null;
     }
-    public String getKind(int playInfoId){
+    //playInfoId를 기준으로 상영관 정보가져오기..
+    public int getTheaterId(int playInfoId){
+        try {
+            String sql = "select theater_id from play_info where id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, playInfoId);
+            ResultSet rs = pstmt.executeQuery();
+            int kindId = rs.getInt("theater_id");
+            return kindId;
+        }catch (Exception e){
+
+        }
+        return 0;
+    }
+
+    //상영관 종류 정보를 가져오는 함수
+    public String getKind(int theater_id){
+        String sql = "select kind from theater where theater_id = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, theater_id);
+            ResultSet rs = pstmt.executeQuery();
+            String kind = rs.getString("kind");
+            return kind;
+        }catch (Exception e){
+
+        }
         return null;
+    }
+
+    public int getCost(ReservationDto reservationDto){
+        //청소년 요금
+        int youth = 0;
+        int youthNum = reservationDto.getYouth();
+        //으른 요금
+        int adult = 0;
+        int adultNum = reservationDto.getAdult();
+        //경로 요금
+        int old = 0;
+        int oldNum = reservationDto.getOld();
+        //우대 요금
+        int treat = 0;
+        int treatNum = reservationDto.getTreatment();
+
+        try {
+            int theater_id = getTheaterId(reservationDto.getPlay_info());
+            String getTimeSql = "select start_date from play_info where play_info_id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(getTimeSql);
+            ResultSet rs = pstmt.executeQuery();
+            Timestamp timestamp = rs.getTimestamp("start_date");
+            int time = timestamp.getHours();
+            //만약 오전 6시 ~ 9시 사이라면...
+            Time timeCost;
+
+            if(time >= 6 && time <= 9 ){
+                LocalTime localTime = LocalTime.of(6,0);
+                timeCost = Time.valueOf(localTime);
+            }
+            else if(time >= 10 && time <= 13){
+                LocalTime localTime = LocalTime.of(10,0);
+                timeCost = Time.valueOf(localTime);
+            }
+            else{
+                LocalTime localTime = LocalTime.of(13,0);
+                timeCost = Time.valueOf(localTime);
+            }
+
+            String kind = getKind(theater_id);
+            String getCostSql = "select * from charge where time = ? and kind = ?";
+            pstmt = connection.prepareStatement(getCostSql);
+            pstmt.setTime(1, timeCost);
+            pstmt.setString(2, kind);
+            rs = pstmt.executeQuery();
+            while (rs.next()){
+                String type = rs.getString("type");
+                int cost = rs.getInt("cost");
+                switch (type){
+                    case "일반":
+                        adult = cost;
+                        break;
+                    case "청소년":
+                        youth = cost;
+                        break;
+                    case "경로":
+                        old = cost;
+                        break;
+                    case "우대":
+                        treat = cost;
+                        break;
+                }
+            }
+            int total = adult * adultNum + youth * youthNum + old * oldNum + treat * treatNum;
+            return total;
+        }catch (Exception e){
+
+        }
+    return 0;
     }
 }
