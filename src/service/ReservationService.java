@@ -28,8 +28,10 @@ import classLoader.Connect;
 import dto.ReservationDto;
 
 import java.sql.*;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class ReservationService {
     /*
@@ -50,6 +52,12 @@ public class ReservationService {
         int old = reservationDto.getOld();
         int treatment = reservationDto.getTreatment();
         LocalDateTime localDateTime = LocalDateTime.now();
+        int reservationId = 0;
+        ArrayList<String> arrayList = reservationDto.getSeatList();
+        if(arrayList.size() != (youth + adult + old + treatment)){
+            System.out.println("좌석 리스트와 인원수가 맞지 않음...");
+            return "fail";
+        }
         String sql = "insert into reservation (payment, discount, date, play_info_id, phone, saving) values (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -57,7 +65,7 @@ public class ReservationService {
             int cost = getCost(reservationDto);
             pstmt.setInt(1, cost);
             pstmt.setInt(2, discount);
-            pstmt.setTimestamp(3,Timestamp.valueOf(localDateTime.toString()));
+            pstmt.setTimestamp(3,Timestamp.valueOf(localDateTime));
             pstmt.setInt(4, playInfoId);
             pstmt.setString(5, phoneNumber);
             //적립 금액 ... 설정하기
@@ -68,22 +76,35 @@ public class ReservationService {
             else{
                 pstmt.setInt(6 ,0);
             }
+            int affetedRows = pstmt.executeUpdate();
+            if(affetedRows > 0){
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if(rs.next()){
+                    reservationId = rs.getInt(1);
+                    System.out.println(reservationId);
+                    setReservationDetail(reservationId, reservationDto);
+                    return "succeuss";
+                }
+            }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         return null;
     }
     //playInfoId를 기준으로 상영관 정보가져오기..
     public int getTheaterId(int playInfoId){
         try {
-            String sql = "select theater_id from play_info where id = ?";
+            String sql = "select theater_id from play_info where play_info_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, playInfoId);
             ResultSet rs = pstmt.executeQuery();
-            int kindId = rs.getInt("theater_id");
-            return kindId;
+            if(rs.next()){
+                int kindId = rs.getInt("theater_id");
+                return kindId;
+            }
+            return 0;
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         return 0;
     }
@@ -95,15 +116,17 @@ public class ReservationService {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, theater_id);
             ResultSet rs = pstmt.executeQuery();
+            rs.next();
             String kind = rs.getString("kind");
             return kind;
         }catch (Exception e){
-
+            e.printStackTrace();
         }
         return null;
     }
 
     public int getCost(ReservationDto reservationDto){
+        System.out.println("요금 구하기...");
         //청소년 요금
         int youth = 0;
         int youthNum = reservationDto.getYouth();
@@ -116,24 +139,44 @@ public class ReservationService {
         //우대 요금
         int treat = 0;
         int treatNum = reservationDto.getTreatment();
-
+        String day;
         try {
             int theater_id = getTheaterId(reservationDto.getPlay_info());
             String getTimeSql = "select start_date from play_info where play_info_id = ?";
             PreparedStatement pstmt = connection.prepareStatement(getTimeSql);
+            pstmt.setInt(1, reservationDto.getPlay_info());
             ResultSet rs = pstmt.executeQuery();
+            rs.next();
             Timestamp timestamp = rs.getTimestamp("start_date");
+            //요일 구하기...
+            LocalDateTime localDateTime = timestamp.toLocalDateTime();
+            DayOfWeek ofWeek = localDateTime.getDayOfWeek();
+            System.out.println("해당 요일" + ofWeek);
+            switch (ofWeek){
+                case FRIDAY:
+                case SUNDAY:
+                case SATURDAY:
+                    day = "공휴일";
+                    break;
+                default:
+                    day = "평일";
+                    break;
+            }
+
             int time = timestamp.getHours();
+            System.out.println("시간대" +time);
             //만약 오전 6시 ~ 9시 사이라면...
             Time timeCost;
 
             if(time >= 6 && time <= 9 ){
                 LocalTime localTime = LocalTime.of(6,0);
                 timeCost = Time.valueOf(localTime);
+                System.out.println(timeCost.toString());
             }
             else if(time >= 10 && time <= 13){
                 LocalTime localTime = LocalTime.of(10,0);
                 timeCost = Time.valueOf(localTime);
+                System.out.println(timeCost.toString());
             }
             else{
                 LocalTime localTime = LocalTime.of(13,0);
@@ -141,14 +184,17 @@ public class ReservationService {
             }
 
             String kind = getKind(theater_id);
-            String getCostSql = "select * from charge where time = ? and kind = ?";
+            System.out.println("상영관 종류" + kind);
+            String getCostSql = "select * from charge where time = ? and kind = ? and day = ?";
             pstmt = connection.prepareStatement(getCostSql);
             pstmt.setTime(1, timeCost);
             pstmt.setString(2, kind);
+            pstmt.setString(3, day);
             rs = pstmt.executeQuery();
             while (rs.next()){
                 String type = rs.getString("type");
                 int cost = rs.getInt("cost");
+                System.out.println("cost: "+ cost);
                 switch (type){
                     case "일반":
                         adult = cost;
@@ -167,8 +213,26 @@ public class ReservationService {
             int total = adult * adultNum + youth * youthNum + old * oldNum + treat * treatNum;
             return total;
         }catch (Exception e){
-
+            e.printStackTrace();
         }
     return 0;
+    }
+    //예약 상세를 설정하는 함수...
+
+    public void setReservationDetail(int reservationId, ReservationDto reservationDto) {
+        String sql = "insert into reservation_detail(reservation_id, seat) values( ?, ?)";
+
+            reservationDto.getSeatList().forEach(seat -> {
+                PreparedStatement pstmt = null;
+                try {
+                    pstmt = connection.prepareStatement(sql);
+                    pstmt.setInt(1, reservationId);
+                    pstmt.setString(2, seat);
+                    int affectRow = pstmt.executeUpdate();
+                    System.out.println("디테일 좌석 만들기.. 성공");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
     }
 }

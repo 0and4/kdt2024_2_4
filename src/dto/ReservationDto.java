@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Getter
 @Setter
@@ -28,6 +29,7 @@ public class ReservationDto {
     //사용할 뽀인트 금액
     private int discount = 0;
     //좌석 리스트...
+    private ArrayList<String> seatList;
 
     //시간대...
     private LocalDateTime dateTime;
