@@ -1,6 +1,10 @@
 package com.exam.app.view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -8,6 +12,9 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.Tab;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.HashMap;
@@ -36,6 +43,9 @@ public class SalesController {
 
     private LocalDate currentDate;
     private YearMonth currentYearMonth;
+    
+    @FXML
+    private Button backToMenuButton;
 
     @FXML
     public void initialize() {
@@ -187,5 +197,26 @@ public class SalesController {
             totalSales += getSalesForDay(day);
         }
         return totalSales;
+    }
+    // 메뉴로 돌아가는 버튼 클릭 이벤트 처리
+    @FXML
+    private void handleBackToMenuAction(ActionEvent event) {
+        try {
+            // FXML 파일을 로드하여 메뉴 화면으로 전환
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/exam/app/view/AdminMenuPopup.fxml"));
+            Parent menuRoot = loader.load();
+
+            // 현재 창의 Stage를 가져옴
+            Stage stage = (Stage) backToMenuButton.getScene().getWindow();
+            Scene scene = new Scene(menuRoot);
+
+            // 메뉴 화면으로 전환
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 예외 발생 시 사용자에게 경고창 표시
+        }
     }
 }

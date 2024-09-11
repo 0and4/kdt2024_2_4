@@ -31,6 +31,8 @@ public class MovieSettingEditController {
     @FXML
     private Button saveButton;
     @FXML
+    private Button backButton;
+    @FXML
     private Label movieTitleLabel;  // 영화 제목 표시용 Label
     
     private String selectedMovieTitle;  // 선택된 영화 제목
@@ -68,6 +70,8 @@ public class MovieSettingEditController {
 
         // 저장 버튼 클릭 시 상영 정보를 저장하고 화면을 전환하도록 설정
         saveButton.setOnAction(event -> saveScreeningInfo());
+        // 뒤로 가기 버튼 클릭 시 이전 화면으로 돌아가도록 설정
+        backButton.setOnAction(event -> switchToMain());
     }
 
     public void initializeData(String movieTitle, HashMap<String, ArrayList<String>> movieScreenings) {

@@ -12,8 +12,8 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.exam.app.view.MovieSettingEditController">
    <children>
-      <Label layoutX="17.0" layoutY="14.0" text="상영 정보 추가/수정" />
-      <GridPane hgap="10.0" layoutX="50.0" layoutY="55.0" vgap="10.0">
+      <Label layoutX="14.0" layoutY="23.0" text="상영 정보 추가/수정" />
+      <GridPane hgap="10.0" layoutX="44.0" layoutY="98.0" vgap="10.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -35,6 +35,7 @@
             <TextField fx:id="timeTextField" prefHeight="26.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         </children>
       </GridPane>
-      <Button fx:id="saveButton" layoutX="116.0" layoutY="346.0" mnemonicParsing="false" text="수정 완료" />
+      <Button fx:id="saveButton" layoutX="114.0" layoutY="332.0" mnemonicParsing="false" text="수정 완료" />
+      <Button fx:id="backButton" layoutX="233.0" layoutY="17.0" minWidth="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="54.0" text="이전" />
    </children>
 </AnchorPane>

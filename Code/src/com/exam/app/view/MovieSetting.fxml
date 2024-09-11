@@ -26,5 +26,6 @@
       <Label layoutX="22.0" layoutY="17.0" style="-fx-font-weight: bold;" text="상영 정보 관리" />
       <!-- '상영 정보 확인' 버튼과 메서드 연결 -->
       <Button fx:id="registerButton1" layoutX="202.0" layoutY="565.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="125.0" text="상영 정보 확인" onAction="#switchToCheck"/>
+      <Button fx:id="backToMenuButton" onAction="#handleBackToMenuAction" layoutX="326.0" layoutY="20.0" mnemonicParsing="false" prefHeight="35.0" text="이전" />
    </children>
 </AnchorPane>

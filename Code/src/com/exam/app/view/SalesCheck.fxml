@@ -72,5 +72,6 @@
         </tabs>
       </TabPane>
       <Button layoutX="150.0" layoutY="547.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="확인" />
+      <Button fx:id="backToMenuButton" onAction="#handleBackToMenuAction" layoutX="326.0" layoutY="20.0" mnemonicParsing="false" prefHeight="35.0" text="이전" />
    </children>
 </AnchorPane>
