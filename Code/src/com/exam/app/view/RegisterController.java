@@ -1,9 +1,12 @@
 package com.exam.app.view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -44,6 +47,9 @@ public class RegisterController {
 
     @FXML
     private TextField ratingField;
+    
+    @FXML
+    private ComboBox<String> kindComboBox;
 
     @FXML
     private Button submitButton;
@@ -125,6 +131,9 @@ public class RegisterController {
             // 선택한 영화의 제목을 팝업 창의 제목 필드에 설정
             popupController.setMovieTitle(selectedMovieTitle);
 
+            // 팝업 컨트롤러에서 ComboBox 초기화
+            popupController.resetComboBox();  // 팝업 창 내에서 ComboBox를 초기화
+
             Stage popupStage = new Stage();
             popupStage.setTitle("Movie Registration");
             popupStage.initModality(Modality.WINDOW_MODAL);
@@ -143,6 +152,13 @@ public class RegisterController {
             alert.setContentText("영화 등록 창을 여는 도중 오류가 발생했습니다.");
             alert.showAndWait();
         }
+
+    }
+
+    public void resetComboBox() {
+        ObservableList<String> options = FXCollections.observableArrayList("2D", "3D", "4D", "4DX", "IMAX");
+        kindComboBox.setItems(options);  // ComboBox에 선택 항목 추가
+        kindComboBox.setValue("2D");  // 기본 선택값 설정
     }
 
     // 팝업창에서 영화 제목을 설정하는 메서드
@@ -151,17 +167,20 @@ public class RegisterController {
         titleField.setEditable(false);  // 제목을 읽기 전용으로 설정
     }
 
+    
     // '등록 완료' 버튼 클릭 이벤트 처리 (MovieRegisterPopup.fxml)
     @FXML
     private void handleSubmitButtonAction(ActionEvent event) {
         String title = titleField.getText();
         String runtime = runtimeField.getText();
         String rating = ratingField.getText();
+        String selectedKind = kindComboBox.getValue();
 
         // 입력된 영화 데이터를 출력하거나 저장 (여기서 DB에 저장할 수 있음)
         System.out.println("영화 제목: " + title);
         System.out.println("러닝타임: " + runtime);
         System.out.println("상영등급: " + rating);
+        System.out.println("상영 종류: " + selectedKind);
 
         // 팝업 창을 닫기
         Stage stage = (Stage) submitButton.getScene().getWindow();
@@ -190,4 +209,5 @@ public class RegisterController {
             // 예외 발생 시 사용자에게 경고창 표시
         }
     }
+    
 }
