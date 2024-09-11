@@ -320,4 +320,37 @@ public class ReservationService {
         }
         return null;
     }
+
+    public String deleteReservationById(int id){
+        try {
+            String reservationInfoSql = "select start_date from play_info where play_info_id = (" +
+                    "select play_info_id from reservation where reservation_id = ?)";
+            PreparedStatement pstmt = connection.prepareStatement(reservationInfoSql);
+            pstmt.setInt(1, id);
+            ResultSet resultInfo = pstmt.executeQuery();
+            Timestamp start_date = null;
+            if (resultInfo.next()){
+                start_date = resultInfo.getTimestamp("start_date");
+                System.out.println(start_date.toString());
+            }
+            //만약
+            if (start_date.toLocalDateTime().isAfter(LocalDateTime.now())){
+                String deleteSql = "delete from reservation where reservation_id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(deleteSql);
+                preparedStatement.setInt(1, id);
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    return "success";  // 삭제 성공
+                } else {
+                    return "false";  // 삭제 실패 (삭제된 행이 없음)
+                }
+            }
+            else {
+                return "false";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

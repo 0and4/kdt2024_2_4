@@ -47,4 +47,10 @@ public class MainController {
         String response = reservationService.getReservationDetailByPhoneNumber(phone);
         return response;
     }
+
+    public String deleteByReservationId(int id){
+        String response = reservationService.deleteReservationById(id);
+        System.out.println(response);
+        return response;
+    }
 }

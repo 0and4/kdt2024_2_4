@@ -9,6 +9,6 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws JsonProcessingException {
         MainController controller = Container.setMainController();
-        controller.getReservationDetailByPhoneNumber("01091922782");
+        controller.deleteByReservationId(11);
     }
 }
