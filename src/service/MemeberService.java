@@ -3,8 +3,6 @@ package service;
 import classLoader.Connect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.MemberDto;
-
-import java.lang.reflect.Member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

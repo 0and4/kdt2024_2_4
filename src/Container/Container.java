@@ -5,7 +5,8 @@ import controller.MainController;
 
 import java.time.LocalDateTime;
 
-public class Container {
+public class
+Container {
     private static MainController mainController;
 
     //컨테이너의 컨트롤러의 정보를 가져오는 걸로하기...

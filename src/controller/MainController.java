@@ -34,4 +34,17 @@ public class MainController {
         return phoneNumber;
     }
 
+    public String getMemberInfo(String phoneNumber){
+        String response = memeberService.getMemberInformation(phoneNumber);
+        return response;
+    }
+
+    public String getReservationDetailById(int id){
+        String response = reservationService.getReservationDetailById(id);
+        return response;
+    }
+    public String getReservationDetailByPhoneNumber(String phone){
+        String response = reservationService.getReservationDetailByPhoneNumber(phone);
+        return response;
+    }
 }
