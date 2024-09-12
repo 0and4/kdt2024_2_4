@@ -2,19 +2,14 @@ package com.exam.app.view;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.DateCell;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,6 +17,8 @@ import com.exam.app.AppData;
 
 public class MovieSettingEditController {
 
+	@FXML
+    private HBox screeningInfoHBox;
     @FXML
     private DatePicker datePicker;
     @FXML
@@ -33,29 +30,37 @@ public class MovieSettingEditController {
     @FXML
     private Button backButton;
     @FXML
-    private Label movieTitleLabel;  // 영화 제목 표시용 Label
+    private Label movieTitleLabel1, movieTitleLabel2;
+    @FXML
+    private Label screeningTypeLabel;
+    @FXML
+    private Label ageRatingLabel;
+    @FXML
+    private Label durationLabel;
+    private String movieTitle;
+    @FXML
+    private VBox screeningInfoVBox;  // 상영정보를 추가할 VBox
     
-    private String selectedMovieTitle;  // 선택된 영화 제목
-    private HashMap<String, ArrayList<String>> movieScreenings; // 영화 상영 정보 저장 구조
+    private String selectedMovieTitle;
+    private HashMap<String, ArrayList<String>> movieScreenings;
 
     @FXML
     public void initialize() {
-        // 상영관의 메뉴 항목 설정
+        // 상영관 목록 추가
         theaterComboBox.getItems().addAll("1관", "2관", "3관");
 
         // 날짜 선택 시 오늘 날짜부터 일주일 이후까지만 선택할 수 있도록 설정
         LocalDate today = LocalDate.now();
         LocalDate oneWeekLater = today.plusWeeks(1);
-        
+
         // 날짜 선택 시 오늘 이전의 날짜는 선택할 수 없도록 설정
         datePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                // 오늘부터 일주일 후까지만 선택 가능
                 setDisable(empty || date.isBefore(today) || date.isAfter(oneWeekLater));
                 if (date.isBefore(today)) {
-                    setStyle("-fx-background-color: #ffc0cb;"); // 오늘 날짜 이전은 선택 불가
+                    setStyle("-fx-background-color: #ffc0cb;");
                 }
             }
         });
@@ -68,72 +73,79 @@ public class MovieSettingEditController {
             }
         });
 
-        // 저장 버튼 클릭 시 상영 정보를 저장하고 화면을 전환하도록 설정
+        // 저장 버튼 클릭 시 상영 정보를 저장하고 화면을 업데이트하도록 설정
         saveButton.setOnAction(event -> saveScreeningInfo());
         // 뒤로 가기 버튼 클릭 시 이전 화면으로 돌아가도록 설정
-        backButton.setOnAction(event -> switchToMain());
+        backButton.setOnAction(event -> switchToSettingController());
     }
 
+    // MovieSettingController에서 영화 정보를 전달받아 초기화하는 메서드
     public void initializeData(String movieTitle, HashMap<String, ArrayList<String>> movieScreenings) {
         this.selectedMovieTitle = movieTitle;
         this.movieScreenings = movieScreenings;
 
-        // 영화 제목을 Label에 표시합니다.
-        movieTitleLabel.setText(movieTitle);
+        // 영화 제목 표시
+        movieTitleLabel1.setText(selectedMovieTitle);
+        movieTitleLabel2.setText(selectedMovieTitle);
 
-        // 현재 상영 정보가 있다면 해당 정보를 UI에 설정
-        if (movieScreenings.containsKey(movieTitle)) {
-            ArrayList<String> screenings = movieScreenings.get(movieTitle);
-            if (!screenings.isEmpty()) {
-                String lastScreening = screenings.get(screenings.size() - 1);  // 가장 최근 상영 정보
-                String[] parts = lastScreening.split(", ");
-                if (parts.length == 3) {
-                    // 문자열을 LocalDate로 변환
-                    LocalDate date = LocalDate.parse(parts[0], DateTimeFormatter.ISO_LOCAL_DATE);
-                    datePicker.setValue(date);  // 날짜
-                    theaterComboBox.setValue(parts[1]);  // 상영관
-                    timeTextField.setText(parts[2]);  // 시간
+        // 상영 정보 초기화
+        if (movieScreenings != null && movieScreenings.containsKey(selectedMovieTitle)) {
+            ArrayList<String> screeningInfo = movieScreenings.get(selectedMovieTitle);
+            if (screeningInfo != null && !screeningInfo.isEmpty()) {
+                // 상영종류, 관람가, 러닝타임을 분리하여 레이블에 설정
+                String[] details = screeningInfo.get(0).split(", ");
+                if (details.length >= 3) {
+                    screeningTypeLabel.setText("(" + details[0] + ")");
+                    ageRatingLabel.setText(details[1]);
+                    durationLabel.setText(details[2]);
                 }
+            } else {
+                // 상영 정보가 없는 경우 기본값 설정 (예: 빈 문자열)
+                screeningTypeLabel.setText("(정보 없음)");
+                ageRatingLabel.setText("정보 없음");
+                durationLabel.setText("정보 없음");
             }
+        } else {
+            // 상영 정보가 없는 경우 기본값 설정 (예: 빈 문자열)
+            screeningTypeLabel.setText("(정보 없음)");
+            ageRatingLabel.setText("정보 없음");
+            durationLabel.setText("정보 없음");
         }
     }
 
-    // 상영 정보 저장 메서드
+
+    @FXML
     private void saveScreeningInfo() {
-        if (selectedMovieTitle != null) {
-            LocalDate date = datePicker.getValue();
-            String theater = theaterComboBox.getValue();
-            String time = timeTextField.getText();
-            
-            if (date == null || theater == null || time == null || time.isEmpty()) {
-                // 상영 정보가 제대로 입력되지 않았으면 저장하지 않고 리턴
-                System.out.println("상영 정보가 완전하지 않습니다.");
-                return;
-            }
-
-            // 영화에 해당하는 상영 정보 추가
-            // 이미 있는 상영 정보에 추가하기
-            // 상영 정보 추가
-            String screeningInfo = String.format("%s, %s, %s", date, theater, time);
-            HashMap<String, ArrayList<String>> screenings = AppData.getMovieScreenings();
-            if (!screenings.containsKey(selectedMovieTitle)) {
-                screenings.put(selectedMovieTitle, new ArrayList<>());
-            }
-            screenings.get(selectedMovieTitle).add(screeningInfo);
-            
-            System.out.println("상영 정보가 저장되었습니다: " + screeningInfo);
-        }
-        // 저장 후 SettingController로 돌아가기
-        switchToMain();
+        String date = datePicker.getValue() != null ? datePicker.getValue().toString() : "정보 없음";
+        String theater = theaterComboBox.getValue() != null ? theaterComboBox.getValue() : "정보 없음";
+        String time = timeTextField.getText().isEmpty() ? "정보 없음" : timeTextField.getText();
+        
+        // 새로운 상영 정보를 담은 VBox 생성
+        VBox vbox = new VBox(5);
+        vbox.setPadding(new Insets(5, 10, 5, 10));
+        
+        Label dateLabel = new Label("날짜: " + date);
+        Label theaterLabel = new Label("상영관: " + theater);
+        Label timeLabel = new Label("시간: " + time);
+        
+        vbox.getChildren().addAll(dateLabel, theaterLabel, timeLabel);
+        
+        // VBox를 HBox에 추가
+        screeningInfoHBox.getChildren().add(vbox);
+        
+        // 입력 필드 초기화
+        datePicker.setValue(null);
+        theaterComboBox.setValue(null);
+        timeTextField.clear();
     }
 
-    // MovieSetting 화면으로 전환하는 메서드
-    private void switchToMain() {
+    // SettingController로 상영 정보를 전달하며 돌아가는 메서드
+    private void switchToSettingController() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MovieSetting.fxml"));
             AnchorPane root = loader.load();
 
-            Stage stage = (Stage) saveButton.getScene().getWindow();
+            Stage stage = (Stage) backButton.getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
