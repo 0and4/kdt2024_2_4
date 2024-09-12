@@ -12,7 +12,10 @@
 
       <!-- 텍스트 -->
       <Text fill="BLACK" layoutX="7.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="금액은 카드사를 통해 2~3일 내로 환불됩니다." textAlignment="CENTER" wrappingWidth="255.3059539794922" />
-      <Button layoutX="92.0" layoutY="88.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0" style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;" text="확  인" textAlignment="CENTER" />
+      <Button layoutX="92.0" layoutY="88.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0"
+        style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;"
+        text="확  인" textAlignment="CENTER" onAction="#handleConfirmButtonAction" />
+
       <Text fill="BLACK" layoutX="8.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="예매가 취소되었습니다." textAlignment="CENTER" wrappingWidth="255.3059539794922" />
    </children>
 </AnchorPane>
