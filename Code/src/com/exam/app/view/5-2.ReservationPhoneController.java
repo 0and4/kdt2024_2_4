@@ -102,19 +102,24 @@ public class ReservationPhoneController {
         }
     }
 
-    // 홈 버튼 클릭 시 kiosk.fxml로 이동
+ // 홈 버튼 처리
     @FXML
     private void handleHomeButtonAction(ActionEvent event) {
         try {
+            // FXML 파일 로드 (kiosk.fxml로 이동)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/exam/app/view/kiosk.fxml"));
             Parent homeView = loader.load();
 
+            // 현재 스테이지 가져오기
             Stage stage = (Stage) phoneField.getScene().getWindow();
+
+            // 새로운 씬으로 전환
             Scene scene = new Scene(homeView);
             stage.setScene(scene);
             stage.show();
+
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // 에러 발생 시 콘솔에 출력
         }
     }
 
@@ -134,7 +139,7 @@ public class ReservationPhoneController {
         }
     }
 
-    // "티켓 조회" 버튼 클릭 시 호출, 유효한 번호인지 확인 후 이동
+    //입력된 번호에 따라 화면 전환
     @FXML
     private void handleReservationListAction(ActionEvent event) {
         String enteredPhoneNumber = phoneField.getText();
@@ -162,6 +167,11 @@ public class ReservationPhoneController {
                 Stage popupStage = new Stage();
                 popupStage.initModality(Modality.APPLICATION_MODAL);
                 popupStage.setTitle("예매 내역 없음");
+
+                // 부모 창 설정
+                Stage parentStage = (Stage) phoneField.getScene().getWindow();
+                popupStage.initOwner(parentStage);  // 부모 창을 팝업 창의 소유자로 설정
+
                 Scene scene = new Scene(noReservationRoot);
                 popupStage.setScene(scene);
                 popupStage.showAndWait();
@@ -170,4 +180,5 @@ public class ReservationPhoneController {
             }
         }
     }
+
 }
