@@ -46,15 +46,15 @@
         </GridPane>
 
         <!-- 티켓 조회 버튼 -->
-        <Button layoutX="110.0" layoutY="485.0" onAction="#handleTicketSearchAction" prefHeight="40.0" prefWidth="160.0" style="-fx-background-radius: 15;-fx-background-color: FF5A5A;" text="티켓 조회" textFill="WHITE" />
+        <Button fx:id="ticketSearchButton" layoutX="110.0" layoutY="485.0" onAction="#handleTicketSearchAction" prefHeight="40.0" prefWidth="160.0" style="-fx-background-radius: 15;-fx-background-color: FF5A5A;" text="티켓 조회" textFill="WHITE" />
         <Rectangle arcHeight="10.0" fill="#ff5a5a" height="60.0" layoutY="560.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="380.0" />
         <Rectangle arcHeight="10.0" fill="#ff5a5a" height="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="380.0" />
 
-        <!-- 휴대폰 번호 및 생년월일 입력 필드 -->
+        <!-- 휴대폰 번호 입력 필드 -->
         <TextField fx:id="phoneField" alignment="CENTER" layoutX="84.0" layoutY="208.0" onMouseClicked="#clearPlaceholderPhone" prefHeight="23.0" prefWidth="215.0" style="-fx-font-size: 14px;" text="휴대폰 번호 : 010-XXXX-XXXX" />
 
         <!-- 라벨, 라인 및 기타 텍스트 -->
-        <Label layoutX="90.0" layoutY="15.0" prefHeight="30.0" prefWidth="200.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="[환불] 예매 내역 출력 화면" textFill="WHITE" />
+        <Label layoutX="87.0" layoutY="15.0" prefHeight="30.0" prefWidth="200.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="[환불] 예매 내역 출력 화면" textFill="WHITE" />
         <Line endX="109.33331298828125" layoutX="193.0" layoutY="236.0" startX="-110.66668701171875" stroke="#a6a6a6" />
         <Button layoutX="320.0" layoutY="10.0" onAction="#handleHomeButtonAction" prefHeight="40.0" prefWidth="44.0" style="-fx-background-radius: 20; -fx-font-size: 18px;" text="🏠" />
         <Text layoutX="77.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="휴대폰번호를 입력해 주세요." textAlignment="CENTER" wrappingWidth="230.0000000000001" />
