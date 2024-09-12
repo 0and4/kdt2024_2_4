@@ -47,7 +47,7 @@
         </GridPane>
 
         <!-- 티켓 조회 버튼 -->
-        <Button layoutX="110.0" layoutY="481.0" onAction="#handleReservationListAction" prefHeight="40.0" prefWidth="160.0" style="-fx-background-radius: 15;-fx-background-color: FF5A5A;" text="티켓 조회" textFill="WHITE" />
+        <Button fx:id="searchButton" layoutX="110.0" layoutY="481.0" onAction="#handleReservationListAction" prefHeight="40.0" prefWidth="160.0" style="-fx-background-radius: 15;-fx-background-color: FF5A5A;" text="티켓 조회" textFill="WHITE" />
         <Rectangle arcHeight="10.0" fill="#ff5a5a" height="60.0" layoutY="560.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="380.0" />
         <Rectangle arcHeight="10.0" fill="#ff5a5a" height="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="380.0" />
 
