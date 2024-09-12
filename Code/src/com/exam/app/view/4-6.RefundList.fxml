@@ -13,11 +13,11 @@
 <AnchorPane fx:id="rootPane" prefHeight="620.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.exam.app.view.RefundListController">
     <children>
     
-    	<Rectangle arcHeight="10.0" fill="#ff5a5a" height="60.0" layoutY="560.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="380.0" />
+        <Rectangle arcHeight="10.0" fill="#ff5a5a" height="60.0" layoutY="560.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="380.0" />
         <Rectangle arcHeight="10.0" fill="#ff5a5a" height="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="380.0" />
     
         <!-- 상단 타이틀 -->
-        <Label layoutX="82.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="[환불] 예매 내역 확인 화면" textFill="WHITE" />
+        <Label layoutX="81.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="[환불] 예매 내역 확인 화면" textFill="WHITE" />
 
         <!-- 홈 버튼 -->
         <Button layoutX="320.0" layoutY="10.0" onAction="#handleHomeButtonAction" prefHeight="40.0" prefWidth="44.0" style="-fx-background-radius: 20; -fx-font-size: 18px;" text="🏠" />
@@ -48,8 +48,8 @@
             </AnchorPane>
         </VBox>
 
-        <!-- 출력 버튼 (기본 비활성화) -->
-        <Button fx:id="printButton" disable="true" layoutX="135.0" layoutY="486.0" onAction="#handlePrintButtonAction" prefHeight="40.0" prefWidth="109.0" style="-fx-background-radius: 15; -fx-background-color: #ff5a5a;" text="출  력" textFill="WHITE">
+        <!-- 환불 버튼 (기본 비활성화) -->
+        <Button fx:id="printButton" disable="true" layoutX="135.0" layoutY="486.0" onAction="#handleRefundButtonAction" prefHeight="40.0" prefWidth="109.0" style="-fx-background-radius: 15; -fx-background-color: #ff5a5a;" text="환  불" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font></Button>
