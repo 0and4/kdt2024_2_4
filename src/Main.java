@@ -1,14 +1,22 @@
-import Container.Container;
+import server.container.Container;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import controller.MainController;
-import dto.ReservationDto;
+import server.controller.MainController;
+import server.dto.RegisterMovieDto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws JsonProcessingException {
-        MainController controller = Container.setMainController();
-        controller.deleteByReservationId(11);
+        MainController mainController = Container.setMainController();
+        mainController.getPlayInformation(20249188);
+        mainController.getAllPlayInformation();
+
+        RegisterMovieDto movieDto = RegisterMovieDto
+                .builder()
+                .movie_id(20249188)
+                .localDateTime(LocalDateTime.of(2023,9,13,10,00))
+                .theater_id(8)
+                .build();
+        mainController.setPlay(movieDto);
     }
 }

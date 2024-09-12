@@ -1,7 +1,7 @@
-package Container;
+package client.Container;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import controller.MainController;
+import client.controller.MainController;
 
 import java.time.LocalDateTime;
 

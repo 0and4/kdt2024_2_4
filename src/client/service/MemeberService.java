@@ -1,8 +1,8 @@
-package service;
+package client.service;
 
 import classLoader.Connect;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dto.MemberDto;
+import client.dto.MemberDto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

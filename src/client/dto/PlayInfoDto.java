@@ -1,22 +1,24 @@
-package dto;
+package client.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Time;
 import java.util.ArrayList;
 
-@Data
-@Builder
 @Getter
 @Setter
-public class ReservationDetailDto {
+@ToString
+@Builder
+@Data
+public class PlayInfoDto {
+    //상영 넘버
+    private int playInfoId;
     //상영 시간...
     private Time time;
     //영화 제목...
     private String title;
+    //영상 등급
+    private int age;
     //상영 시작 시간...
     private String startDateTime;
     //상영 종료 시간...
@@ -25,6 +27,9 @@ public class ReservationDetailDto {
     private String kind;
     //위치..
     private String section;
-    //좌석 리스트....
-    private ArrayList<String> seatList;
+
+    //좌석 개수...
+    private int seat;
+    //이미 예약된 좌석들...
+    private ArrayList<String> reserveSeats;
 }

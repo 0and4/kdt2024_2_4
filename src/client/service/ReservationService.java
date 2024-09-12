@@ -1,4 +1,4 @@
-package service;
+package client.service;
 
 /*1. 영화 상단엔 상영 정보가 출력된다.
         - 상영 정보 : 1) 영화 이미지 2) 관람 등급 3) 영화 제목 4)종류(2DX, Laser, 3D) 5) 상영 시간(러닝타임) 6)상영 시작 시간 7) 총 좌석수 8) 남은 좌석 수 9) 상영관
@@ -23,11 +23,10 @@ package service;
 4. 결제 완료 후 : (팝업) 티켓을 받을 휴대폰 번호를 입력해 주세요. -> 키패드로 입력 후 확인 -> 완료되었습니다.
  */
 
-import Container.Container;
 import classLoader.Connect;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dto.ReservationDetailDto;
-import dto.ReservationDto;
+import client.dto.ReservationDetailDto;
+import client.dto.ReservationDto;
 
 import java.sql.*;
 import java.time.DayOfWeek;

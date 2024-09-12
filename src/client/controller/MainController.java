@@ -1,10 +1,10 @@
-package controller;
+package client.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import dto.ReservationDto;
-import service.MemeberService;
-import service.PlayInfoService;
-import service.ReservationService;
+import client.dto.ReservationDto;
+import client.service.MemeberService;
+import client.service.PlayInfoService;
+import client.service.ReservationService;
 
 import java.time.LocalDateTime;
 
