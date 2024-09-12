@@ -12,7 +12,12 @@
 
       <!-- 텍스트 -->
       <Text fill="BLACK" layoutX="21.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="출력이 취소되었습니다." textAlignment="CENTER" wrappingWidth="227.30596923828125" />
-      <Button layoutX="151.0" layoutY="87.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0" style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;" text="다시 선택" textAlignment="CENTER" />
-      <Button layoutX="35.0" layoutY="87.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0" style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;" text="처음으로" textAlignment="CENTER" />
+      <Button layoutX="151.0" layoutY="87.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0"
+        style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;"
+        text="다시 선택" textAlignment="CENTER" onAction="#handleSelectAgainButtonAction"/>
+      <Button layoutX="35.0" layoutY="87.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0"
+        style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;"
+        text="처음으로" textAlignment="CENTER" onAction="#handleHomeButtonAction"/>
+
    </children>
 </AnchorPane>
