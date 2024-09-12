@@ -126,10 +126,15 @@ public class ReservationNumberController {
 
                 // 팝업 창 설정
                 Stage popupStage = new Stage();
-                popupStage.initModality(Modality.APPLICATION_MODAL);
+                popupStage.initModality(Modality.APPLICATION_MODAL); // 모달로 설정
+                popupStage.initOwner(((Stage) phoneField.getScene().getWindow())); // 부모 스테이지 설정
+
+                // 팝업 타이틀 및 씬 설정
                 popupStage.setTitle("예매 내역 없음");
                 Scene scene = new Scene(noReservationRoot);
                 popupStage.setScene(scene);
+
+                // 팝업 창을 띄움 (모달)
                 popupStage.showAndWait();
 
             } catch (IOException e) {
