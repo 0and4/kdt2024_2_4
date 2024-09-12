@@ -27,12 +27,15 @@
             <!-- 여기서부터 예매 항목들이 동적으로 추가됨 -->
         </VBox>
 
-        <!-- 출력 버튼 (초기 비활성화) -->
-        <Button fx:id="printButton" layoutX="135.0" layoutY="486.0" prefHeight="40.0" prefWidth="109.0" style="-fx-background-radius: 15; -fx-background-color: #ff5a5a;" text="출  력" textFill="WHITE" disable="true">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Button>
+		<!-- 출력 버튼 (초기 비활성화) -->
+		<Button fx:id="printButton" layoutX="135.0" layoutY="486.0" prefHeight="40.0" prefWidth="109.0" 
+		        style="-fx-background-radius: 15; -fx-background-color: #ff5a5a;" text="출  력" 
+		        textFill="WHITE" disable="true" onAction="#handlePrintButtonAction">
+		    <font>
+		        <Font size="20.0" />
+		    </font>
+		</Button>
+
 
         <!-- 예매 내역 항목 (AnchorPane 클릭 시 출력 버튼 활성화) -->
         <AnchorPane fx:id="reservationItem" layoutX="18.0" layoutY="88.0" prefHeight="171.0" prefWidth="340.0" onMouseClicked="#handleReservationItemClick">
