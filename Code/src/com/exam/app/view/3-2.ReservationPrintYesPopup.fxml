@@ -12,6 +12,8 @@
 
       <!-- 텍스트 -->
       <Text fill="BLACK" layoutX="21.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="출력이 완료되었습니다." textAlignment="CENTER" wrappingWidth="227.30596923828125" />
-      <Button layoutX="102.0" layoutY="88.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="65.0" style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;" text="확  인" textAlignment="CENTER" />
+
+      <!-- 확인 버튼 -->
+      <Button layoutX="102.0" layoutY="88.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="65.0" style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;" text="확  인" textAlignment="CENTER" onAction="#handleConfirmButtonAction"/>
    </children>
 </AnchorPane>
