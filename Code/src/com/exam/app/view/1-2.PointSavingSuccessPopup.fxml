@@ -12,7 +12,9 @@
 
       <!-- 텍스트 -->
       <Text fill="BLACK" layoutX="21.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[포인트 적립]" textAlignment="CENTER" wrappingWidth="227.30596923828125" />
-      <Text fill="BLACK" layoutX="36.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[ 168원 ] " textAlignment="CENTER" wrappingWidth="65.33333333333326" />
+      
+      <!-- 168원 임의로 설정! 결제금액에 % 적용해서 받을 수 있는 포인트 나타내야 함. -->
+      <Text fill="BLACK" layoutX="36.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[ 168원 ]" textAlignment="CENTER" wrappingWidth="65.33333333333326" />
 
       <!-- 확인 버튼 -->
       <Button layoutX="102.0" layoutY="94.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="65.0" style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;" text="확  인" textAlignment="CENTER" />
