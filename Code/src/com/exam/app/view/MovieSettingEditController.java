@@ -17,7 +17,7 @@ import com.exam.app.AppData;
 
 public class MovieSettingEditController {
 
-	@FXML
+    @FXML
     private HBox screeningInfoHBox;
     @FXML
     private DatePicker datePicker;
@@ -37,12 +37,10 @@ public class MovieSettingEditController {
     private Label ageRatingLabel;
     @FXML
     private Label durationLabel;
-    private String movieTitle;
     @FXML
     private VBox screeningInfoVBox;  // 상영정보를 추가할 VBox
     
     private String selectedMovieTitle;
-    private HashMap<String, ArrayList<String>> movieScreenings;
 
     @FXML
     public void initialize() {
@@ -80,39 +78,23 @@ public class MovieSettingEditController {
     }
 
     // MovieSettingController에서 영화 정보를 전달받아 초기화하는 메서드
-    public void initializeData(String movieTitle, HashMap<String, ArrayList<String>> movieScreenings) {
+    public void initializeData(String movieTitle) {
         this.selectedMovieTitle = movieTitle;
-        this.movieScreenings = movieScreenings;
 
         // 영화 제목 표시
         movieTitleLabel1.setText(selectedMovieTitle);
         movieTitleLabel2.setText(selectedMovieTitle);
 
         // 상영 정보 초기화
-        if (movieScreenings != null && movieScreenings.containsKey(selectedMovieTitle)) {
-            ArrayList<String> screeningInfo = movieScreenings.get(selectedMovieTitle);
-            if (screeningInfo != null && !screeningInfo.isEmpty()) {
-                // 상영종류, 관람가, 러닝타임을 분리하여 레이블에 설정
-                String[] details = screeningInfo.get(0).split(", ");
-                if (details.length >= 3) {
-                    screeningTypeLabel.setText("(" + details[0] + ")");
-                    ageRatingLabel.setText(details[1]);
-                    durationLabel.setText(details[2]);
-                }
-            } else {
-                // 상영 정보가 없는 경우 기본값 설정 (예: 빈 문자열)
-                screeningTypeLabel.setText("(정보 없음)");
-                ageRatingLabel.setText("정보 없음");
-                durationLabel.setText("정보 없음");
-            }
-        } else {
-            // 상영 정보가 없는 경우 기본값 설정 (예: 빈 문자열)
-            screeningTypeLabel.setText("(정보 없음)");
-            ageRatingLabel.setText("정보 없음");
-            durationLabel.setText("정보 없음");
-        }
-    }
+        String screeningType = AppData.getMovieType(selectedMovieTitle);
+        String ageRating = AppData.getMovieRating(selectedMovieTitle);
+        String duration = AppData.getMovieRuntime(selectedMovieTitle);
 
+        // 상영 정보 레이블에 설정
+        screeningTypeLabel.setText("(" + screeningType + ")");
+        ageRatingLabel.setText(ageRating);
+        durationLabel.setText(duration);
+    }
 
     @FXML
     private void saveScreeningInfo() {
