@@ -3,9 +3,12 @@ package com.exam.app.view;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -37,9 +40,7 @@ public class MovieSettingEditController {
     private Label ageRatingLabel;
     @FXML
     private Label durationLabel;
-    @FXML
-    private VBox screeningInfoVBox;  // 상영정보를 추가할 VBox
-    
+
     private String selectedMovieTitle;
 
     @FXML
@@ -101,24 +102,72 @@ public class MovieSettingEditController {
         String date = datePicker.getValue() != null ? datePicker.getValue().toString() : "정보 없음";
         String theater = theaterComboBox.getValue() != null ? theaterComboBox.getValue() : "정보 없음";
         String time = timeTextField.getText().isEmpty() ? "정보 없음" : timeTextField.getText();
-        
+
         // 새로운 상영 정보를 담은 VBox 생성
         VBox vbox = new VBox(5);
         vbox.setPadding(new Insets(5, 10, 5, 10));
-        
-        Label dateLabel = new Label("날짜: " + date);
-        Label theaterLabel = new Label("상영관: " + theater);
-        Label timeLabel = new Label("시간: " + time);
-        
+        vbox.setAlignment(Pos.CENTER);
+
+        // StackPane을 사용하여 VBox의 중앙에 삭제 버튼을 겹쳐 배치
+        StackPane stackPane = new StackPane();
+        // 테두리 설정
+        stackPane.setBorder(new Border(
+            new BorderStroke(
+                Color.BLACK, 
+                BorderStrokeStyle.SOLID, 
+                null, 
+                new BorderWidths(0.5)
+            )
+        ));
+
+        Label dateLabel = new Label(date);
+        Label theaterLabel = new Label(theater);
+        Label timeLabel = new Label(time);
+
         vbox.getChildren().addAll(dateLabel, theaterLabel, timeLabel);
-        
+
+        // 삭제 버튼 추가
+        Button deleteButton = new Button("삭제");
+        deleteButton.setVisible(false);
+        deleteButton.setOnAction(event -> deleteScreeningInfo(stackPane));
+
+        // StackPane에 VBox와 삭제 버튼 추가
+        stackPane.getChildren().addAll(vbox, deleteButton);
+        stackPane.setAlignment(deleteButton, Pos.CENTER);
+
+        // VBox 클릭 시 삭제 버튼 표시/숨기기
+        stackPane.setOnMouseClicked(event -> toggleDeleteButton(deleteButton));
+
         // VBox를 HBox에 추가
-        screeningInfoHBox.getChildren().add(vbox);
-        
+        screeningInfoHBox.getChildren().add(stackPane);
+
         // 입력 필드 초기화
         datePicker.setValue(null);
         theaterComboBox.setValue(null);
         timeTextField.clear();
+    }
+
+    private void deleteScreeningInfo(StackPane stackPane) {
+        screeningInfoHBox.getChildren().remove(stackPane);
+        // VBox를 삭제한 후 남아있는 VBox들을 왼쪽으로 이동시키기
+        for (int i = 0; i < screeningInfoHBox.getChildren().size(); i++) {
+            StackPane currentStackPane = (StackPane) screeningInfoHBox.getChildren().get(i);
+            VBox currentVBox = (VBox) currentStackPane.getChildren().get(0);
+            if (i == 0) {
+                // 첫 번째 VBox에만 padding 설정
+                currentVBox.setPadding(new Insets(0, 0, 0, 0));
+            } else {
+                currentVBox.setPadding(new Insets(0, 0, 0, 10)); // 나머지 VBox는 간격을 줍니다.
+            }
+        }
+    }
+
+    private void toggleDeleteButton(Button deleteButton) {
+        if (deleteButton.isVisible()) {
+            deleteButton.setVisible(false);
+        } else {
+            deleteButton.setVisible(true);
+        }
     }
 
     // SettingController로 상영 정보를 전달하며 돌아가는 메서드
