@@ -29,21 +29,6 @@ public class RefundListController {
 
     private AnchorPane selectedReservation = null; // 선택된 예매 항목을 저장
 
-    // 홈 버튼 클릭 시 kiosk.fxml로 이동
-    @FXML
-    private void handleHomeButtonAction(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/exam/app/view/kiosk.fxml"));
-            Parent homeView = loader.load();
-
-            Stage stage = (Stage) rootPane.getScene().getWindow(); // rootPane의 Scene을 얻어서 Stage를 가져옴
-            Scene scene = new Scene(homeView);
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     // 예매 내역 클릭 시 테두리 빨간색 변경 및 출력 버튼 활성화/비활성화
     @FXML
@@ -142,6 +127,27 @@ public class RefundListController {
         if (selectedReservation != null) {
             System.out.println("출력 팝업 띄우기");
             // 팝업 추가 구현..
+        }
+    }
+    
+    //홈 버튼
+    @FXML
+    private void handleHomeButtonAction(ActionEvent event) {
+        try {
+            // FXML 파일 로드 (kiosk.fxml로 이동)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/exam/app/view/kiosk.fxml"));
+            Parent homeView = loader.load();
+
+            // 현재 스테이지 가져오기
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+
+            // 새로운 씬으로 전환
+            Scene scene = new Scene(homeView);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace(); // 에러 발생 시 콘솔에 출력
         }
     }
 }
