@@ -30,27 +30,17 @@ public class SettingController {
 
     private HBox selectedMovie;  // 선택된 영화 항목을 저장할 변수
     private String selectedMovieTitle;  // 선택된 영화 제목
-    private HashMap<String, ArrayList<String>> movieScreenings;  // 영화별 상영 정보 저장소
-    
+
     @FXML
     public void initialize() {
-        // 영화 데이터 초기화 및 영화 목록 동적 생성
-        movieScreenings = AppData.getMovieScreenings();
+        // 영화 데이터를 AppData로부터 로드
+        AppData.loadMovieScreenings();
         populateMovieList();
-    }
-
-    // 선택된 영화의 상영 정보를 업데이트하는 메서드
-    public void ScreeningInfo(String movieTitle, HashMap<String, ArrayList<String>> movieScreenings) {
-        if (movieTitle != null && movieScreenings != null) {
-            this.movieScreenings = movieScreenings;
-
-            // UI 업데이트 (예: 영화 목록을 새로 고침)
-            populateMovieList();
-        }
     }
 
     // 영화 목록을 동적으로 추가하는 메서드
     private void populateMovieList() {
+        HashMap<String, ArrayList<HashMap<String, String>>> movieScreenings = AppData.getMovieScreenings();
         if (movieScreenings == null || movieScreenings.isEmpty()) {
             System.out.println("영화 목록이 없습니다.");
             return;
@@ -71,20 +61,10 @@ public class SettingController {
             Label titleLabel = new Label(movieTitle);  // 영화 제목 레이블
             titleLabel.setId("movieTitleLabel");  // ID 추가
             
-            // 상영 정보 레이블
-            ArrayList<String> screeningInfo = movieScreenings.get(movieTitle);
-            String screeningType = "상영 종류: N/A";
-            String rating = "관람가: N/A";
-            String duration = "상영 시간: N/A";
-            
-            if (screeningInfo != null && !screeningInfo.isEmpty()) {
-                String[] infoParts = screeningInfo.get(0).split(", ");
-                if (infoParts.length >= 3) {
-                    screeningType = "상영 종류: " + infoParts[0];
-                    rating = "관람가: " + infoParts[1];
-                    duration = "상영 시간: " + infoParts[2];
-                }
-            }
+            // 상영 정보 레이블 생성 (AppData로부터 가져옴)
+            String screeningType = "상영 종류: " + AppData.getMovieType(movieTitle);
+            String rating = "관람가: " + AppData.getMovieRating(movieTitle);
+            String duration = "상영 시간: " + AppData.getMovieRuntime(movieTitle);
 
             Label durationLabel = new Label(duration);
             Label ratingLabel = new Label(rating);
@@ -114,10 +94,6 @@ public class SettingController {
         selectedMovieTitle = movieTitleLabel.getText();  // 선택한 영화 제목 저장
     }
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
     // '상영 정보 추가/수정' 버튼 클릭 시 호출되는 메서드
     @FXML
     private void switchToEdit() {
@@ -129,70 +105,47 @@ public class SettingController {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MovieSettingEdit.fxml"));
-            root = loader.load();
+            Parent root = loader.load();
 
             MovieSettingEditController editController = loader.getController();
-            editController.initializeData(selectedMovieTitle, movieScreenings);
+            // 선택된 영화 제목만 전달
+            editController.initializeData(selectedMovieTitle);
 
-            switchScene();
+            Stage stage = (Stage) registerButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     // '상영 정보 확인' 버튼 클릭 시 호출되는 메서드
     @FXML
     public void switchToCheck(ActionEvent event) throws IOException {
-        if (selectedMovieTitle == null) {
-            System.out.println("영화를 선택하세요.");
-            return;
-        }
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MovieSettingCheck.fxml"));
-            root = loader.load();
+            Parent root = loader.load();
 
-            // MovieSettingCheckController 가져오기
-            MovieSettingCheckController controller = loader.getController();
-            // 현재 선택한 영화의 상영 정보를 전달
-            ArrayList<String> screenings = movieScreenings.get(selectedMovieTitle);
-            controller.setMovieScreenings(selectedMovieTitle, screenings);
-
-            switchScene(event);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // 씬 전환을 위한 메서드 (중복 제거용)
-    private void switchScene() {
-        Stage stage = (Stage) registerButton.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    // ActionEvent가 있는 씬 전환 메서드
-    private void switchScene(ActionEvent event) {
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
     // 메뉴로 돌아가는 버튼 클릭 이벤트 처리
     @FXML
     private void handleBackToMenuAction(ActionEvent event) {
         try {
-            // FXML 파일을 로드하여 메뉴 화면으로 전환
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/exam/app/view/AdminMenuPopup.fxml"));
             Parent menuRoot = loader.load();
 
-            // 현재 창의 Stage를 가져옴
             Stage stage = (Stage) backToMenuButton.getScene().getWindow();
             Scene scene = new Scene(menuRoot);
-
-            // 메뉴 화면으로 전환
             stage.setScene(scene);
             stage.show();
 
