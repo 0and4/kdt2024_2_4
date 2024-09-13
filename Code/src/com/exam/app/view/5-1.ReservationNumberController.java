@@ -143,7 +143,7 @@ public class ReservationNumberController {
         }
     }
 
-    // 홈 버튼 처리
+    //홈 버튼
     @FXML
     private void handleHomeButtonAction(ActionEvent event) {
         try {
@@ -152,7 +152,7 @@ public class ReservationNumberController {
             Parent homeView = loader.load();
 
             // 현재 스테이지 가져오기
-            Stage stage = (Stage) phoneField.getScene().getWindow();
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
 
             // 새로운 씬으로 전환
             Scene scene = new Scene(homeView);
@@ -163,4 +163,5 @@ public class ReservationNumberController {
             e.printStackTrace(); // 에러 발생 시 콘솔에 출력
         }
     }
+
 }
