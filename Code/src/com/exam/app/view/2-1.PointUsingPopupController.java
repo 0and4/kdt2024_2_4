@@ -5,13 +5,49 @@ import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class PointUsingPopupController {
 
     @FXML
     private TextField phoneField; // 휴대폰 번호 입력 필드
 
+    @FXML
+    private Button confirmButton; // 확인 버튼
+
     private boolean isPlaceholderVisible = true; // 플레이스홀더가 표시되고 있는지 여부
+
+    @FXML
+    public void initialize() {
+        // 처음에 확인 버튼 비활성화
+        confirmButton.setDisable(true);
+
+        // 전화번호 입력 필드에 리스너 추가하여 '-' 추가 및 형식 확인
+        phoneField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // 숫자만 입력하도록 처리
+            String digits = newValue.replaceAll("[^\\d]", "");
+
+            // 하이픈을 추가하여 010-XXXX-XXXX 형식 만들기
+            if (digits.length() > 3 && digits.length() <= 7) {
+                phoneField.setText(digits.substring(0, 3) + "-" + digits.substring(3));
+            } else if (digits.length() > 7) {
+                phoneField.setText(digits.substring(0, 3) + "-" + digits.substring(3, 7) + "-" + digits.substring(7));
+            } else {
+                phoneField.setText(digits); // 그 외의 경우는 하이픈 없이 숫자만 출력
+            }
+
+            // 커서를 항상 맨 끝에 위치시키기
+            phoneField.positionCaret(phoneField.getText().length());
+
+            // 입력된 값이 정확한 형식인지 확인
+            if (phoneField.getText().matches("010-\\d{4}-\\d{4}")) {
+                confirmButton.setDisable(false); // 형식이 맞으면 버튼 활성화
+            } else {
+                confirmButton.setDisable(true); // 형식이 맞지 않으면 버튼 비활성화
+            }
+        });
+    }
 
     // 숫자 키패드 버튼 클릭 시 호출되는 메서드
     @FXML
