@@ -9,6 +9,8 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane fx:id="rootPane" prefHeight="620.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.exam.app.view.RefundListController">
     <children>
@@ -19,8 +21,16 @@
         <!-- 상단 타이틀 -->
         <Label layoutX="81.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="[환불] 예매 내역 확인 화면" textFill="WHITE" />
 
-        <!-- 홈 버튼 -->
-        <Button layoutX="320.0" layoutY="10.0" onAction="#handleHomeButtonAction" prefHeight="40.0" prefWidth="44.0" style="-fx-background-radius: 20; -fx-font-size: 18px;" text="🏠" />
+		<!-- 홈 버튼 -->
+		<Button layoutX="313.0" layoutY="7.0" onAction="#handleHomeButtonAction" prefHeight="40.0" prefWidth="59.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+		    <graphic>
+		        <ImageView fitHeight="37.0" fitWidth="39.0" preserveRatio="true">
+		            <image>
+		                <Image url="@/com/exam/app/view/images/home.png" />
+		            </image>
+		        </ImageView>
+		    </graphic>
+		</Button>
 
         <!-- 예매 내역 목록을 담는 VBox -->
         <VBox fx:id="reservationListContainer" layoutX="20.0" layoutY="60.0" prefWidth="340.0" spacing="20.0">
