@@ -2,7 +2,6 @@ import server.container.Container;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import server.controller.MainController;
 import server.dto.RegisterMovieDto;
-
 import java.time.LocalDateTime;
 
 public class Main {
@@ -14,9 +13,11 @@ public class Main {
         RegisterMovieDto movieDto = RegisterMovieDto
                 .builder()
                 .movie_id(20249188)
-                .localDateTime(LocalDateTime.of(2023,9,13,10,00))
+                .localDateTime(LocalDateTime.of(2022,9,13,10,00))
                 .theater_id(8)
                 .build();
         mainController.setPlay(movieDto);
+
+        mainController.getSalesByMonth(2024);
     }
 }
