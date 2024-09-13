@@ -10,6 +10,8 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane prefHeight="620.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.exam.app.view.RefundPhoneController">
     <children>
@@ -56,7 +58,18 @@
         <!-- 라벨, 라인 및 기타 텍스트 -->
         <Label layoutX="87.0" layoutY="15.0" prefHeight="30.0" prefWidth="200.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="[환불] 예매 내역 출력 화면" textFill="WHITE" />
         <Line endX="109.33331298828125" layoutX="193.0" layoutY="236.0" startX="-110.66668701171875" stroke="#a6a6a6" />
-        <Button layoutX="320.0" layoutY="10.0" onAction="#handleHomeButtonAction" prefHeight="40.0" prefWidth="44.0" style="-fx-background-radius: 20; -fx-font-size: 18px;" text="🏠" />
+		
+		<!-- 홈 버튼 -->
+		<Button layoutX="313.0" layoutY="7.0" onAction="#handleHomeButtonAction" prefHeight="40.0" prefWidth="59.0" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+		    <graphic>
+		        <ImageView fitHeight="37.0" fitWidth="39.0" preserveRatio="true">
+		            <image>
+		                <Image url="@/com/exam/app/view/images/home.png" />
+		            </image>
+		        </ImageView>
+		    </graphic>
+		</Button>
+		
         <Text layoutX="77.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="휴대폰번호를 입력해 주세요." textAlignment="CENTER" wrappingWidth="230.0000000000001" />
         <Text layoutX="36.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="비회원으로 예매한 고객님은 예매번호로 조회해 주세요." textAlignment="CENTER" wrappingWidth="307.3333740234376" />
     </children>
