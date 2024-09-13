@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="620.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SettingController">
@@ -15,15 +16,16 @@
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
-               <!-- 영화 항목은 컨트롤러에서 동적으로 추가될 것이므로 여기는 비워둡니다 -->
+               <!-- 영화 항목은 SettingController에서 동적으로 추가될 것 -->
             </VBox>
          </content>
       </ScrollPane>
-      <!-- '상영 정보 추가/수정' 버튼과 메서드 연결 -->
-      <Button fx:id="registerButton" layoutX="48.0" layoutY="565.0" mnemonicParsing="false" onAction="#switchToEdit" prefHeight="30.0" prefWidth="125.0" text="상영 정보 추가/수정" />
+      <!-- '상영 정보 추가/수정' 버튼 -->
+      <Button fx:id="registerButton" layoutX="48.0" layoutY="565.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="125.0" text="상영 정보 추가/수정" onAction="#switchToEdit"/>
       <Label layoutX="22.0" layoutY="17.0" style="-fx-font-weight: bold;" text="상영 정보 관리" />
-      <!-- '상영 정보 확인' 버튼과 메서드 연결 -->
-      <Button fx:id="registerButton1" layoutX="202.0" layoutY="565.0" mnemonicParsing="false" onAction="#switchToCheck" prefHeight="30.0" prefWidth="125.0" text="상영 정보 확인" />
-      <Button fx:id="backTosetting" layoutX="300.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleBackToMenu" prefHeight="37.0" prefWidth="54.0" text="이전" />
+      <!-- '상영 정보 확인' 버튼 -->
+      <Button fx:id="registerButton1" layoutX="202.0" layoutY="565.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="125.0" text="상영 정보 확인" onAction="#switchToCheck"/>
+      <!-- '이전' 버튼 -->
+      <Button fx:id="backToMenuButton" layoutX="326.0" layoutY="20.0" mnemonicParsing="false" prefHeight="35.0" text="이전" onAction="#handleBackToMenuAction"/>
    </children>
 </AnchorPane>

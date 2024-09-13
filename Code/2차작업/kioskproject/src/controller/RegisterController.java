@@ -60,6 +60,7 @@ public class RegisterController {
 
     // 현재 선택된 HBox와 영화 제목을 추적하는 변수
     private HBox selectedMovieBox;
+    private Integer selectedMovieId;
     private String selectedMovieTitle;  // 선택된 영화의 제목을 저장할 변수
     private Integer selectedMovieRuntime; //선택된 영화의 상영시간을 저장할 변수
     private String selectedMovieRating;// 선택된 영화의 상영등급을 저장할 변수
@@ -89,10 +90,11 @@ public class RegisterController {
     // VBox에 샘플 영화 데이터를 로드하는 메서드 (MovieRegister.fxml용)
     public void loadMovieData() {
     	try {
-    		String sql = "SELECT title,poster,runtime,rating FROM movies";
+    		String sql = "SELECT movie_id,title,poster,runtime,rating FROM movies";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
+				Integer movie_id = rs.getInt("movie_id");
 				String title = rs.getString("title");
 				String poster = rs.getString("poster");
 				Integer runtime = rs.getInt("runtime");
@@ -112,7 +114,7 @@ public class RegisterController {
 				Label movieTitle = new Label(title);
 				movieTitle.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 				movieBox.getChildren().addAll(imageview,movieTitle);
-				movieBox.setOnMouseClicked(event -> handleMovieSelection(movieBox, movieTitle.getText(),runtime,rating,poster));
+				movieBox.setOnMouseClicked(event -> handleMovieSelection(movieBox, movieTitle.getText(),runtime,rating,poster,movie_id));
 				movieListVBox.getChildren().add(movieBox);
 				
 			}
@@ -124,7 +126,7 @@ public class RegisterController {
     }
 
     // 영화 선택을 처리하는 메서드 (선택된 movieBox 강조 표시)
-    private void handleMovieSelection(HBox movieBox, String movieTitle, Integer runtime, String rating, String poster) {
+    private void handleMovieSelection(HBox movieBox, String movieTitle, Integer runtime, String rating, String poster, Integer movie_id) {
         // 이미 선택된 영화가 있으면 강조 표시를 제거
         if (selectedMovieBox != null) {
             selectedMovieBox.setStyle(""); // 이전에 선택된 영화의 스타일을 초기화
@@ -132,6 +134,7 @@ public class RegisterController {
 
         // 새로운 movieBox를 선택하고 강조 스타일 적용
         selectedMovieBox = movieBox;
+        selectedMovieId = movie_id;
         selectedMovieTitle = movieTitle;  // 선택된 영화 제목을 저장
         selectedMovieRuntime = runtime; // 선택된 러닝타임을 저장
         selectedMovieRating = rating; // 선택된 상영등급을 저장
@@ -162,6 +165,8 @@ public class RegisterController {
 
             // 선택한 영화의 제목을 팝업 창의 제목 필드에 설정
             popupController.setMovieTitle(selectedMovieTitle);
+            
+            popupController.setMovieId(selectedMovieId);
             
             popupController.setMovieRuntime(selectedMovieRuntime);
             
@@ -217,6 +222,10 @@ public class RegisterController {
     public void setMoviePoster(String poster) {
     	this.selectedMoviePoster = poster;
     }
+    
+    public void setMovieId(Integer movie_id) {
+    	this.selectedMovieId = movie_id;
+    }
 
     // '등록 완료' 버튼 클릭 이벤트 처리 (MovieRegisterPopup.fxml)
     @FXML
@@ -227,13 +236,14 @@ public class RegisterController {
         String selectedKind = kindComboBox.getValue();
         
         try {
-    		String sql = "INSERT INTO showmovie(title,runtime,rating,movietype,poster) VALUES(?,?,?,?,?)";
+    		String sql = "INSERT INTO showmovie(movie_id, title, runtime, rating, movietype, poster) VALUES(?,?,?,?,?,?)";
     		PreparedStatement pstmt = con.prepareStatement(sql);
-    		pstmt.setString(1, title);
-    		pstmt.setString(2, runtime);
-    		pstmt.setString(3, rating);
-    		pstmt.setString(4, selectedKind);
-    		pstmt.setString(5, selectedMoviePoster); // 포스터 경로 저장
+    		pstmt.setInt(1, selectedMovieId);
+    		pstmt.setString(2, title);
+    		pstmt.setString(3, runtime);
+    		pstmt.setString(4, rating);
+    		pstmt.setString(5, selectedKind);
+    		pstmt.setString(6, selectedMoviePoster); // 포스터 경로 저장
     	    pstmt.executeUpdate(); // 쿼리 실행
     		pstmt.close();
     	}catch(Exception e) {

@@ -31,11 +31,10 @@ public class SettingController {
     @FXML
     private VBox screeningInfoVBox;  // 상영 정보 출력용 VBox
     private HBox selectedMovie;  // 선택된 영화 항목을 저장할 변수
+    
+    private Integer selectedMovieId;
     private String selectedMovieTitle; // 선택된 영화의 제목을 저장
-    private String selectedMovieRuntime; //선택된 영화의 상영시간을 저장할 변수
-    private String selectedMovieRating;// 선택된 영화의 상영등급을 저장할 변수
-    private String selectedMovietype;//상영관 타입을 저장할 변수
-    private String selectedMoviePoster;//선택된 영화의 포스터를 저장할 변수
+    private String selectedMovieType;
     
     @FXML
     private Button backToMenuButton; // 이전 버튼
@@ -48,7 +47,6 @@ public class SettingController {
     String url = "jdbc:mysql://localhost:3306/kiosk";
 	private Connection con;
     
-    @FXML
     public void initialize() {
     	try {
     		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -68,11 +66,6 @@ public class SettingController {
             screeningInfoVBox = new VBox();  // 간단한 초기화. FXML이 아닌 코드로 생성.
             System.err.println("screeningInfoVBox was null and has been initialized programmatically.");
         }
-
-        // 초기 영화 목록 추가
-        /*addMovieToList("Movie 1");
-        addMovieToList("Movie 2");
-        addMovieToList("Movie 3");*/
     }
 
     private Stage stage;
@@ -87,7 +80,7 @@ public class SettingController {
             root = loader.load();
 
             MovieSettingEditController controller = loader.getController();
-            controller.initializeData(selectedMovieTitle, AppData.getMovieScreenings());
+            controller.initializeData(selectedMovieId,selectedMovieType,AppData.getMovieScreenings());
 
             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
@@ -116,17 +109,15 @@ public class SettingController {
     }
 
     // 영화 선택 시 파란색 테두리 추가
-    public void selectMovie(HBox movieItem, String movieTitleLabel, String rating, String runtime, String movietype, String poster) {
+    public void selectMovie(HBox movieItem, String movieTitleLabel, String rating, String runtime, String movietype, String poster, Integer movie_id) {
         if (selectedMovie != null) {
             selectedMovie.setStyle("");  // 테두리 제거
         }
 
         selectedMovie = movieItem;
         selectedMovieTitle = movieTitleLabel;  // 선택된 영화 제목을 저장
-        selectedMovieRuntime = runtime; // 선택된 러닝타임을 저장
-        selectedMovieRating = rating; // 선택된 상영등급을 저장
-        selectedMovietype = movietype;// 상영관 타입
-        selectedMoviePoster = poster; // 선택된 영화의 포스터를 저장
+        selectedMovieId = movie_id;
+        selectedMovieType = movietype;
         selectedMovie.setStyle("-fx-border-color: blue; -fx-border-width: 2;");
 
         /*Label movieTitleLabel = (Label) movieItem.lookup("#movieTitleLabel");
@@ -137,11 +128,12 @@ public class SettingController {
     @FXML
     public void addMovieToList() {
     	try {
-    		String sql = "SELECT title,runtime,rating,movietype,poster FROM showmovie";
+    		String sql = "SELECT movie_id, title,runtime,rating,movietype,poster FROM showmovie";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
+				Integer movie_id = rs.getInt("movie_id");
 				String title = rs.getString("title");
 				String runtime = rs.getString("runtime");
 				String rating = rs.getString("rating");
@@ -156,15 +148,16 @@ public class SettingController {
 				Image image = new Image(file.toURI().toString());
 	            ImageView moviePoster = new ImageView(image);
 	            moviePoster.setFitWidth(100);
-	            moviePoster.setFitHeight(150);
+	            moviePoster.setFitHeight(100);
 	            // moviePoster.setImage(new Image("file:path_to_image.jpg"));  // 실제 이미지 경로로 대체 필요
 
 	            Label movieTitleLabel = new Label(title);
 	            movieTitleLabel.setId("movieTitleLabel");
+	            Label movieType = new Label(movietype);
 
-	            movieItem.getChildren().addAll(moviePoster, movieTitleLabel);
+	            movieItem.getChildren().addAll(moviePoster, movieTitleLabel,movieType);
 
-	            movieItem.setOnMouseClicked(event -> selectMovie(movieItem,movieTitleLabel.getText(),rating,runtime,movietype,poster));
+	            movieItem.setOnMouseClicked(event -> selectMovie(movieItem,movieTitleLabel.getText(),rating,runtime,movietype,poster,movie_id));
 
 	            movieListVBox.getChildren().add(movieItem);
 			}
