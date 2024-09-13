@@ -33,12 +33,9 @@ public class PointUsingSuccessPopupController {
             isPlaceholderVisible = false;
         }
 
-        // "지우기" 버튼일 때 처리
+        // "지우기" 버튼일 때 처리 - 전체 텍스트 삭제
         if ("지우기".equals(buttonText)) {
-            String currentText = phoneField1.getText();
-            if (!currentText.isEmpty()) {
-                phoneField1.setText(currentText.substring(0, currentText.length() - 1)); // 마지막 글자 삭제
-            }
+            phoneField1.clear(); // 모든 텍스트 삭제
         }
         // "최대" 버튼일 때 처리 - 500원 단위로 최대 값을 입력 필드에 추가
         else if ("최대".equals(buttonText)) {
