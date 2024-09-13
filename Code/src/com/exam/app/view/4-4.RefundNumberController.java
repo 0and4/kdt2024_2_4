@@ -150,7 +150,7 @@ public class RefundNumberController {
         }
     }
 
-    // 홈 버튼 클릭 시 호출되는 메서드
+    //홈 버튼
     @FXML
     private void handleHomeButtonAction(ActionEvent event) {
         try {
@@ -159,7 +159,7 @@ public class RefundNumberController {
             Parent homeView = loader.load();
 
             // 현재 스테이지 가져오기
-            Stage stage = (Stage) phoneField.getScene().getWindow();
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
 
             // 새로운 씬으로 전환
             Scene scene = new Scene(homeView);
