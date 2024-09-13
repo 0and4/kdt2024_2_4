@@ -1,4 +1,4 @@
-package com.exam.app.view;  
+package com.exam.app.view;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -102,27 +102,6 @@ public class ReservationPhoneController {
         }
     }
 
- // 홈 버튼 처리
-    @FXML
-    private void handleHomeButtonAction(ActionEvent event) {
-        try {
-            // FXML 파일 로드 (kiosk.fxml로 이동)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/exam/app/view/kiosk.fxml"));
-            Parent homeView = loader.load();
-
-            // 현재 스테이지 가져오기
-            Stage stage = (Stage) phoneField.getScene().getWindow();
-
-            // 새로운 씬으로 전환
-            Scene scene = new Scene(homeView);
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace(); // 에러 발생 시 콘솔에 출력
-        }
-    }
-
     // "예매 번호로 조회" 버튼 클릭 시 ReservationNumber.fxml로 이동
     @FXML
     private void handleTicketSearchAction(ActionEvent event) {
@@ -178,6 +157,27 @@ public class ReservationPhoneController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    
+    //홈 버튼
+    @FXML
+    private void handleHomeButtonAction(ActionEvent event) {
+        try {
+            // FXML 파일 로드 (kiosk.fxml로 이동)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/exam/app/view/kiosk.fxml"));
+            Parent homeView = loader.load();
+
+            // 현재 스테이지 가져오기
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+
+            // 새로운 씬으로 전환
+            Scene scene = new Scene(homeView);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace(); // 에러 발생 시 콘솔에 출력
         }
     }
 
