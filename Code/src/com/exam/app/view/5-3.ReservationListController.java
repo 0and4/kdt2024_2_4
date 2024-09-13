@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 
+
 public class ReservationListController {
 
     @FXML
@@ -28,22 +29,24 @@ public class ReservationListController {
 
     private boolean isSelected = false; // 항목이 선택되었는지 여부를 저장
 
-    // 홈 버튼을 클릭했을 때 실행되는 메서드
+    //홈 버튼
     @FXML
     private void handleHomeButtonAction(ActionEvent event) {
         try {
-            // FXML 파일 로드
+            // FXML 파일 로드 (kiosk.fxml로 이동)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/exam/app/view/kiosk.fxml"));
-            Parent kioskView = loader.load();
+            Parent homeView = loader.load();
 
-            // 현재 Stage를 가져와서 새로운 Scene으로 교체
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(kioskView);
+            // 현재 스테이지 가져오기
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+
+            // 새로운 씬으로 전환
+            Scene scene = new Scene(homeView);
             stage.setScene(scene);
             stage.show();
 
         } catch (IOException e) {
-            e.printStackTrace(); // 오류 발생 시 스택 트레이스 출력
+            e.printStackTrace(); // 에러 발생 시 콘솔에 출력
         }
     }
 
