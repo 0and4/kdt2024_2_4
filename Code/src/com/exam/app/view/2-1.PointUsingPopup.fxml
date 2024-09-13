@@ -42,7 +42,7 @@
         </GridPane>
 
         <!-- 확인 버튼 -->
-        <Button layoutX="114.0" layoutY="356.0" prefHeight="40.0" prefWidth="91.0" style="-fx-background-radius: 15;-fx-background-color: FF5A5A;" text="확  인" textFill="WHITE" />
+        <Button fx:id="confirmButton" layoutX="114.0" layoutY="356.0" prefHeight="40.0" prefWidth="91.0" style="-fx-background-radius: 15;-fx-background-color: FF5A5A;" text="확  인" textFill="WHITE" disable="true"/>
 
         <!-- 휴대폰 번호 입력 필드 -->
         <TextField fx:id="phoneField" alignment="CENTER" layoutX="52.0" layoutY="85.0" onMouseClicked="#clearPlaceholder" prefHeight="23.0" prefWidth="215.0" style="-fx-font-size: 14px;" text="휴대폰 번호 : 010-XXXX-XXXX" />
