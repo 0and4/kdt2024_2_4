@@ -153,7 +153,8 @@ public class MovieSettingEditController {
                 
                 //상영관 정보 로드
                 loadTheaterComboBox();
-
+                //화면 하단 상자 정보
+                loadScreenInfo();
                 // 상영 정보 로드
                 movieScreenings = AppData.getMovieScreenings();
                 if (movieScreenings.containsKey(selectedMovieTitle)) {
@@ -195,6 +196,89 @@ public class MovieSettingEditController {
 	   	 }
     }
     
+    //화면 하단 상자 정보
+    private void loadScreenInfo() {
+    	screeningInfoHBox.getChildren().clear(); // 기존 항목 제거
+    	
+    	try {
+    		//상영날짜 상영시작시간 가져옴
+    		String sql = "SELECT theater_id, movie_date, start_time FROM play_info where movie_id=?";
+    		PreparedStatement pstmt = con.prepareStatement(sql);// sql 연결
+    		pstmt.setInt(1, selectedMovieId); // 일치하는 movie_id찾기위해 가져옴
+    		ResultSet rs = pstmt.executeQuery();
+    		
+    		while(rs.next()) {
+    			int theaterId = rs.getInt("theater_id");
+                LocalDate movieDate = rs.getDate("movie_date").toLocalDate();
+                LocalTime startTime = rs.getTime("start_time").toLocalTime();
+                
+                // theater_id를 기반으로 상영관 정보 가져오기
+                String theaterSql = "SELECT section,kind FROM theater WHERE theater_id = ?";
+                PreparedStatement theaterPstmt = con.prepareStatement(theaterSql);
+                theaterPstmt.setInt(1, theaterId);
+                ResultSet theaterRs = theaterPstmt.executeQuery();
+                //상영관
+                String section = "정보 없음";
+                //상영관 종류
+                String kind = "정보없음";
+                if (theaterRs.next()) {
+                    section = theaterRs.getString("section");
+                    kind = theaterRs.getString("kind");
+                }
+                
+                // 날짜, 시작 시간
+                String date = movieDate.toString();
+                String time = startTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                
+                // 새로운 상영 정보를 담은 VBox 생성
+                VBox vbox = new VBox(5);
+                vbox.setPadding(new Insets(5, 10, 5, 10));
+                vbox.setAlignment(Pos.CENTER);
+
+                // StackPane을 사용하여 VBox의 중앙에 삭제 버튼을 겹쳐 배치
+                StackPane stackPane = new StackPane();
+                // 테두리 설정
+                stackPane.setBorder(new Border(
+                    new BorderStroke(
+                        Color.BLACK, 
+                        BorderStrokeStyle.SOLID, 
+                        null, 
+                        new BorderWidths(0.5)
+                    )
+                ));
+
+                Label dateLabel = new Label(date);
+                Label theaterLabel = new Label(section);
+                Label timeLabel = new Label(time);
+                Label kindLabel = new Label(kind);
+
+                vbox.getChildren().addAll(dateLabel, kindLabel,theaterLabel, timeLabel);
+
+                // 삭제 버튼 추가
+                Button deleteButton = new Button("삭제");
+                deleteButton.setVisible(false);
+                deleteButton.setOnAction(event -> deleteScreeningInfo(stackPane));
+
+                // StackPane에 VBox와 삭제 버튼 추가
+                stackPane.getChildren().addAll(vbox, deleteButton);
+                stackPane.setAlignment(deleteButton, Pos.CENTER);
+
+                // VBox 클릭 시 삭제 버튼 표시/숨기기
+                stackPane.setOnMouseClicked(event -> toggleDeleteButton(deleteButton));
+
+                // VBox를 HBox에 추가
+                screeningInfoHBox.getChildren().add(stackPane);
+
+                // 입력 필드 초기화
+                datePicker.setValue(null);
+                theaterComboBox.setValue(null);
+                timeTextField.clear();
+    		}
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}//try
+    }// loadScreenInfo
+    
     //상영 시작 시간을 가져와 종료시간 계산하기
     private void updateEndTime() {
     	String runtime = selectedMovieRuntime;
@@ -221,17 +305,26 @@ public class MovieSettingEditController {
         } else {
             endtimeField.setText("");
         }
-    }
+    }//상영종료시간 계산
 
     // 상영 정보 저장 메서드
     @FXML
     private void saveScreeningInfo() {
+    	 if (selectedMovieTitle != null) {
+             LocalDate date = datePicker.getValue();
+             String theater = theaterComboBox.getValue();
+             String time = timeTextField.getText();
+
+             if (date == null || theater == null || time == null || time.isEmpty()) {
+                 // 상영 정보가 제대로 입력되지 않았으면 저장하지 않고 리턴
+                 System.out.println("상영 정보가 완전하지 않습니다.");
+                 return;
+             }
+    	 }
     	//입력한 날짜 가져오기
     	LocalDate localDate = datePicker.getValue();
-    	
     	//입력한 상영 시작 시간 가져오기
     	LocalTime localStartTime = LocalTime.parse(timeTextField.getText());
-    	
     	//계산된 상영 종료 시간 가져오기
     	LocalTime localEndTime = LocalTime.parse(endtimeField.getText());
     	
@@ -245,7 +338,7 @@ public class MovieSettingEditController {
     	
     	try {
     		int theater_id = getTheaterId(theater);//화면 하단에 theater_id를 받아오는 함수 있음
-    		String sql = "INSERT INTO play_into(movie_id,theater_id,movie_date,start_time,end_time) VALUES(?,?,?,?,?)";
+    		String sql = "INSERT INTO play_info(movie_id,theater_id,movie_date,start_time,end_time) VALUES(?,?,?,?,?)";
     		PreparedStatement pstmt = con.prepareStatement(sql);
     		pstmt.setInt(1, selectedMovieId);
     		pstmt.setInt(2, theater_id);
@@ -254,52 +347,12 @@ public class MovieSettingEditController {
     		pstmt.setTime(5, sqlEndTime);
     		pstmt.executeUpdate();
     		System.out.println("상영 정보가 성공적으로 저장되었습니다.");
+    		
+    		loadScreenInfo();
     	}catch(SQLException e) {
     		System.err.println("상영 정보 저장 중 오류 발생:");
             e.printStackTrace();
     	}
-    	
-        String date = datePicker.getValue() != null ? datePicker.getValue().toString() : "정보 없음";
-        //String theater = theaterComboBox.getValue() != null ? theaterComboBox.getValue() : "정보 없음";
-        String time = timeTextField.getText().isEmpty() ? "정보 없음" : timeTextField.getText();
-         
-        // 새로운 상영 정보를 담은 VBox 생성
-        VBox vbox = new VBox(5);
-        vbox.setPadding(new Insets(5, 10, 5, 10));
-        vbox.setAlignment(Pos.CENTER);
-
-        // StackPane을 사용하여 VBox의 중앙에 삭제 버튼을 겹쳐 배치
-        StackPane stackPane = new StackPane();
-        // 테두리 설정
-        stackPane.setBorder(new Border(
-            new BorderStroke(
-                Color.BLACK, 
-                BorderStrokeStyle.SOLID, 
-                null, 
-                new BorderWidths(0.5)
-            )
-        ));
-
-        Label dateLabel = new Label(date);
-        Label theaterLabel = new Label(theater);
-        Label timeLabel = new Label(time);
-
-        vbox.getChildren().addAll(dateLabel, theaterLabel, timeLabel);
-
-        // 삭제 버튼 추가
-        Button deleteButton = new Button("삭제");
-        deleteButton.setVisible(false);
-        deleteButton.setOnAction(event -> deleteScreeningInfo(stackPane));
-
-        // StackPane에 VBox와 삭제 버튼 추가
-        stackPane.getChildren().addAll(vbox, deleteButton);
-        stackPane.setAlignment(deleteButton, Pos.CENTER);
-
-        // VBox 클릭 시 삭제 버튼 표시/숨기기
-        stackPane.setOnMouseClicked(event -> toggleDeleteButton(deleteButton));
-
-        // VBox를 HBox에 추가
-        screeningInfoHBox.getChildren().add(stackPane);
 
         // 입력 필드 초기화
         datePicker.setValue(null);
@@ -322,18 +375,47 @@ public class MovieSettingEditController {
     
     //화면에서 StackPane지우기
     private void deleteScreeningInfo(StackPane stackPane) {
-        screeningInfoHBox.getChildren().remove(stackPane);
-        // VBox를 삭제한 후 남아있는 VBox들을 왼쪽으로 이동시키기
-        for (int i = 0; i < screeningInfoHBox.getChildren().size(); i++) {
-            StackPane currentStackPane = (StackPane) screeningInfoHBox.getChildren().get(i);
-            VBox currentVBox = (VBox) currentStackPane.getChildren().get(0);
-            if (i == 0) {
-                // 첫 번째 VBox에만 padding 설정
-                currentVBox.setPadding(new Insets(0, 0, 0, 0));
-            } else {
-                currentVBox.setPadding(new Insets(0, 0, 0, 10)); // 나머지 VBox는 간격을 줍니다.
+    	 // StackPane에서 영화 상영 정보를 얻기 위한 VBox 접근
+        VBox vbox = (VBox) stackPane.getChildren().get(0);
+        Label dateLabel = (Label) vbox.getChildren().get(0);
+        Label timeLabel = (Label) vbox.getChildren().get(3);
+
+        // 상영 정보 추출
+        String date = dateLabel.getText();
+        String startTime = timeLabel.getText();
+        System.out.println("받은날짜: "+date);
+        System.out.println("받은시간: "+startTime);
+        
+        try {
+        	// Time 객체에 시:분:초 형식 필요
+            String formattedStartTime = startTime + ":00"; // 'HH:MM:SS' 형식으로 변환
+        	// 상영 정보 삭제를 위한 SQL 쿼리
+            String sql = "DELETE FROM play_info WHERE movie_id = ? AND movie_date = ? AND start_time = ?";
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, selectedMovieId);
+            pstmt.setDate(2, Date.valueOf(date));
+            pstmt.setTime(3, Time.valueOf(formattedStartTime)); // Time 객체에 시:분:초 형식 필요
+            pstmt.executeUpdate();
+
+            System.out.println("상영 정보가 성공적으로 삭제되었습니다.");
+        	
+        	screeningInfoHBox.getChildren().remove(stackPane);
+            // VBox를 삭제한 후 남아있는 VBox들을 왼쪽으로 이동시키기
+            for (int i = 0; i < screeningInfoHBox.getChildren().size(); i++) {
+                StackPane currentStackPane = (StackPane) screeningInfoHBox.getChildren().get(i);
+                VBox currentVBox = (VBox) currentStackPane.getChildren().get(0);
+                if (i == 0) {
+                    // 첫 번째 VBox에만 padding 설정
+                    currentVBox.setPadding(new Insets(0, 0, 0, 0));
+                } else {
+                    currentVBox.setPadding(new Insets(0, 0, 0, 10)); // 나머지 VBox는 간격을 줍니다.
+                }
             }
-        }
+        }catch(Exception e) {
+        	System.err.println("상영 정보 삭제 중 오류 발생:");
+        	e.printStackTrace();
+        }//try-catch()
+              
     }
 
     private void toggleDeleteButton(Button deleteButton) {
