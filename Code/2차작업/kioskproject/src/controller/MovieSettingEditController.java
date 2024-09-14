@@ -197,14 +197,18 @@ public class MovieSettingEditController {
     }
     
     //화면 하단 상자 정보
-    private void loadScreenInfo() {
+    public void loadScreenInfo() {
     	screeningInfoHBox.getChildren().clear(); // 기존 항목 제거
     	
     	try {
     		//상영날짜 상영시작시간 가져옴
-    		String sql = "SELECT theater_id, movie_date, start_time FROM play_info where movie_id=?";
+    		String sql = "SELECT pi.theater_id, pi.movie_date, pi.start_time, t.kind " +
+                    "FROM play_info pi " +
+                    "JOIN theater t ON pi.theater_id = t.theater_id " +
+                    "WHERE pi.movie_id = ? AND t.kind = ?";
     		PreparedStatement pstmt = con.prepareStatement(sql);// sql 연결
     		pstmt.setInt(1, selectedMovieId); // 일치하는 movie_id찾기위해 가져옴
+    		 pstmt.setString(2, selectedMovieType);// 일치하는 영화관 종류를 찾기위헤 movietype값을 가져옴
     		ResultSet rs = pstmt.executeQuery();
     		
     		while(rs.next()) {
