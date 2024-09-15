@@ -72,7 +72,24 @@ public class buyController implements Initializable {
 	
 	// 포인트 적립 팝업
 	public void savePointPopup(ActionEvent event) {
-			
+		//현재 스테이지 정보 가져오기
+		Stage savePointPopupStage = (Stage) usePoint.getScene().getWindow();
+		//팝업을 띄워줄 새로운 스테이지 생성
+		Stage pop = new Stage(StageStyle.DECORATED);
+		pop.initModality(Modality.WINDOW_MODAL);
+		pop.initOwner(savePointPopupStage);
+		//팝업창 불러오기
+		try {
+			Parent root = (Parent)FXMLLoader.load(getClass().getResource("/fxml/PointSavingPopup.fxml"));
+			Scene scene = new Scene(root);
+			pop.setScene(scene);
+			pop.setTitle("포인트 적립");
+			pop.setResizable(false);// 창 조절 차단
+			// 팝업 보여주기
+			pop.show();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
