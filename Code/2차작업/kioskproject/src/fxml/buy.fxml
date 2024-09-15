@@ -23,7 +23,7 @@
          <children>
             <Button fx:id="home" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: none; -fx-background-radius: 5; -fx-border-radius: 5;">
                <HBox.margin>
-                  <Insets right="5.0" top="2.5" />
+                  <Insets right="10.0" top="5.0" />
                </HBox.margin>
                <graphic>
                   <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
@@ -168,7 +168,7 @@
                         <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;" text="카드결제" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <Button mnemonicParsing="false" prefHeight="55.0" prefWidth="300.0" style="-fx-background-color: #ff6342; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 24; -fx-font-family: Dotum; -fx-text-fill: white;" text="결제하기">
+                  <Button fx:id="purChase" mnemonicParsing="false" prefHeight="55.0" prefWidth="300.0" style="-fx-background-color: #ff6342; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 24; -fx-font-family: Dotum; -fx-text-fill: white;" text="결제하기">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>

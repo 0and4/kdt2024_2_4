@@ -21,6 +21,7 @@ public class buyController implements Initializable {
 	@FXML Button home;
 	@FXML Button usePoint;
 	@FXML Button savePoint;
+	@FXML Button purChase;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -28,6 +29,7 @@ public class buyController implements Initializable {
 		home.setOnAction(event->switchHome(event));
 		usePoint.setOnAction(event->usePointPopup(event));
 		savePoint.setOnAction(event->savePointPopup(event));
+		purChase.setOnAction(event->rescheck(event));
 	}
 	
 	//메인화면으로 이동
@@ -87,6 +89,17 @@ public class buyController implements Initializable {
 			pop.setResizable(false);// 창 조절 차단
 			// 팝업 보여주기
 			pop.show();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//예약확인 창으로 이동
+	private void rescheck(ActionEvent event) {
+		try {
+			Parent rescheckstage = (Parent)FXMLLoader.load(getClass().getResource("/fxml/reservationCheck.fxml"));
+			StackPane root = (StackPane) buyPane.getScene().getRoot();
+			root.getChildren().add(rescheckstage);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
