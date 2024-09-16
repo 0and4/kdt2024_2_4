@@ -58,7 +58,7 @@
                                  </children>
                               </AnchorPane>
                            </graphic></Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="240.0" prefWidth="180.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 20;">
+                        <Button fx:id="printTicket" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="240.0" prefWidth="180.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 20;">
                            <graphic>
                               <AnchorPane prefHeight="230.0" prefWidth="180.0">
                                  <children>
@@ -71,7 +71,7 @@
                                  </children>
                               </AnchorPane>
                            </graphic></Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="240.0" prefWidth="180.0" style="-fx-border-color: black; -fx-border-radius: 20; -fx-background-color: white;">
+                        <Button fx:id="cancelTicket" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="240.0" prefWidth="180.0" style="-fx-border-color: black; -fx-border-radius: 20; -fx-background-color: white;">
                            <graphic>
                               <AnchorPane prefHeight="230.0" prefWidth="180.0">
                                  <children>

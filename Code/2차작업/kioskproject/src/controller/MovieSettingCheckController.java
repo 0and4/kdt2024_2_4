@@ -84,7 +84,7 @@ public class MovieSettingCheckController {
             	String stime = startTime.format(DateTimeFormatter.ofPattern("HH:mm"));
             	String etime = endTime.format(DateTimeFormatter.ofPattern("HH:mm"));
             	
-            	String movieKey = movieTitle + "|" + rating + "|" + runtime + "|" + poster;
+            	String movieKey = movieTitle + "|" + rating + "|" + runtime + "|" + movieType +"|" + poster;
 
                 // 영화 정보를 맵에 추가
                 if (!movieMap.containsKey(movieKey)) {
@@ -115,16 +115,28 @@ public class MovieSettingCheckController {
                 Label runtimeLabel = new Label(movie.getRuntime() + "분");
 
                 VBox infoBox = new VBox();
-                infoBox.getChildren().addAll(titleLabel, ratingLabel, runtimeLabel);
-
+                VBox timeBox = new VBox();
+                timeBox.setSpacing(5);
+                infoBox.getChildren().addAll(titleLabel, ratingLabel, runtimeLabel,timeBox);
+               
                 for (Screening screening : movie.getScreenings()) {
+                	//추후 css작업 시 가로 배치하기 위하여 생성
+                	/*HBox screeningHBox = new HBox();
+                    screeningHBox.setSpacing(10);*/
+                	VBox timeDetailVBox = new VBox();
                     Label dateLabel = new Label("상영 날짜: " + screening.getDate());
                     Label timeLabel = new Label("상영 시간: " + screening.getStartTime() + " - " + screening.getEndTime());
                     Label sectionLabel = new Label("상영관: " + screening.getSection());
-                    infoBox.getChildren().addAll(dateLabel, timeLabel, sectionLabel);
+                    timeDetailVBox.getChildren().addAll(dateLabel, timeLabel, sectionLabel);
+                    timeDetailVBox.setStyle("-fx-border-color: black;");
+                    //추후 가로배치 시 사용
+                    /*screeningHBox.getChildren().add(timeDetailVBox);
+                    timeBox.getChildren().add(screeningHBox);*/
+                    timeBox.getChildren().add(timeDetailVBox);                  
                 }
 
                 screeningBox.getChildren().addAll(posterImageView, infoBox);
+                screeningBox.setStyle("-fx-border-color:blue;");
                 screeningInfoVBox.getChildren().add(screeningBox);
             }
             

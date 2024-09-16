@@ -21,14 +21,18 @@ public class kioskMaincontroller implements Initializable {
 	@FXML private MenuItem unconnect;
 	
 	@FXML private StackPane mainpane;
-	@FXML private Button buyTicket;
+	@FXML private Button buyTicket; //티켓 구매 버튼
+	@FXML private Button printTicket;//예매 조회 및 티켓출력 버튼
+	@FXML private Button cancelTicket;// 티켓 취소 버튼
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-		admin.setOnAction(event->connectAdmin(event));
-		unconnect.setOnAction(event->UNConnect(event));
-		buyTicket.setOnAction(event->choise(event));
+		admin.setOnAction(event->connectAdmin(event));// 관리자 버튼
+		unconnect.setOnAction(event->UNConnect(event));//서버 접속 해제
+		buyTicket.setOnAction(event->choise(event));//티켓 구매 버튼
+		printTicket.setOnAction(event->printTk(event));//예매 조회 및 티켓 출력 버튼
+		cancelTicket.setOnAction(event->cancelTk(event));//티켓 취소 화면
 	}
 	
 	public void connectAdmin(ActionEvent event) {
@@ -60,6 +64,31 @@ public class kioskMaincontroller implements Initializable {
 			Parent moviestage = (Parent)FXMLLoader.load(getClass().getResource("/fxml/choiseMovie.fxml"));
 			StackPane root = (StackPane) mainpane.getScene().getRoot();
 			root.getChildren().add(moviestage);
+			
+			Scene scene = mainpane.getScene();
+			scene.getStylesheets().add(getClass().getResource("/fxml/css/choiseMovie.css").toString());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//예매 티켓 조회 및 출력
+	public void printTk(ActionEvent event) {
+		try {
+			Parent resPrintstage = (Parent)FXMLLoader.load(getClass().getResource("/fxml/ReservationNumber.fxml"));
+			StackPane root = (StackPane) mainpane.getScene().getRoot();
+			root.getChildren().add(resPrintstage);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//예매 티켓 취소
+	public void cancelTk(ActionEvent event) {
+		try {
+			Parent refundPrintstage = (Parent)FXMLLoader.load(getClass().getResource("/fxml/4-4.RefundNumber.fxml"));
+			StackPane root = (StackPane) mainpane.getScene().getRoot();
+			root.getChildren().add(refundPrintstage);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

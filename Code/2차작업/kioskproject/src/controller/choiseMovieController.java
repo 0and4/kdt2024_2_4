@@ -44,8 +44,30 @@ public class choiseMovieController implements Initializable {
 		day6.setText(today.plusDays(5).format(buttonformatter));
 		day7.setText(today.plusDays(6).format(buttonformatter));
 		
+		//버튼 클릭 시 선택한 버튼 색상 표시
+		day1.setOnMouseClicked(event -> handleButtonClick(day1));
+	    day2.setOnMouseClicked(event -> handleButtonClick(day2));
+	    day3.setOnMouseClicked(event -> handleButtonClick(day3));
+	    day4.setOnMouseClicked(event -> handleButtonClick(day4));
+	    day5.setOnMouseClicked(event -> handleButtonClick(day5));
+	    day6.setOnMouseClicked(event -> handleButtonClick(day6));
+	    day7.setOnMouseClicked(event -> handleButtonClick(day7));
+		
 		home.setOnAction(event->switchHome(event)); // 홈화면으로 이동
 		nextPage.setOnAction(event->switchNextPage(event));// 다음페이지로 이동
+	}
+	
+	//버튼 클릭 시 선택한 버튼 색상 변경 및 제거
+	private void handleButtonClick(Button clickedButton) {
+		day1.getStyleClass().remove("selected");
+	    day2.getStyleClass().remove("selected");
+	    day3.getStyleClass().remove("selected");
+	    day4.getStyleClass().remove("selected");
+	    day5.getStyleClass().remove("selected");
+	    day6.getStyleClass().remove("selected");
+	    day7.getStyleClass().remove("selected");
+	    
+	    clickedButton.getStyleClass().add("selected");
 	}
 	
 	@FXML
