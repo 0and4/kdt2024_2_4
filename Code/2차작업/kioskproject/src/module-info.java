@@ -6,4 +6,9 @@ open module kioskproject {
 	requires javafx.media;
 	
 	requires org.json;
+	requires lombok;
+	requires com.fasterxml.jackson.databind;
+	requires com.fasterxml.jackson.core;
+	requires javafx.base;
+	requires javafx.graphics;
 }
