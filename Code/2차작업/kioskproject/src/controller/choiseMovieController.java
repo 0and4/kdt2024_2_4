@@ -29,7 +29,7 @@ public class choiseMovieController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		
 		LocalDate today = LocalDate.now();
 		formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd(E)");
 		buttonformatter = DateTimeFormatter.ofPattern("d"+"일"+"\n(E)");

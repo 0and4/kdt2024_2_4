@@ -62,7 +62,8 @@ public class MovieSettingCheckController {
         	String sql = "SELECT DISTINCT sm.title, sm.runtime, sm.rating, sm.poster, sm.movietype, t.kind, t.section, p.movie_date, p.start_time, p.end_time "+
         				 "FROM play_info p "+
         				 "JOIN showmovie sm ON p.movie_id = sm.movie_id "+
-        				 "JOIN theater t ON p.theater_id = t.theater_id";
+        				 "JOIN theater t ON p.theater_id = t.theater_id "+
+        				 "where sm.movietype = t.kind";
         	PreparedStatement pstmt = con.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             
@@ -152,15 +153,15 @@ public class MovieSettingCheckController {
         private final String title;
         private final String rating;
         private final String runtime;
-        private final String posterUrl;
+        private final String poster;
         private final String movieType;
         private final ArrayList<Screening> screenings;
 
-        public MovieInfo(String title, String rating, String runtime, String posterUrl, String movieType) {
+        public MovieInfo(String title, String rating, String runtime, String poster, String movieType) {
             this.title = title;
             this.rating = rating;
             this.runtime = runtime;
-            this.posterUrl = posterUrl;
+            this.poster = poster;
             this.movieType = movieType;
             this.screenings = new ArrayList<>();
         }
@@ -182,7 +183,7 @@ public class MovieSettingCheckController {
         }
 
         public String getPosterUrl() {
-            return posterUrl;
+            return poster;
         }
 
         public String getMovieType() {
