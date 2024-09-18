@@ -2,10 +2,43 @@ package dto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ReservationDAO {
+	public Set<String> getReservedSeats(String movieName, String movieDate, String movieStart) {
+        Set<String> reservedSeats = new HashSet<>();
+        
+        String query = "SELECT seats FROM reservation WHERE movie_name = ? AND movie_date = ? AND movie_start = ?";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, movieName);
+            stmt.setString(2, movieDate);
+            stmt.setString(3, movieStart);
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                String[] seats = rs.getString("seats").split(", ");
+                for (String seat : seats) {
+                    reservedSeats.add(seat);
+                }
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return reservedSeats;
+    }
+
+	
+	//DB로 값 전송
 	public void saveReservation(MovieData movieData, String seats, int totalPrice, String reservationNumber, List<String> peopleDetails) {
 		String sql = "INSERT INTO reservation (movie_name, movie_type, movie_runtime, movie_date, movie_start, movie_end, movie_theater, seats,  people, resNumber, totalprice) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import dto.MovieData;
+import dto.ReservationDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -53,12 +54,24 @@ public class seatController implements Initializable {
 	}
 	
 	private void createSeats() {
-		//12
+		// 이미 예약된 좌석을 데이터베이스에서 가져옴
+	    ReservationDAO reservationDAO = new ReservationDAO();
+	    Set<String> reservedSeats = reservationDAO.getReservedSeats(selectMovie.getSelectedMovieTitle(), selectMovie.getSelectedMovieDate(), selectMovie.getSelectedMovieStartTime());
+		//10줄 단위로 출력
 	    for (int i = 0; i < (selectedMovieSeat + 9) / 10; i++) { // 필요한 행 수 계산
 	        char rowLabel = (char) ('A' + i); // 행을 A, B, C로 설정
 	        for (int j = 0; j < Math.min(10, selectedMovieSeat - i * 10); j++) {
-	            Button seatButton = new Button(rowLabel + String.valueOf(j + 1)); // 좌석 이름 설정
-	            seatButton.setOnAction(event -> handleSeatSelection(seatButton));
+	            String seatName = rowLabel + String.valueOf(j + 1);
+	            Button seatButton = new Button(seatName); // 좌석 이름 설정
+
+	            // 예약된 좌석인지 확인하고 비활성화 처리
+	            if (reservedSeats.contains(seatName)) {
+	                seatButton.setDisable(true); // 예약된 좌석이면 비활성화
+	                seatButton.setStyle("-fx-background-color: gray;"); // 예약된 좌석은 회색으로 표시
+	            } else {
+	                seatButton.setOnAction(event -> handleSeatSelection(seatButton)); // 선택 가능 좌석 처리
+	            }
+
 	            seatGrid.add(seatButton, j, i); // 그리드에 추가
 	        }
 	    }
