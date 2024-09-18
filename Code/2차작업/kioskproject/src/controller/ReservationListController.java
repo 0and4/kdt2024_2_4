@@ -1,23 +1,31 @@
 package controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import dto.ReservationDAO;
+import dto.ReservationDTO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.input.MouseEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.Modality;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import java.io.IOException;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 
 public class ReservationListController {
-
+	@FXML private Text rating, movieTitle, movieType, runTime, movieTime, movieDate, section, seats, Details, resNum;
+	@FXML private VBox reservationListContainer;
+	
     @FXML
     private Button printButton;
 
@@ -28,6 +36,55 @@ public class ReservationListController {
     private AnchorPane reservationItem;
 
     private boolean isSelected = false; // 항목이 선택되었는지 여부를 저장
+    
+    private ReservationDAO reservationDAO = new ReservationDAO();
+    
+    // 예매 데이터를 화면에 표시하는 메서드
+    public void setReservationDetails(String reservationNumber) {
+        // 예매 데이터를 DAO에서 가져옴
+        ReservationDTO reservation = reservationDAO.getReservationByNumber(reservationNumber);
+
+        if (reservation != null) {
+            // 가져온 데이터를 화면에 표시
+            movieTitle.setText(reservation.getMovieTitle());
+            rating.setText(reservation.getMovieRating());
+            movieType.setText(reservation.getMovieType());
+            runTime.setText(reservation.getMovieRuntime() + "분");
+            movieDate.setText(reservation.getMovieDate().toString());
+            movieTime.setText(reservation.getMovieStart().toString()+"~"+reservation.getMovieEnd().toString());
+
+            // 좌석 정보 및 섹션 정보 설정
+            section.setText(reservation.getMovieTheater());
+            seats.setText(String.join(", ", reservation.getSeatList()));  // 좌석 리스트를 쉼표로 구분하여 표시
+
+            // 기타 예매 정보
+            resNum.setText(reservation.getRandomNumber());
+            Details.setText("인원 수: " + String.join(", ", reservation.getPeopleList()));
+        }
+    }
+    
+ // 여러 예매 정보 표시 메서드
+    public void setReservationDetails(List<ReservationDTO> reservations) {
+        reservationListContainer.getChildren().clear(); // 기존 내용 삭제
+
+        for (ReservationDTO reservation : reservations) {
+            // 새로운 예약 항목 생성
+            Text reservationText = new Text(
+                "예매번호: " + reservation.getRandomNumber() + "\n" +
+                "영화 제목: " + reservation.getMovieTitle() + "\n" +
+                "관람 등급 " + reservation.getMovieRating() + "\n" +
+                "영화 장르: " + reservation.getMovieType() + "\n" +
+                "상영 시간: " + reservation.getMovieRuntime() + "분\n" +
+                "예매 날짜: " + reservation.getMovieDate().toString() + "\n" +
+                "예매 시간: " + reservation.getMovieStart().toString() + "~" + reservation.getMovieEnd().toString() + "\n" +
+                "구역: " + reservation.getMovieTheater() + "\n" +
+                "좌석: " + String.join(", ", reservation.getSeats()) + "\n" +
+                "인원 수: " + String.join(", ", reservation.getPeople())
+            );
+
+            reservationListContainer.getChildren().add(reservationText); // VBox에 추가
+        }
+    }
 
     //홈 버튼
     @FXML

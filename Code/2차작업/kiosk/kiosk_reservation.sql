@@ -27,6 +27,7 @@ DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE `reservation` (
   `res_id` int NOT NULL AUTO_INCREMENT,
   `movie_name` varchar(45) NOT NULL,
+  `rating` varchar(45) DEFAULT NULL,
   `movie_type` varchar(45) NOT NULL,
   `movie_runtime` varchar(45) NOT NULL,
   `movie_date` date NOT NULL,
@@ -40,8 +41,10 @@ CREATE TABLE `reservation` (
   `usePoint` int DEFAULT NULL,
   `savePoint` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
-  PRIMARY KEY (`res_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`res_id`),
+  KEY `user_idx` (`user_id`),
+  CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +53,7 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
-INSERT INTO `reservation` VALUES (1,'베테랑2','2D','118','2024-09-19','11:10:00','13:08:00','2관 1층','A1','일반 1','0750490864911088',10000,NULL,NULL,NULL);
+INSERT INTO `reservation` VALUES (7,'트랜스포머 ONE','all','IMAX','104','2024-09-19','11:10:00','12:54:00','IMAX관','B2, A3, A1','일반 1, 청소년 2','4247141563424707',86000,NULL,NULL,1);
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -63,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-18 20:49:56
+-- Dump completed on 2024-09-19  1:50:49

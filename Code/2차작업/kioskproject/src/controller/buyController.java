@@ -150,7 +150,12 @@ public class buyController implements Initializable {
 			// DB에 예매 정보를 저장하는 로직
 	        ReservationDAO reservationDAO = new ReservationDAO();
 	        reservationDAO.saveReservation(selectMovieData, seatString, toPrise, randNum, PeopleDetails);
-			Parent rescheckstage = (Parent)FXMLLoader.load(getClass().getResource("/fxml/reservationCheck.fxml"));
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/reservationCheck.fxml"));
+	        Parent rescheckstage = loader.load();
+	        //컨트롤러 불러오기
+	        reservationCheckController resController = loader.getController();
+	        resController.initalizeData(selectMovieData,seatString,randNum,PeopleDetails);
+	        
 			StackPane root = (StackPane) buyPane.getScene().getRoot();
 			root.getChildren().add(rescheckstage);
 		}catch(Exception e) {

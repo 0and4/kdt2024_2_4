@@ -1,17 +1,20 @@
 package controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import dto.ReservationDAO;
+import dto.ReservationDTO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class ReservationPhoneController {
 
@@ -22,12 +25,11 @@ public class ReservationPhoneController {
     private Button searchButton; // 조회 버튼
 
     private boolean phoneFieldCleared = false; // 필드가 한 번 클릭되어 지워졌는지 여부
+    
+    private ReservationDAO reservationDAO = new ReservationDAO();
 
     // 유효한 전화번호 형식
     private static final String VALID_PHONE_NUMBER_PATTERN = "^010-\\d{4}-\\d{4}$"; // 010-XXXX-XXXX 형식
-
-    // 임시로 설정된 유효한 전화번호
-    private static final String VALID_PHONE_NUMBER = "010-1234-5678";
 
     @FXML
     public void initialize() {
@@ -123,19 +125,52 @@ public class ReservationPhoneController {
     private void handleReservationListAction(ActionEvent event) {
         String enteredPhoneNumber = phoneField.getText();
 
-        if (enteredPhoneNumber.equals(VALID_PHONE_NUMBER)) {
-            // 전화번호가 유효하면 ReservationList.fxml로 이동
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/5-3.ReservationList.fxml"));
-                Parent reservationListView = loader.load();
+        if (enteredPhoneNumber.matches(VALID_PHONE_NUMBER_PATTERN)) {
+        	List<ReservationDTO> reservations = reservationDAO.getReservationsByPhoneNumber(enteredPhoneNumber);
+        	if (!reservations.isEmpty()) {
+        		// 전화번호가 유효하면 ReservationList.fxml로 이동
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/5-3.ReservationList.fxml"));
+                    Parent reservationListView = loader.load();
+                    ReservationListController controller = loader.getController();
+                    if (reservations.size() == 1) {
+                        // 단일 예약일 경우
+                        controller.setReservationDetails(reservations.get(0).getRandomNumber());
+                    } else {
+                        // 여러 예약일 경우
+                        controller.setReservationDetails(reservations);
+                    }
+                    Stage stage = (Stage) phoneField.getScene().getWindow();
+                    Scene scene = new Scene(reservationListView);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        	}else {
+        		// 전화번호가 유효하지 않으면 Noreservation 팝업 띄움
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/0-3.Noreservation.fxml"));
+                    Parent noReservationRoot = loader.load();
 
-                Stage stage = (Stage) phoneField.getScene().getWindow();
-                Scene scene = new Scene(reservationListView);
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                    // 팝업 창 설정
+                    Stage popupStage = new Stage();
+                    popupStage.initModality(Modality.APPLICATION_MODAL);
+                    popupStage.setTitle("예매 내역 없음");
+
+                    // 부모 창 설정
+                    Stage parentStage = (Stage) phoneField.getScene().getWindow();
+                    popupStage.initOwner(parentStage);  // 부모 창을 팝업 창의 소유자로 설정
+
+                    Scene scene = new Scene(noReservationRoot);
+                    popupStage.setScene(scene);
+                    popupStage.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        	}
+        	
+        	
         } else {
             // 전화번호가 유효하지 않으면 Noreservation 팝업 띄움
             try {

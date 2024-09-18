@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+import dto.ReservationDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 public class ReservationNumberController {
 	@FXML StackPane ResNumPane;
 	@FXML Button home;
+	
     @FXML
     private TextField phoneField; // FXML 파일에 있는 TextField에 연결
 
@@ -45,8 +47,8 @@ public class ReservationNumberController {
         }
     }
     
-    // 임시로 설정된 예매 번호
-    private static final String VALID_RESERVATION_NUMBER = "1234567891234567";
+    
+    private ReservationDAO reservationDAO = new ReservationDAO(); // DAO 객체 생성
 
     @FXML
     public void initialize() {
@@ -103,12 +105,14 @@ public class ReservationNumberController {
     @FXML
     private void handleTicketSearchAction(ActionEvent event) {
         String enteredReservationNumber = phoneField.getText();
-        if (enteredReservationNumber.equals(VALID_RESERVATION_NUMBER)) {
+        if (reservationDAO.isReservationNumberValid(enteredReservationNumber)) {
             // 예매 번호가 올바르면 ReservationList.fxml로 이동
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/5-3.ReservationList.fxml"));
                 Parent reservationListRoot = loader.load();
-
+                // 컨트롤러에 접근하여 메서드를 호출하여 데이터 전달
+                ReservationListController controller = loader.getController();
+                controller.setReservationDetails(enteredReservationNumber);  // 예매번호를 넘겨줌
                 // 현재 스테이지 가져오기
                 Stage stage = (Stage) phoneField.getScene().getWindow();
 

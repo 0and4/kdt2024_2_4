@@ -52,17 +52,17 @@
                         <Image url="@image/movie.png" />
                     </image>
                 </ImageView>
-                <Text layoutX="141.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[12]" wrappingWidth="28.6666259765625" />
-                <Text layoutX="166.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="마루는 강쥐" wrappingWidth="146.66661071777344" />
-                <Text layoutX="245.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(2D)" wrappingWidth="28.6666259765625" />
-                <Text layoutX="274.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="90분" wrappingWidth="28.6666259765625" />
-                <Text layoutX="208.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12:30 ~ 14:00" wrappingWidth="95.33329772949219" />
-                <Text layoutX="141.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2024.09.01" wrappingWidth="66.66661071777344" />
-                <Text layoutX="142.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A관(3층)" wrappingWidth="54.66661071777344" />
-                <Text layoutX="197.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G7, G8, G9" wrappingWidth="131.33323669433594" />
-                <Text layoutX="142.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="일반 3명" wrappingWidth="54.66661071777344" />
+                <Text fx:id="rating" layoutX="141.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[12]" wrappingWidth="28.6666259765625" />
+                <Text fx:id="movieTitle" layoutX="166.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="마루는 강쥐" wrappingWidth="146.66661071777344" />
+                <Text fx:id="movieType" layoutX="245.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(2D)" wrappingWidth="28.6666259765625" />
+                <Text fx:id="runTime" layoutX="274.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="90분" wrappingWidth="28.6666259765625" />
+                <Text fx:id="movieTime" layoutX="208.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12:30 ~ 14:00" wrappingWidth="95.33329772949219" />
+                <Text fx:id="movieDate" layoutX="141.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2024.09.01" wrappingWidth="66.66661071777344" />
+                <Text fx:id="section" layoutX="142.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A관(3층)" wrappingWidth="54.66661071777344" />
+                <Text fx:id="seats" layoutX="197.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="G7, G8, G9" wrappingWidth="131.33323669433594" />
+                <Text fx:id="Details" layoutX="142.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="일반 3명" wrappingWidth="54.66661071777344" />
                 <Text layoutX="141.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="예매 번호 : " wrappingWidth="66.66661071777344" />
-                <Text layoutX="205.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="13987114398710985" wrappingWidth="121.99998474121094" />
+                <Text fx:id="resNum" layoutX="205.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="13987114398710985" wrappingWidth="121.99998474121094" />
             </children>
         </AnchorPane>
 

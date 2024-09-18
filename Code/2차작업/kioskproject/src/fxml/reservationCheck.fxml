@@ -38,7 +38,7 @@
          <children>
             <Pane layoutX="59.0" layoutY="91.0" prefHeight="230.0" prefWidth="180.0" style="-fx-background-color: #ccc;">
                <children>
-                  <ImageView fitHeight="230.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="setPoster" fitHeight="230.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>
             <Label layoutX="150.0" layoutY="35.0" style="-fx-font-size: 32; -fx-font-family: Gulimche;" text="예매가 완료되었습니다." />
@@ -46,26 +46,26 @@
                <children>
                   <HBox spacing="5.0">
                      <children>
-                        <Label style="-fx-font-size: 18;" text="[등급]" />
-                        <Label style="-fx-font-size: 18;" text="[영화제목]" />
-                        <Label style="-fx-font-size: 18;" text="[상영관 종류]" />
-                        <Label style="-fx-font-size: 18;" text="[러닝타임]" />
+                        <Label fx:id="setRating" style="-fx-font-size: 18;" text="[등급]" />
+                        <Label fx:id="setTitle" style="-fx-font-size: 18;" text="[영화제목]" />
+                        <Label fx:id="setType" style="-fx-font-size: 18;" text="[상영관 종류]" />
                      </children>
                   </HBox>
+                  <Label fx:id="setRuntime" style="-fx-font-size: 18;" text="[러닝타임]" />
+                  <Label fx:id="setDate" style="-fx-font-size: 18;" text="[상영날짜]" />
                   <HBox spacing="2.0">
                      <children>
-                        <Label style="-fx-font-size: 18;" text="[상영날짜]" />
-                        <Label style="-fx-font-size: 18;" text="[상영시작시간] ~ [상영종료시간]" />
+                        <Label fx:id="setTime" style="-fx-font-size: 18;" text="[상영시작시간] ~ [상영종료시간]" />
                      </children>
                   </HBox>
                   <HBox spacing="5.0">
                      <children>
-                        <Label style="-fx-font-size: 18;" text="[상영관]" />
-                        <Label style="-fx-font-size: 18;" text="[좌석]" />
+                        <Label fx:id="setTheater" style="-fx-font-size: 18;" text="[상영관]" />
+                        <Label fx:id="setSeats" style="-fx-font-size: 18;" text="[좌석]" />
                      </children>
                   </HBox>
-                  <Label style="-fx-font-size: 18;" text="[선택 인원수]" />
-                  <Label style="-fx-font-size: 18;" text="[생성된 예매번호 16자리]" />
+                  <Label fx:id="setPeople" style="-fx-font-size: 18;" text="[선택 인원수]" />
+                  <Label fx:id="setRandom" style="-fx-font-size: 18;" text="[생성된 예매번호 16자리]" />
                </children>
             </VBox>
             <Button fx:id="btnOk" layoutX="251.0" layoutY="459.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-font-size: 24; -fx-background-color: #ff6532; -fx-text-fill: white; -fx-background-radius: 20;" text="확인" />

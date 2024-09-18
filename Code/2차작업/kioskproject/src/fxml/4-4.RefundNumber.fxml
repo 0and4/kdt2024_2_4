@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="620.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RefundNumberController">
+<AnchorPane prefHeight="620.0" prefWidth="380.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RefundNumberController">
     <children>
         <Button layoutX="31.0" layoutY="79.0" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 15; -fx-background-color: FF5A5A;" text="예매 번호로 조회" textFill="WHITE" />
         <Button layoutX="209.0" layoutY="79.0" onAction="#handlePhoneSearchAction" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 15;" text="휴대폰 번호로 조회" />
