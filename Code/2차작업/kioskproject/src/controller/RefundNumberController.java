@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 
+import dto.ReservationDAO;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -24,8 +25,8 @@ public class RefundNumberController {
     private Button searchButton; // 버튼을 FXML에서 연결
 
     private boolean isPlaceholder = true; // 플레이스홀더 상태
-    private static final String VALID_RESERVATION_NUMBER = "1234567891234567"; // 임의로 설정한 유효한 예매번호
-
+    //private static final String VALID_RESERVATION_NUMBER = "1234567891234567"; // 임의로 설정한 유효한 예매번호
+    private ReservationDAO reservationDAO = new ReservationDAO(); // DAO 객체 생성
     @FXML
     public void initialize() {
         // TextField의 텍스트가 변경될 때마다 호출되는 리스너 추가
@@ -87,12 +88,13 @@ public class RefundNumberController {
     private void handleTicketSearchAction(ActionEvent event) {
         String enteredReservationNumber = phoneField.getText();
 
-        if (enteredReservationNumber.equals(VALID_RESERVATION_NUMBER)) {
+        if (reservationDAO.isReservationNumberValid(enteredReservationNumber)) {
             // 예매 번호가 유효할 경우 RefundList.fxml로 이동
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/4-6.RefundList.fxml"));
                 Parent reservationListRoot = loader.load();
-
+                RefundListController controller = loader.getController();
+                controller.setReservationDetails(enteredReservationNumber);  // 예매번호를 넘겨줌
                 // 현재 스테이지 가져오기
                 Stage stage = (Stage) phoneField.getScene().getWindow();
 

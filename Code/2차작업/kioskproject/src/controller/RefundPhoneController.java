@@ -1,18 +1,20 @@
 package controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import dto.ReservationDAO;
+import dto.ReservationDTO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-
-import java.io.IOException;
 
 public class RefundPhoneController {
 
@@ -22,6 +24,9 @@ public class RefundPhoneController {
     private Button ticketSearchButton; // 티켓 조회 버튼
 
     private boolean isPlaceholder = true; // 예제 텍스트 상태 확인 변수
+    
+    private ReservationDAO reservationDAO = new ReservationDAO();
+    private static final String VALID_PHONE_NUMBER_PATTERN = "^010-\\d{4}-\\d{4}$";
 
     // 키패드 버튼 클릭 시 호출되는 메서드
     @FXML
@@ -106,34 +111,70 @@ public class RefundPhoneController {
     private void handleTicketSearchAction(ActionEvent event) {
         String phoneNumber = phoneField.getText();
 
-        if (phoneNumber.equals("010-1234-5678")) {
-            // 번호가 맞으면 RefundList.fxml로 이동
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/4-6.RefundList.fxml"));
-                Parent refundListView = loader.load();
+        if (phoneNumber.matches(VALID_PHONE_NUMBER_PATTERN)) {
+        	List<ReservationDTO> reservations = reservationDAO.getReservationsByPhoneNumber(phoneNumber);
+        	if (!reservations.isEmpty()) {
+        		// 전화번호가 유효하면 ReservationList.fxml로 이동
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/4-6.RefundList.fxml"));
+                    Parent reservationListView = loader.load();
+                    RefundListController controller = loader.getController();
+                    if (reservations.size() == 1) {
+                        // 단일 예약일 경우
+                        controller.setReservationDetails(reservations.get(0).getRandomNumber());
+                    } else {
+                        // 여러 예약일 경우
+                        controller.setReservationDetails(reservations);
+                    }
+                    Stage stage = (Stage) phoneField.getScene().getWindow();
+                    Scene scene = new Scene(reservationListView);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        	}else {
+        		// 전화번호가 유효하지 않으면 Noreservation 팝업 띄움
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/0-3.Noreservation.fxml"));
+                    Parent noReservationRoot = loader.load();
 
-                Stage stage = (Stage) phoneField.getScene().getWindow();
-                Scene scene = new Scene(refundListView);
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                    // 팝업 창 설정
+                    Stage popupStage = new Stage();
+                    popupStage.initModality(Modality.APPLICATION_MODAL);
+                    popupStage.setTitle("예매 내역 없음");
+
+                    // 부모 창 설정
+                    Stage parentStage = (Stage) phoneField.getScene().getWindow();
+                    popupStage.initOwner(parentStage);  // 부모 창을 팝업 창의 소유자로 설정
+
+                    Scene scene = new Scene(noReservationRoot);
+                    popupStage.setScene(scene);
+                    popupStage.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        	}
+        	
+        	
         } else {
-            // 번호가 맞지 않으면 0-3.NoReservation 팝업 표시
+            // 전화번호가 유효하지 않으면 Noreservation 팝업 띄움
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/0-3.NoReservation.fxml"));
-                Parent popup = loader.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/0-3.Noreservation.fxml"));
+                Parent noReservationRoot = loader.load();
 
+                // 팝업 창 설정
                 Stage popupStage = new Stage();
-                popupStage.setTitle("조회 실패");
+                popupStage.initModality(Modality.APPLICATION_MODAL);
+                popupStage.setTitle("예매 내역 없음");
 
-                // 현재 창을 부모 스테이지로 설정
-                Stage mainStage = (Stage) phoneField.getScene().getWindow();
-                popupStage.initOwner(mainStage);
+                // 부모 창 설정
+                Stage parentStage = (Stage) phoneField.getScene().getWindow();
+                popupStage.initOwner(parentStage);  // 부모 창을 팝업 창의 소유자로 설정
 
-                popupStage.setScene(new Scene(popup));
-                popupStage.showAndWait(); // 팝업이 표시된 동안 다른 작업을 막음
+                Scene scene = new Scene(noReservationRoot);
+                popupStage.setScene(scene);
+                popupStage.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();
             }
