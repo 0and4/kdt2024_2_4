@@ -66,7 +66,7 @@ public class kioskMaincontroller implements Initializable {
 			root.getChildren().add(moviestage);
 			
 			Scene scene = mainpane.getScene();
-			scene.getStylesheets().add(getClass().getResource("/fxml/css/choiseMovie.css").toString());
+			scene.getStylesheets().add(getClass().getResource("/fxml/css/choiseMovie.css").toExternalForm());
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

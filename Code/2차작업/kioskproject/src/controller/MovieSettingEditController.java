@@ -202,7 +202,7 @@ public class MovieSettingEditController {
     	
     	try {
     		//상영날짜 상영시작시간 가져옴
-    		String sql = "SELECT pi.theater_id, pi.movie_date, pi.start_time, t.kind " +
+    		String sql = "SELECT pi.theater_id, pi.movie_date, pi.start_time, pi.end_time,t.kind " +
                     "FROM play_info pi " +
                     "JOIN theater t ON pi.theater_id = t.theater_id " +
                     "WHERE pi.movie_id = ? AND t.kind = ?";
@@ -215,6 +215,7 @@ public class MovieSettingEditController {
     			int theaterId = rs.getInt("theater_id");
                 LocalDate movieDate = rs.getDate("movie_date").toLocalDate();
                 LocalTime startTime = rs.getTime("start_time").toLocalTime();
+                LocalTime endTime = rs.getTime("end_time").toLocalTime();
                 
                 // theater_id를 기반으로 상영관 정보 가져오기
                 String theaterSql = "SELECT section,kind FROM theater WHERE theater_id = ?";
@@ -232,8 +233,8 @@ public class MovieSettingEditController {
                 
                 // 날짜, 시작 시간
                 String date = movieDate.toString();
-                String time = startTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-                
+                String stime = startTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+                String etime = endTime.format(DateTimeFormatter.ofPattern("HH:mm"));
                 // 새로운 상영 정보를 담은 VBox 생성
                 VBox vbox = new VBox(5);
                 vbox.setPadding(new Insets(5, 10, 5, 10));
@@ -253,10 +254,11 @@ public class MovieSettingEditController {
 
                 Label dateLabel = new Label(date);
                 Label theaterLabel = new Label(section);
-                Label timeLabel = new Label(time);
+                Label timeLabel = new Label(stime);
+                Label endtimeLabel = new Label("~"+etime);
                 Label kindLabel = new Label(kind);
 
-                vbox.getChildren().addAll(dateLabel, kindLabel,theaterLabel, timeLabel);
+                vbox.getChildren().addAll(dateLabel, kindLabel,theaterLabel, timeLabel,endtimeLabel);
 
                 // 삭제 버튼 추가
                 Button deleteButton = new Button("삭제");
@@ -342,6 +344,11 @@ public class MovieSettingEditController {
     	
     	try {
     		int theater_id = getTheaterId(theater);//화면 하단에 theater_id를 받아오는 함수 있음
+    		// 기존 상영 정보와 종료 시간이 충돌하지 않는지 확인
+            if (!isEndTimeValid(localDate, localStartTime, localEndTime, theater_id)) {
+                System.out.println("상영 종료 시간이 기존 상영 시간과 충돌합니다.");
+                return;
+            }
     		String sql = "INSERT INTO play_info(movie_id,theater_id,movie_date,start_time,end_time) VALUES(?,?,?,?,?)";
     		PreparedStatement pstmt = con.prepareStatement(sql);
     		pstmt.setInt(1, selectedMovieId);
@@ -375,6 +382,26 @@ public class MovieSettingEditController {
 	        theaterId = rs.getInt("theater_id");
 	    }
 	    return theaterId;
+    }
+    
+    //상영 시간이 겹치는지 조회
+    private boolean isEndTimeValid(LocalDate date, LocalTime startTime, LocalTime endTime, int theaterId) throws SQLException {
+        String sql = "SELECT start_time, end_time FROM play_info WHERE movie_date = ? AND theater_id = ?";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setDate(1, Date.valueOf(date));
+        pstmt.setInt(2, theaterId);
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()) {
+            LocalTime existingStartTime = rs.getTime("start_time").toLocalTime();
+            LocalTime existingEndTime = rs.getTime("end_time").toLocalTime();
+
+            if (startTime.isBefore(existingEndTime) && endTime.isAfter(existingStartTime)) {
+                // 새로운 상영 시간이 기존 상영 시간과 겹침
+                return false;
+            }
+        }
+        return true;
     }
     
     //화면에서 StackPane지우기

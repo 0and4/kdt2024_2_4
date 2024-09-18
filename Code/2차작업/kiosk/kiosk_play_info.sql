@@ -36,7 +36,7 @@ CREATE TABLE `play_info` (
   KEY `theaterid_idx` (`theater_id`),
   CONSTRAINT `showmid` FOREIGN KEY (`movie_id`) REFERENCES `showmovie` (`movie_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `theaterid` FOREIGN KEY (`theater_id`) REFERENCES `theater` (`theater_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `play_info` (
 
 LOCK TABLES `play_info` WRITE;
 /*!40000 ALTER TABLE `play_info` DISABLE KEYS */;
-INSERT INTO `play_info` VALUES (18,3,1,'2024-09-16','07:20:00','09:18:00'),(19,5,10,'2024-09-18','08:22:00','10:06:00'),(20,20,4,'2024-09-16','17:58:00','19:32:00'),(21,3,7,'2024-09-17','17:45:00','19:43:00'),(22,5,10,'2024-09-20','17:52:00','19:36:00');
+INSERT INTO `play_info` VALUES (32,3,2,'2024-09-19','11:10:00','13:08:00'),(33,3,3,'2024-09-19','11:10:00','13:08:00'),(34,5,10,'2024-09-19','11:10:00','12:54:00');
 /*!40000 ALTER TABLE `play_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -58,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-14 19:59:13
+-- Dump completed on 2024-09-18 20:49:56

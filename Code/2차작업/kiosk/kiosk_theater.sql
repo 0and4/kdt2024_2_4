@@ -39,7 +39,7 @@ CREATE TABLE `theater` (
 
 LOCK TABLES `theater` WRITE;
 /*!40000 ALTER TABLE `theater` DISABLE KEYS */;
-INSERT INTO `theater` VALUES (1,'2D',0,'1관 1층'),(2,'2D',0,'2관 1층'),(3,'2D',0,'3관 1층'),(4,'3D',0,'4관 2층'),(5,'3D',0,'5관 3층'),(6,'3D',0,'전용관'),(7,'4D',0,'7관 5층'),(8,'4D',0,'특별관(4D)'),(9,'4DX',0,'특별관(4DX)'),(10,'IMAX',0,'IMAX관');
+INSERT INTO `theater` VALUES (1,'2D',65,'1관 1층'),(2,'2D',72,'2관 1층'),(3,'2D',55,'3관 1층'),(4,'3D',76,'4관 2층'),(5,'3D',88,'5관 3층'),(6,'3D',30,'전용관'),(7,'4D',102,'7관 5층'),(8,'4D',120,'특별관(4D)'),(9,'4DX',46,'특별관(4DX)'),(10,'IMAX',110,'IMAX관');
 /*!40000 ALTER TABLE `theater` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-14 19:59:13
+-- Dump completed on 2024-09-18 20:49:56

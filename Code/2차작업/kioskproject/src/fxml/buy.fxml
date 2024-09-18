@@ -48,25 +48,30 @@
                         <Insets left="55.0" top="30.0" />
                      </VBox.margin>
                      <children>
-                        <ImageView fitHeight="230.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="initPoster" fitHeight="230.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
-                  <Label style="-fx-font-size: 22; -fx-font-family: Batang;" text="영화 선택 정보">
+                  <Label fx:id="initTitle" style="-fx-font-size: 22; -fx-font-family: Batang;" text="영화 선택 정보">
                      <VBox.margin>
                         <Insets left="20.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label style="-fx-font-size: 22; -fx-font-family: Batang;" text="상영시간 정보">
+                        <Label fx:id="initDate" style="-fx-font-size: 22; -fx-font-family: Batang;" text="상영날짜정보">
+                           <VBox.margin>
+                              <Insets left="20.0" top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                  <Label fx:id="initTime" style="-fx-font-size: 22; -fx-font-family: Batang;" text="상영시간 정보">
                      <VBox.margin>
                         <Insets left="20.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label style="-fx-font-size: 22; -fx-font-family: Batang;" text="상영관 : 좌석정보">
+                  <Label fx:id="initTheater" style="-fx-font-size: 22; -fx-font-family: Batang;" text="상영관 : 좌석정보">
                      <VBox.margin>
                         <Insets left="20.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <Label style="-fx-font-size: 22; -fx-font-family: Batang;" text="인원 수">
+                  <Label fx:id="initPeople" style="-fx-font-size: 22; -fx-font-family: Batang;" text="인원 수">
                      <VBox.margin>
                         <Insets left="20.0" top="15.0" />
                      </VBox.margin>
@@ -78,7 +83,7 @@
                               <Insets top="3.0" />
                            </HBox.margin>
                         </Text>
-                        <Label style="-fx-font-size: 18;" text="예매생성번호 16자리">
+                        <Label fx:id="resNum" style="-fx-font-size: 18;" text="예매생성번호 16자리">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -91,10 +96,10 @@
                   <Pane maxWidth="-Infinity" prefWidth="200.0" style="-fx-background-color: #999; -fx-background-radius: 20;">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" style="-fx-font-size: 22; -fx-text-fill: #fff;" text="총 결제 금액 :" />
-                        <Label layoutX="30.0" layoutY="50.0" style="-fx-font-size: 22; -fx-text-fill: white;" text="가격정보(원)" />
+                        <Label fx:id="totalPrice" layoutX="30.0" layoutY="50.0" style="-fx-font-size: 22; -fx-text-fill: white;" text="가격정보(원)" />
                      </children>
                      <VBox.margin>
-                        <Insets left="50.0" top="35.0" />
+                        <Insets left="50.0" top="20.0" />
                      </VBox.margin>
                   </Pane>
                </children>
@@ -165,7 +170,19 @@
                      <children>
                         <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;" text="카카오페이" />
                         <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;" text="네이버페이" GridPane.columnIndex="1" />
-                        <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;" text="카드결제" GridPane.rowIndex="1" />
+                        <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;" GridPane.rowIndex="1">
+                                 <graphic>
+                                    <VBox alignment="CENTER" prefHeight="150.0" prefWidth="150.0">
+                                       <children>
+                                          <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icon/credit_card.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label style="-fx-font-size: 24;" text="카드결제" />
+                                       </children>
+                                    </VBox>
+                                 </graphic></Button>
                      </children>
                   </GridPane>
                   <Button fx:id="purChase" mnemonicParsing="false" prefHeight="55.0" prefWidth="300.0" style="-fx-background-color: #ff6342; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 24; -fx-font-family: Dotum; -fx-text-fill: white;" text="결제하기">

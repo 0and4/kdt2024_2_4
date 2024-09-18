@@ -59,11 +59,12 @@ public class MovieSettingCheckController {
         
         //Play_info 테이블에서 상영정보를 가져와서 추가
         try {
-        	String sql = "SELECT DISTINCT sm.title, sm.runtime, sm.rating, sm.poster, sm.movietype, t.kind, t.section, p.movie_date, p.start_time, p.end_time "+
+        	String sql = "SELECT sm.title, sm.runtime, sm.rating, sm.poster, sm.movietype, t.kind, t.section,t.seat, p.movie_date, p.start_time, p.end_time "+
         				 "FROM play_info p "+
         				 "JOIN showmovie sm ON p.movie_id = sm.movie_id "+
         				 "JOIN theater t ON p.theater_id = t.theater_id "+
-        				 "where sm.movietype = t.kind";
+        				 "where sm.movietype = t.kind " +
+        				 "ORDER BY sm.title, t.kind, p.movie_date";
         	PreparedStatement pstmt = con.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             
@@ -75,6 +76,7 @@ public class MovieSettingCheckController {
             	String rating = rs.getString("rating");
             	String poster = rs.getString("poster");
             	String movieType = rs.getString("kind");
+            	Integer seat = rs.getInt("seat");
             	String movieSection = rs.getString("section");
             	LocalDate moviedate = rs.getDate("movie_date").toLocalDate();
             	LocalTime startTime = rs.getTime("start_time").toLocalTime();
@@ -84,7 +86,7 @@ public class MovieSettingCheckController {
             	String stime = startTime.format(DateTimeFormatter.ofPattern("HH:mm"));
             	String etime = endTime.format(DateTimeFormatter.ofPattern("HH:mm"));
             	
-            	String movieKey = movieTitle + "|" + rating + "|" + runtime + "|" + movieType +"|" + poster;
+            	String movieKey = movieTitle + "|" + rating + "|" + movieType + "|" +runtime +"|" + poster;
 
                 // 영화 정보를 맵에 추가
                 if (!movieMap.containsKey(movieKey)) {
@@ -92,7 +94,7 @@ public class MovieSettingCheckController {
                 }
 
                 // 상영 정보 추가
-                movieMap.get(movieKey).addScreening(date, stime, etime, movieSection);     	
+                movieMap.get(movieKey).addScreening(date, stime, etime, seat, movieSection);     	
                
             }//while
             
@@ -117,7 +119,7 @@ public class MovieSettingCheckController {
                 VBox infoBox = new VBox();
                 VBox timeBox = new VBox();
                 timeBox.setSpacing(5);
-                infoBox.getChildren().addAll(titleLabel, ratingLabel, runtimeLabel,timeBox);
+                infoBox.getChildren().addAll(titleLabel, ratingLabel, runtimeLabel);
                
                 for (Screening screening : movie.getScreenings()) {
                 	//추후 css작업 시 가로 배치하기 위하여 생성
@@ -126,7 +128,7 @@ public class MovieSettingCheckController {
                 	VBox timeDetailVBox = new VBox();
                     Label dateLabel = new Label("상영 날짜: " + screening.getDate());
                     Label timeLabel = new Label("상영 시간: " + screening.getStartTime() + " - " + screening.getEndTime());
-                    Label sectionLabel = new Label("상영관: " + screening.getSection());
+                    Label sectionLabel = new Label("상영관: " + screening.getSection() +" "+ screening.getSeat()+"석");
                     timeDetailVBox.getChildren().addAll(dateLabel, timeLabel, sectionLabel);
                     timeDetailVBox.setStyle("-fx-border-color: black;");
                     //추후 가로배치 시 사용
@@ -134,7 +136,7 @@ public class MovieSettingCheckController {
                     timeBox.getChildren().add(screeningHBox);*/
                     timeBox.getChildren().add(timeDetailVBox);                  
                 }
-
+                infoBox.getChildren().add(timeBox);
                 screeningBox.getChildren().addAll(posterImageView, infoBox);
                 screeningBox.setStyle("-fx-border-color:blue;");
                 screeningInfoVBox.getChildren().add(screeningBox);
@@ -178,8 +180,8 @@ public class MovieSettingCheckController {
             this.screenings = new ArrayList<>();
         }
 
-        public void addScreening(String date, String startTime, String endTime, String section) {
-            screenings.add(new Screening(date, startTime, endTime, section));
+        public void addScreening(String date, String startTime, String endTime,Integer seat, String section) {
+            screenings.add(new Screening(date, startTime, endTime, seat, section));
         }
 
         public String getTitle() {
@@ -212,11 +214,13 @@ public class MovieSettingCheckController {
         private final String startTime;
         private final String endTime;
         private final String section;
+		private final Integer seat;
 
-        public Screening(String date, String startTime, String endTime, String section) {
+        public Screening(String date, String startTime, String endTime, Integer seat, String section) {
             this.date = date;
             this.startTime = startTime;
             this.endTime = endTime;
+            this.seat = seat;
             this.section = section;
         }
 
@@ -234,6 +238,10 @@ public class MovieSettingCheckController {
 
         public String getSection() {
             return section;
+        }
+        
+        public Integer getSeat() {
+        	return seat;
         }
     }
 }
