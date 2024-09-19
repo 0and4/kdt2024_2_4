@@ -10,6 +10,9 @@ import java.util.Set;
 
 import dto.MovieData;
 import dto.ReservationDAO;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class seatController implements Initializable {
 	@FXML StackPane seatPane;
@@ -160,6 +164,14 @@ public class seatController implements Initializable {
             controller.initializeData(selectMovie, selectedSeatsString.toString(),selectedtotalPrice, PeopleDetails, randomNumber); // 선택한 좌석 정보 전달
 			StackPane root = (StackPane) seatPane.getScene().getRoot();
 			root.getChildren().add(paymentstage);
+			
+			//전환 효과
+			paymentstage.setTranslateX(650);
+			Timeline timeline = new Timeline();
+			KeyValue keyValue = new KeyValue(paymentstage.translateXProperty(), 0);
+			KeyFrame keyFrame = new KeyFrame(Duration.millis(200),keyValue); //0.2초간 실행 좌에서 우로 이동...
+			timeline.getKeyFrames().add(keyFrame);
+			timeline.play();//애니메이션 실행
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

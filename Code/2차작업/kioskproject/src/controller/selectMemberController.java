@@ -11,6 +11,9 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import dto.MovieData;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class selectMemberController implements Initializable {
 
@@ -226,6 +230,14 @@ public class selectMemberController implements Initializable {
             controller.initializeData(selectedMovie ,selectedMovie.getSelectedMovieSeat(),selectedNumberOfPeople, selectedTotalPrice, selectedPeopleDetails);
 			StackPane root = (StackPane) selectMemberPane.getScene().getRoot();
 			root.getChildren().add(seatstage);
+			
+			//전환 효과
+			seatstage.setTranslateX(650);
+			Timeline timeline = new Timeline();
+			KeyValue keyValue = new KeyValue(seatstage.translateXProperty(), 0);
+			KeyFrame keyFrame = new KeyFrame(Duration.millis(200),keyValue); //0.2초간 실행 좌에서 우로 이동...
+			timeline.getKeyFrames().add(keyFrame);
+			timeline.play();//애니메이션 실행
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

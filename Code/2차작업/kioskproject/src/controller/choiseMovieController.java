@@ -16,6 +16,9 @@ import java.util.ResourceBundle;
 
 import dto.Movie;
 import dto.MovieData;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +34,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class choiseMovieController implements Initializable {
 	@FXML private StackPane choiseMoviePane;
@@ -290,6 +294,14 @@ public class choiseMovieController implements Initializable {
             controller.initializeData(movieData);
 			StackPane root = (StackPane) choiseMoviePane.getScene().getRoot();
 			root.getChildren().add(selectMemberStage);
+			//전환 효과
+			selectMemberStage.setTranslateX(650);
+			Timeline timeline = new Timeline();
+			KeyValue keyValue = new KeyValue(selectMemberStage.translateXProperty(), 0);
+			KeyFrame keyFrame = new KeyFrame(Duration.millis(200),keyValue); //0.2초간 실행 좌에서 우로 이동...
+			timeline.getKeyFrames().add(keyFrame);
+			timeline.play();//애니메이션 실행
+			
 			Scene scene = choiseMoviePane.getScene();
 			scene.getStylesheets().add(getClass().getResource("/fxml/css/choiseMovie.css").toExternalForm());
 		}catch(Exception e) {
