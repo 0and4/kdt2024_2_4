@@ -58,7 +58,7 @@
                                  </children>
                               </AnchorPane>
                            </graphic></Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="240.0" prefWidth="180.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 20;">
+                        <Button alignment="CENTER" fx:id="checkRegisterBtn" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="240.0" prefWidth="180.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 20;">
                            <graphic>
                               <AnchorPane prefHeight="230.0" prefWidth="180.0">
                                  <children>

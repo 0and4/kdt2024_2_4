@@ -22,15 +22,29 @@ public class kioskMaincontroller implements Initializable {
 	
 	@FXML private StackPane mainpane;
 	@FXML private Button buyTicket;
-
+	
+	//예약 확인 버튼..
+	@FXML private Button checkRegisterBtn;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		admin.setOnAction(event->connectAdmin(event));
 		unconnect.setOnAction(event->UNConnect(event));
 		buyTicket.setOnAction(event->choise(event));
+		checkRegisterBtn.setOnAction(event -> checkRegisger(event));
 	}
 	
+	private void checkRegisger(ActionEvent event) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ReservationNumber.fxml"));
+			Parent nextScreen = loader.load();
+			Stage stage = (Stage) mainpane.getScene().getWindow();
+			stage.setScene(new Scene(nextScreen));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void connectAdmin(ActionEvent event) {
 		System.out.println("관리자 접속 클릭");
 		try {

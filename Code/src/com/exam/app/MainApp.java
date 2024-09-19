@@ -14,7 +14,7 @@ public class MainApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			URL fxmlPath = new File("src/com/exam/app/view/MovieSetting.fxml").toURL();
+			URL fxmlPath = new File("Code/src/com/exam/app/view/MovieSetting.fxml").toURL();
 			FXMLLoader loader = new FXMLLoader();
 			AnchorPane mainLayoutAnchorPane = (AnchorPane) loader.load(fxmlPath);
 			Scene scene = new Scene(mainLayoutAnchorPane);

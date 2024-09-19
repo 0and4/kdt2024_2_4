@@ -60,6 +60,8 @@ public class SeatAndNumberController implements Initializable{
 							.old(oldNum)
 							.play_info(this.playInfoDto.getPlayInfoId())
 							.seatList(new ArrayList<>())
+							.discount(0)
+							.isSave(false)
 							.build();
 					controller.setReservationDto(rDto);
 					controller.init();

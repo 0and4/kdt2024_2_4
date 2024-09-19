@@ -1,17 +1,22 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import dto.PlayInfoDto;
 import dto.ReservationDto;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +33,23 @@ public class SelectSeatController implements Initializable{
 		
 	}
 	public void init() {
+		nextPage.setOnMouseClicked(e->{
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/buy.fxml"));
+			Parent nextScreen = null;
+			try {
+				nextScreen = loader.load();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        BuyController controller = loader.getController();
+	        controller.setReserveDto(reservationDto);
+	        controller.setPlayInfo(playInfoDto);
+	        controller.init();
+	        Stage stage = (Stage) nextPage.getScene().getWindow();
+	        stage.setScene(new Scene(nextScreen));
+		});
+		
 		//좌석의 개수...
 		int length = playInfoDto.getSeat();
 		//테스트 코드 나중에 지우시면 됩니다..

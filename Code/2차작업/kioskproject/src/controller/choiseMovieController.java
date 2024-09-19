@@ -100,7 +100,7 @@ public class choiseMovieController implements Initializable {
 		dayAfter -= localDateTime.getDayOfMonth();
 		localDateTime = localDateTime.plusDays(dayAfter);
 		//테스트를 위해 일부러..
-		localDateTime = localDateTime.minusDays(2);
+		localDateTime = localDateTime.minusDays(3);
 		requestDto.setRequestCode(RequestCode.GET_PLAYINFO_TIME);
 		requestDto.setBody(localDateTime.toString());
 		System.out.println("원하는 날짜.."+localDateTime);
@@ -141,7 +141,8 @@ public class choiseMovieController implements Initializable {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 				String startTime = LocalDateTime.parse(playDto.getStartDateTime()).format(formatter);
 				String endTime = LocalDateTime.parse(playDto.getEndDateTime()).format(formatter);
-				
+				playDto.setStartDateTime(startTime);
+				playDto.setEndDateTime(endTime);
 				//
 				
 				// Create ImageView
