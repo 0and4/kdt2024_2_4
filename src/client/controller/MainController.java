@@ -7,6 +7,7 @@ import client.service.PlayInfoService;
 import client.service.ReservationService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MainController {
     private final PlayInfoService playInfoService = new PlayInfoService();
@@ -52,5 +53,10 @@ public class MainController {
         String response = reservationService.deleteReservationById(id);
         System.out.println(response);
         return response;
+    }
+
+    public int getCost(ReservationDto reservationDto){
+        int cost = reservationService.getCost(reservationDto);
+        return cost;
     }
 }

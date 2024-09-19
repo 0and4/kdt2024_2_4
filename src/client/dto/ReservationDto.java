@@ -1,8 +1,6 @@
 package client.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,6 +8,9 @@ import java.util.ArrayList;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class ReservationDto {
     //전화번호란
     private String phoneNumber;

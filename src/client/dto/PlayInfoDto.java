@@ -30,6 +30,10 @@ public class PlayInfoDto {
 
     //좌석 개수...
     private int seat;
+
+    //url
+    private String url;
+
     //이미 예약된 좌석들...
     private ArrayList<String> reserveSeats;
 }

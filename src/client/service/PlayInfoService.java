@@ -1,10 +1,14 @@
 package client.service;
 
 import classLoader.Connect;
+import client.dto.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import client.dto.PlayInfoDto;
+import enumcode.StatusCode;
+
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
@@ -15,28 +19,30 @@ public class PlayInfoService {
     //데이테베이스에 접근하기 위한 세팅값을 가져옵니다..
     Connection connection = Connect.getConnection();
     String sql = "" +
-            " select p.play_info_id, p.start_date, p.end_date, m.url, m.running_time , m.title , m.age, t.kind, t.seat, t.section" +
+            " select p.play_info_id, p.start_date, p.end_date, m.url, m.running_time, m.url , m.title , m.age, t.kind, t.seat, t.section" +
             " from play_info p join movie m on p.movie_id = m.movie_id join theater t on t.theater_id = p.theater_id";
     //입력받은 날짜를 기준으로 상영정보를 가져오는 란....
     //일별... 2024-09-12날짜를 주면은 제가 값을 리턴하게 만들게요.....
     //이미 예약한 좌석 정보도 넘기기...
     public String getPlayInfo(LocalDateTime date) throws JsonProcessingException {
+        System.out.println("sql을 싱행합니다...");
         if(date == null){
             //인자로 받은 값이 null값이라면....
             date = LocalDateTime.now();
         }
-        String sqlDetail =  sql;
+        String sqlDetail =  sql + " where DATE(start_date) = ?";
         List<PlayInfoDto> playInfoDtoList = new ArrayList<>();
         try {
             PreparedStatement pstmt = connection.prepareStatement(sqlDetail);
             //26번째 줄 ?의 파라미터의 입력값이다..
-//            pstmt.setTimestamp(1, Timestamp.valueOf(date));
+            pstmt.setDate(1, Date.valueOf(date.toLocalDate()));
             //정보를 가져옵니다...
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
                 //다음값이 있을 때가지.... 계속 값을 가져옵니다...
                 //넘겨주는 정보...
                 PlayInfoDto playInfoDto = PlayInfoDto.builder()
+                        .url(rs.getString("url"))
                         //상영 id
                         .playInfoId(rs.getInt("play_info_id"))
                         .title(rs.getString("title"))
@@ -70,10 +76,12 @@ public class PlayInfoService {
             System.out.println("오류발생..");
             e.printStackTrace();
         }
+
         //만약 오류가 없이 완벽하게 값이 다 넣어졌다면...
-        ObjectMapper objectMapper = new ObjectMapper();
-        String returnValue = objectMapper.writeValueAsString(playInfoDtoList);
-        System.out.println(returnValue);
-        return returnValue;
+        Response response = new Response();
+        response.setStatusCode(StatusCode.SUCCESS.getStatusCode());
+        response.setBody(playInfoDtoList);
+        System.out.println(response.responseBuild());
+        return response.responseBuild();
     }
 }

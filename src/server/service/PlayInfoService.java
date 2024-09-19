@@ -98,10 +98,11 @@ public class PlayInfoService {
                     playInfoDtos.add(playInfoDto);
                 }
             }
-            ObjectMapper objectMapper = new ObjectMapper();
-            String returnValue = objectMapper.writeValueAsString(playInfoDtos);
-            System.out.println(returnValue);
-            return returnValue;
+            //응답을 빌드합니다...
+            Response response = new Response();
+            response.setStatusCode(StatusCode.SUCCESS.getStatusCode());
+            response.setBody(playInfoDtos);
+            return response.responseBuild();
         }catch (Exception e){
 
         }

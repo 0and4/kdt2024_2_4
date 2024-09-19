@@ -24,9 +24,11 @@ package client.service;
  */
 
 import classLoader.Connect;
+import client.dto.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import client.dto.ReservationDetailDto;
 import client.dto.ReservationDto;
+import enumcode.StatusCode;
 
 import java.sql.*;
 import java.time.DayOfWeek;
@@ -45,6 +47,8 @@ public class ReservationService {
     Connection connection = Connect.getConnection();
 
     public String setReservation(ReservationDto reservationDto) {
+        //만약 전화번호가 없는값이라면.... -> 강제 회원가입을 진행
+        
         //상영 정보를 가져옵니다...
         int playInfoId = reservationDto.getPlay_info();
         String phoneNumber = reservationDto.getPhoneNumber();
@@ -56,6 +60,24 @@ public class ReservationService {
         LocalDateTime localDateTime = LocalDateTime.now();
         int reservationId = 0;
         ArrayList<String> arrayList = reservationDto.getSeatList();
+
+
+        try {
+            String sqlGetMemeber = "select * from user where phone = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sqlGetMemeber);
+            pstmt.setString(1,phoneNumber);
+            ResultSet rs = pstmt.executeQuery();
+            //값이 없다면 회원가입을 진행..
+            if(!rs.next()){
+                String insertSql = "insert into user(phone) values(?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(insertSql);
+                preparedStatement.setString(1,phoneNumber);
+                preparedStatement.executeUpdate();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         if (arrayList.size() != (youth + adult + old + treatment)) {
             System.out.println("좌석 리스트와 인원수가 맞지 않음...");
             return "fail";
@@ -84,7 +106,7 @@ public class ReservationService {
                     reservationId = rs.getInt(1);
                     System.out.println(reservationId);
                     setReservationDetail(reservationId, reservationDto);
-                    return "succeuss";
+                    return Integer.toString(reservationId);
                 }
             }
         } catch (Exception e) {
@@ -332,13 +354,21 @@ public class ReservationService {
                 start_date = resultInfo.getTimestamp("start_date");
                 System.out.println(start_date.toString());
             }
-            //만약
+            else {
+                Response response = new Response();
+                response.setStatusCode(StatusCode.NOT_FOUND.getStatusCode());
+                response.setBody("일치하는 예약 번호가 없습니다...");
+                return response.responseBuild();
+            }
+            //만약 시간이 초과되지 않았다면...
             if (start_date.toLocalDateTime().isAfter(LocalDateTime.now())){
                 String deleteSql = "delete from reservation where reservation_id = ?";
                 PreparedStatement preparedStatement = connection.prepareStatement(deleteSql);
                 preparedStatement.setInt(1, id);
                 int rowsAffected = preparedStatement.executeUpdate();
                 if (rowsAffected > 0) {
+                    Response response = new Response();
+                    response.setStatusCode(StatusCode.SUCCESS.getStatusCode());
                     return "success";  // 삭제 성공
                 } else {
                     return "false";  // 삭제 실패 (삭제된 행이 없음)

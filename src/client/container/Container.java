@@ -24,25 +24,4 @@ Container {
         return null;
     }
 
-    public static void playerInfoService(LocalDateTime time) throws JsonProcessingException {
-        if(mainController != null){
-            String result = mainController.getPlayInfo(time);
-            System.out.println("호출한 값" + result);
-        }
-        else{
-            System.out.println("메인컨트롤러를 먼저 생성해주세요....");
-        }
-    }
-
-    public static String getPhoneNumber(String phoneNumber) {
-        if(mainController != null){
-            String result = mainController.getPhoneNumber(phoneNumber);
-            System.out.println("전화번호: " + result);
-            return result;
-        }
-        else {
-            System.out.println("메인 컨트롤러를 먼저 생성해주십쇼...");
-            return null;
-        }
-    }
 }
