@@ -7,8 +7,8 @@ public class MovieData {
     private String selectedMovieRuntime;//선택된 영화의 총 상영시간을 저장할 변수
     private Integer selectedMovieSeat;//선택한 상영관의 좌석 수를 저장할 변수
     private String selectedMovieType; // 선택한 영화의 상영관 정보를 저장할 변수
-    private String selectedMovieSection;
-    private String selectedMovieDate;
+    private String selectedMovieSection; //선택한 영화의 상영관 위치정보를 저장할 변수
+    private String selectedMovieDate;// 선택한 영화의 상영날짜를 저장할 변수
     private String selectedMovieStartTime;//선택한 영화의 상영시작시간을 저장할 변수
     private String selectedMovieEndTime;//선택한 영화의 상영종료시간을 저장할 변수
     
@@ -18,6 +18,7 @@ public class MovieData {
 	public void setSelectedMovieTitle(String selectedMovieTitle) {
 		this.selectedMovieTitle = selectedMovieTitle;
 	}
+	
 	public String getSelectedMovieRating() {
 		return selectedMovieRating;
 	}
