@@ -168,7 +168,23 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;" text="카카오페이" />
+                        <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;">
+                                 <graphic>
+                                    <VBox alignment="CENTER" prefHeight="1550.0" prefWidth="150.0" spacing="5.0">
+                                       <children>
+                                          <ImageView fitHeight="50.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@icon/payment_icon_yellow_small.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label style="-fx-font-size: 24;" text="카카오페이">
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </graphic></Button>
                         <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;" text="네이버페이" GridPane.columnIndex="1" />
                         <Button mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" style="-fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-color: white;" GridPane.rowIndex="1">
                                  <graphic>

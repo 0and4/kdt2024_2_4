@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 public class Movie {
+	private Integer res_id;//예약 정보를 넘겨주기 위해 가져옴
 	private String title; //영화 제목
 	private String rating; //관람 등급
 	private String runtime;//상영시간
@@ -11,7 +12,8 @@ public class Movie {
 	private String kind; //'theater'테이블에서 가져온 상영관 타입 - 영화 종류와 상영관의 종류에 따라 값을 묶기 위해 가져옴
 	private ArrayList<Screening> screenings;
 	
-	public Movie(String title, String rating, String runtime, String poster, String kind) {
+	public Movie(Integer play_Info_id, String title, String rating, String runtime, String poster, String kind) {
+		this.res_id = play_Info_id;
 		this.title = title;
 		this.rating = rating;
 		this.runtime = runtime;
@@ -29,6 +31,12 @@ public class Movie {
         screenings.add(new Screening(date, startTime, endTime, seat, section));
     }
 
+	public Integer getRes_id() {
+		return res_id;
+	}
+	public void setRes_id(Integer res_id) {
+		this.res_id = res_id;
+	}
 	public String getTitle() {
 		return title;
 	}

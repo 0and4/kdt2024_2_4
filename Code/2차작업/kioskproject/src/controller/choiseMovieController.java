@@ -142,7 +142,7 @@ public class choiseMovieController implements Initializable {
         //Play_info 테이블에서 상영정보를 가져와서 추가
 		
 		try {
-			String sql = "SELECT sm.title, sm.runtime, sm.rating, sm.poster, sm.movietype, t.kind, t.section,t.seat, p.movie_date, p.start_time, p.end_time "+
+			String sql = "SELECT sm.title, sm.runtime, sm.rating, sm.poster, sm.movietype, t.kind, t.section,t.seat,p.play_info_id, p.movie_date, p.start_time, p.end_time "+
    				 "FROM play_info p "+
    				 "JOIN showmovie sm ON p.movie_id = sm.movie_id "+
    				 "JOIN theater t ON p.theater_id = t.theater_id "+
@@ -154,6 +154,7 @@ public class choiseMovieController implements Initializable {
 			// 영화 정보를 저장할 맵
             Map<String, Movie> movieMap = new HashMap<>();
 			while(rs.next()) {
+				Integer res_id = rs.getInt("play_info_id");
 				String title = rs.getString("title");
                 String runtime = rs.getString("runtime");
                 String rating = rs.getString("rating");
@@ -173,7 +174,7 @@ public class choiseMovieController implements Initializable {
             	String movieKey = title + "|" + rating + "|" + kind + "|" +runtime +"|" + poster;
             	
             	if (!movieMap.containsKey(movieKey)) {
-                    movieMap.put(movieKey, new Movie(title, rating, runtime, poster, kind));
+                    movieMap.put(movieKey, new Movie(res_id,title, rating, runtime, poster, kind));
                 }
 
                 movieMap.get(movieKey).addScreening(date, stime, etime, seat, section);
@@ -199,8 +200,6 @@ public class choiseMovieController implements Initializable {
 				
 				//영화정보 불러오기
 				Label titleLabel = new Label("["+movie.getRating()+"]"+movie.getTitle()+"("+ movie.getKind() +")"+movie.getRuntime()+"분");//영화 정보 가져오기
-				//Label ratingLabel = new Label("["+movie.getRating()+"]");//관람 등급 가져오기
-				//Label runtimeLabel = new Label(movie.getRuntime()+"분");//상영시간 가져오기
 				
 				// TablePane에 상영 시간 Button 추가
 		        FlowPane timeFlow = new FlowPane();
@@ -210,13 +209,16 @@ public class choiseMovieController implements Initializable {
 		        
 		        // 상영 시간 버튼 생성
 		        for (Movie.Screening screening : movie.getScreenings()) {
-		        	Label kindLabel = new Label(movie.getKind()+"|"+screening.getSection()+"|"+screening.getSeat()+"석");
+		        	VBox kind = new VBox();
+		        	Label kindLabel = new Label(screening.getSection());
+		        	Label seats = new Label(screening.getSeat()+"석");
 		            Button timeButton = new Button(screening.getStartTime());
+		            kind.getChildren().addAll(timeButton,kindLabel,seats);
 		            timeButton.setOnAction(event -> {
 		                // 이곳에 선택된 시간에 맞는 동작을 추가할 수 있음
 		                handleTimeSelection(movie.getTitle(),movie.getRating(),movie.getKind(), movie.getRuntime(), movie.getPoster(),screening.getSeat(), screening.getSection(),screening.getDate(),screening.getStartTime(), screening.getEndTime());
 		            });
-		            timeFlow.getChildren().addAll(kindLabel,timeButton); // FlowPane에 버튼 추가
+		            timeFlow.getChildren().add(kind); // FlowPane에 버튼 추가
 		        }
 		        
 		        layout.getChildren().addAll(posterImage, movieInfo);
@@ -243,16 +245,6 @@ public class choiseMovieController implements Initializable {
         movieData.setSelectedMovieDate(date);
         movieData.setSelectedMovieStartTime(selectedTime);
         movieData.setSelectedMovieEndTime(selectedEndTime);
-    	/*selectedMovieTitle = movie; //선택한 영화의 정보를 넘겨줌
-    	selectedMovieRating = rating;//선택한 영화의 관람 등급을 넘겨줌
-    	selectedMovieType = kind;//상영관의 종류를 넘겨줌
-    	selectedMovieRuntime = runtime;//선택한 영화의 총 상영시간을 넘겨줌
-    	selectedMoviePoster = poster; // 포스터 정보를 넘겨줌
-    	selectedMovieSeat = seat;//좌석 수를 넘겨줌
-    	selectedMovieSection = section;//상영관 위치를 넘겨줌
-    	selectedMovieDate = date;//선택한 날짜를 넘겨줌
-    	selectedMovieStartTime = selectedTime;//상영시작시간을 넘겨줌
-    	selectedMovieEndTime = selectedEndTime;//상영 종료 시간을 넘겨줌*/
     	
         System.out.println("선택된 영화: " + movie);
         System.out.println("선택한 영화 관람 등급"+rating);
