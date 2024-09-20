@@ -16,7 +16,7 @@ public class HandleFunction {
     try {
         socketChannel = SocketChannel.open();
         System.out.println("[연결요청]");
-        socketChannel.connect(new InetSocketAddress("localhost",50001));
+        socketChannel.connect(new InetSocketAddress("10.2.12.171",50001));
         System.out.println("[연결성공]");
 
         ByteBuffer byteBuffer = null;

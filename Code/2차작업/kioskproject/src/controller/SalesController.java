@@ -17,8 +17,19 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dto.Day;
+import dto.RequestCode;
+import dto.RequestDto;
+import dto.SalesDto;
+import handleMessage.HandleFunction;
 
 public class SalesController {
 
@@ -100,12 +111,38 @@ public class SalesController {
 
         // 일별 매출을 저장할 Map
         Map<Integer, Double> dailySales = new HashMap<>();
-
+        
+        //값을 가져오는 메서드
+        HandleFunction hd = new HandleFunction();
+        RequestDto rd = new RequestDto();
+        rd.setRequestCode(RequestCode.GET_SALES_INFO_DAY);
+        Day day1 = new Day();
+        day1.setYear(currentYearMonth.getYear());
+        day1.setMonth(currentYearMonth.getMonthValue());
+        rd.setBody(day1);
+        String response = hd.submit(rd);
+        ObjectMapper obm = new ObjectMapper();
+        Map<String, Object> jsonMap;
+        ArrayList<SalesDto> salesList = null;
+        try {
+			jsonMap = obm.readValue(response, new TypeReference<Map<String, Object>>(){});
+			salesList = obm.convertValue(jsonMap.get("body"), new TypeReference<ArrayList<SalesDto>>() {});
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         for (int i = 1; i <= daysInMonth; i++) {
             final int day = i;
-            double sales = getSalesForDay(day);
-            dailySales.put(day, sales);
-
+            double sales = 0;
+            String format = String.format("%d-%02d-%02d", currentYearMonth.getYear(), currentYearMonth.getMonthValue() , i);
+            for(SalesDto sale : salesList) {
+            	if(sale.getDateTime().equals(format)) {
+            		sales = sale.getSale();
+            		break;
+            	}
+            }
+            
             // 매출을 천원 단위로 반올림
             double roundedSales = Math.round(sales / 1000.0) * 1000;
 
@@ -139,19 +176,34 @@ public class SalesController {
         yearGrid.getChildren().clear();
         int currentYear = currentYearMonth.getYear();
         yearLabel.setText(String.valueOf(currentYear));
-
+        HandleFunction hd = new HandleFunction();
+        RequestDto rd = new RequestDto();
+        rd.setRequestCode(RequestCode.GET_SALES_INFO_MONTH);
+        Day day1 = new Day();
+        day1.setYear(currentYear);
+        rd.setBody(day1);
+        String response = hd.submit(rd);
         // 12개월의 매출을 저장할 Map
         Map<Integer, Double> monthlySales = new HashMap<>();
-
+        ObjectMapper obm = new ObjectMapper();
+        Map<String, Object> jsonMap;
+        ArrayList<SalesDto> sales = null;
+        try {
+			jsonMap = obm.readValue(response, new TypeReference<Map<String, Object>>(){});
+			sales = obm.convertValue(jsonMap.get("body"), new TypeReference<ArrayList<SalesDto>>() {});
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+      
         for (int month = 1; month <= 12; month++) {
+        	double totalMonthlySales = 0;
             YearMonth yearMonth = YearMonth.of(currentYear, month);
-
-            // 월별 매출을 계산하기 위한 변수
-            double totalMonthlySales = 0;
-
-            // 해당 월의 모든 일별 매출 합산
-            for (int day = 1; day <= yearMonth.lengthOfMonth(); day++) {
-                totalMonthlySales += getSalesForDay(day);
+            String format = String.format("%d-%02d", currentYear, month);
+            for(SalesDto dto : sales) {
+            	if(dto.getDateTime().equals(format)) {
+            		totalMonthlySales = dto.getSale();
+            	}
             }
 
             // 매출을 천원 단위로 반올림
