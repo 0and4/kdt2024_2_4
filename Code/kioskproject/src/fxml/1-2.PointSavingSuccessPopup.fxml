@@ -17,7 +17,7 @@
       <Text fx:id="savingPoint" fill="BLACK" layoutX="36.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[ 168원 ]" textAlignment="CENTER" wrappingWidth="65.33333333333326" />
 
       <!-- 확인 버튼 -->
-      <Button layoutX="102.0" layoutY="94.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="65.0" style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;" text="확  인" textAlignment="CENTER" />
+      <Button layoutX="102.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleBtnOk" prefHeight="29.0" prefWidth="65.0" style="-fx-background-color: #ff5a5a; -fx-text-fill: white; -fx-background-radius: 20;" text="확  인" textAlignment="CENTER" />
       <Text fill="BLACK" layoutX="91.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="적립이 완료되었습니다." textAlignment="CENTER" wrappingWidth="152.00000508626295" />
    </children>
 </AnchorPane>

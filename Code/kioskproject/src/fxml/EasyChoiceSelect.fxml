@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="EasyTimePane" prefHeight="750.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EasyTime">
+<StackPane fx:id="EasyChoiceSelectPane" prefHeight="750.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EasyChoiceSelect">
    <children>
       <BorderPane prefHeight="750.0" prefWidth="650.0">
          <top>

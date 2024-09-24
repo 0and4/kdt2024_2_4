@@ -217,9 +217,15 @@ public class choiseMovieController implements Initializable {
 					posterImage.setFitWidth(180);
 					posterImage.setFitHeight(230);
 					
-					File file = new File(movie.getPoster());
-					Image image = new Image(file.toURI().toString());
-					posterImage.setImage(image);
+					if(movie.getRes_id() == 3) {
+						Image image = new Image(movie.getPoster());
+						posterImage.setImage(image);
+					}else {
+						File file = new File(movie.getPoster());
+						Image image = new Image(file.toURI().toString());
+						posterImage.setImage(image);
+					}
+					
 					
 					//영화정보 불러오기
 					Label titleLabel = new Label("["+movie.getRating()+"]"+movie.getTitle()+"("+ movie.getKind() +")"+movie.getRuntime()+"분");//영화 정보 가져오기

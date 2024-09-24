@@ -32,6 +32,9 @@ public class EasySelectMember implements Initializable{
     @FXML private Button nextPage; // 다음으로 버튼 
     @FXML private Button backBtn; // 이전으로 버튼
     @FXML private VBox movieList; // 영화 목록 패널
+    @FXML private Label selectTitle; // 영화제목 불러오기
+	@FXML private Label selectTime;
+	@FXML private ImageView selectPoster;
 
     //일반 인원 선택0~10명까지
 	@FXML private Button adult,adult1,adult2,adult3,adult4,adult5,adult6,adult7,adult8,adult9,adult10;
@@ -154,6 +157,20 @@ public class EasySelectMember implements Initializable{
 		        selectedTotalPrice += ticketPrice * numberOfPeople; // 총 금액 계산
 		    }
 		}
+        public void initializeData(MovieData selectMovie) {
+            this.selectedMovie = selectMovie;
+            
+            if(selectTitle != null && selectTime != null && selectPoster != null) {
+                selectTitle.setText("[" + selectedMovie.getSelectedMovieRating() +"] "+ selectedMovie.getSelectedMovieTitle()+" ("+ selectedMovie.getSelectedMovieType()+") "+selectedMovie.getSelectedMovieRuntime()+"분 "+"["+selectedMovie.getSelectedMovieSection()+"]");
+                selectTime.setText(selectedMovie.getSelectedMovieStartTime());
+                
+                File file = new File(selectedMovie.getSelectedMoviePoster());
+                Image image = new Image(file.toURI().toString());
+                selectPoster.setImage(image);
+                selectPoster.setFitHeight(170);
+                selectPoster.setFitWidth(150);
+            }
+        }
 
         @FXML
         public void handleMemberSelect(ActionEvent event) {
@@ -184,6 +201,8 @@ public class EasySelectMember implements Initializable{
                 // FXML 파일을 로드하여 메뉴 화면으로 전환
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EasyChoiceSelect.fxml"));
                 Parent homeRoot = loader.load();
+                EasyChoiceSelect controller = loader.getController();
+                controller.keeping(selectedMovie ,selectedMovie.getSelectedMovieSeat(),selectedNumberOfPeople, selectedTotalPrice, selectedPeopleDetails);
                 // 현재 창의 Stage를 가져옴
                 Stage stage = (Stage) home.getScene().getWindow();
                 Scene scene = new Scene(homeRoot); // 홈화면으로 전환

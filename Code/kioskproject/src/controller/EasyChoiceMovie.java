@@ -3,6 +3,10 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dto.DBConnection;
+
+// import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
+
 // import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
 
 import dto.Movie;
@@ -37,6 +41,7 @@ import java.io.File;
 
 public class EasyChoiceMovie implements Initializable{
 
+    public static String date;
     @FXML private StackPane choiseMoviePane;
     @FXML private Button home; // 홈버튼
     @FXML private Button nextPage; // 다음으로 버튼 
@@ -45,11 +50,16 @@ public class EasyChoiceMovie implements Initializable{
     @FXML private VBox movieList; // 영화 목록 패널
 
     @FXML private Label selectedDateText; //선택된 날짜
+    
     MovieData movieData;
-    String url = "jdbc:mysql://localhost:3306/kiosk";
+//    String url = "jdbc:mysql://localhost:3306/kiosk";
+    String selectedDate;
     Map<String, Movie> selectedData;
 	private Connection con;
     private Movie selectedMovie;
+    private String movieTitle;
+    private String movieRating;
+    private String movieKind;
 
     // public String setSelectedDate(String date) {
     //     selectedDateText.setText(date);
@@ -64,15 +74,17 @@ public class EasyChoiceMovie implements Initializable{
         nextPage.setOnAction(event->NextPage(event)); //다음으로 버튼
 
         movieData = new MovieData();
-		try {
-    		Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("데이터베이스 연결중...");
-			con = DriverManager.getConnection(url,"root","root1234");
-			System.out.println("연결성공");
-
-    	}catch(Exception e) {
-    		e.printStackTrace();
-    	}
+        selectedData = new HashMap<>();
+        con = DBConnection.getConnection();
+//		try {
+//    		Class.forName("com.mysql.cj.jdbc.Driver");
+//			System.out.println("데이터베이스 연결중...");
+//			con = DriverManager.getConnection(url,"root","db2023");
+//			System.out.println("연결성공");
+//
+//    	}catch(Exception e) {
+//    		e.printStackTrace();
+//    	}
         
         if (movieList == null) {
             System.out.println("movieListVBox is null");
@@ -89,13 +101,26 @@ public class EasyChoiceMovie implements Initializable{
         // 선택된 영화의 스타일 변경 (배경색을 바꿈)
         movieCell.setStyle("-fx-background-color: #cce5ff;"); // 하늘색 배경
         selectedMovie = movie; // 선택된 영화 저장
-        System.out.println(movieMap);
+
+        //누를 때 마다초기화
+        selectedData.clear();
+        selectedData.put(selectedMovie.getRating(), selectedMovie);
+        selectedData.put(selectedMovie.getTitle(), selectedMovie);
+        selectedData.put(selectedMovie.getKind(), selectedMovie);
+
+        movieTitle=selectedMovie.getTitle();
+        movieRating=selectedMovie.getRating();
+        movieKind=selectedMovie.getKind();
+        System.out.println(movieTitle+"|"+movieRating+"|"+movieKind);
+
+        System.out.println(selectedData);
     }
     
 	//영화 목록 출력
 	public void loadMovieList(String date) {
         selectedDateText.setText(date);
         System.out.println("선택된 날짜: " + date); // 로그로 값 확인
+        selectedDate=date;
 		// 이전에 추가된 정보를 초기화
         movieList.getChildren().clear();
         //Play_info 테이블에서 상영정보를 가져와서 추가
@@ -180,7 +205,7 @@ public class EasyChoiceMovie implements Initializable{
 		        }
 		        
                 posterImage.setOnMouseClicked(event -> selectMovie(movieCell, movie, movieMap)); //영화 포스터 선택했을 떄
-                selectedData = movieMap;
+                
 
 		        layout.getChildren().addAll(posterImage, movieInfo);
 		        movieInfo.getChildren().addAll(titleLabel, timeFlow);
@@ -200,6 +225,9 @@ public class EasyChoiceMovie implements Initializable{
             Parent nextPageRoot = loader.load();
             EasyTime EasyTimeCt = loader.getController();
             EasyTimeCt.loadData(selectedData);
+            System.out.println(selectedData);
+            EasyTimeCt.loadMovieList(selectedDate,movieTitle,movieRating,movieKind); //날짜와 영화를 가져가야함.
+            System.out.println("NextPage버튼 : "+selectedDate);
 
             Stage stage = (Stage) nextPage.getScene().getWindow();
             Scene scene = new Scene(nextPageRoot);
