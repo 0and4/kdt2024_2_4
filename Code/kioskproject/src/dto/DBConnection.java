@@ -8,7 +8,7 @@ public class DBConnection {
 	public static Connection getConnection() {
 		Connection con = null;
 		try {
-			String url = "jdbc:mysql://localhost:3306/kiosk";
+			String url = "jdbc:mysql://10.2.17.172:3306/kiosk";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			System.out.println("데이터베이스 연결중...");
 			con = DriverManager.getConnection(url,"root","root1234");

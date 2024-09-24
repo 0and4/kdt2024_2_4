@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import dto.DBConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,18 +45,19 @@ public class SettingController {
     @FXML private Button registerButton;
     @FXML private Button registerButton1;
     
-    String url = "jdbc:mysql://localhost:3306/kiosk";
+//    String url = "jdbc:mysql://localhost:3306/kiosk";
 	private Connection con;
     
     public void initialize() {
-    	try {
-    		Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("데이터베이스 연결중...");
-			con = DriverManager.getConnection(url,"root","root1234");
-			System.out.println("연결성공");
-    	}catch(Exception e) {
-    		e.printStackTrace();
-    	}
+    	con = DBConnection.getConnection();
+//    	try {
+//    		Class.forName("com.mysql.cj.jdbc.Driver");
+//			System.out.println("데이터베이스 연결중...");
+//			con = DriverManager.getConnection(url,"root","root1234");
+//			System.out.println("연결성공");
+//    	}catch(Exception e) {
+//    		e.printStackTrace();
+//    	}
         if (movieListVBox == null) {
             System.err.println("movieListVBox is not initialized.");
         }else {

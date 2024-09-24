@@ -141,7 +141,7 @@ public class buyController implements Initializable {
 	public void updateTotal(int discount) {
 	    // 사용된 포인트 로그
 	    System.out.println("Discount applied: " + discount);
-	    memberDto.setDiscount(discount);
+	    selectMovieData.setDiscount(discount);
 	    
 	    if (discount > 0) {
 	        int currentTotal = Integer.parseInt(totalPrice.getText().replace(" 원", ""));
@@ -164,7 +164,7 @@ public class buyController implements Initializable {
 			double totalPriceValue = Double.parseDouble(totalPrice.getText().replace(" 원", ""));
 			double calculatedSaving = totalPriceValue * 0.001;
 			int saving = (int) calculatedSaving;
-			memberDto.setSaving(saving);
+			selectMovieData.setSaving(saving);
 			savingPoints = saving;
 			// 디버깅을 위한 로그 출력
 	        System.out.println("계산된 포인트: " + saving);
