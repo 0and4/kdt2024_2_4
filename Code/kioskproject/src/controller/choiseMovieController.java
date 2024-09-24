@@ -218,8 +218,8 @@ public class choiseMovieController implements Initializable {
 					posterImage.setFitHeight(230);
 					
 					if(movie.getRes_id() == 3) {
-						Image image = new Image(movie.getPoster());
-						posterImage.setImage(image);
+						Image image = new Image(movie.getPoster()); // URL이 직접 들어온다고 가정
+					    posterImage.setImage(image);
 					}else {
 						File file = new File(movie.getPoster());
 						Image image = new Image(file.toURI().toString());

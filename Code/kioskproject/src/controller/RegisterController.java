@@ -241,8 +241,26 @@ public class RegisterController {
         String runtime = runtimeField.getText();
         String rating = ratingField.getText();
         String selectedKind = kindComboBox.getValue();
-        
+        // 중복 확인 쿼리
         try {
+            String checkSql = "SELECT COUNT(*) FROM showmovie WHERE title = ? AND movietype = ?";
+            PreparedStatement checkPstmt = con.prepareStatement(checkSql);
+            checkPstmt.setString(1, title);
+            checkPstmt.setString(2, selectedKind);
+            ResultSet rs = checkPstmt.executeQuery();
+            
+            if (rs.next() && rs.getInt(1) > 0) {
+                // 중복된 영화가 존재하는 경우
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning");
+                alert.setHeaderText(null);
+                alert.setContentText("중복된 영화가 존재합니다. 다른 영화로 등록해주세요.");
+                alert.showAndWait();
+
+                // 팝업 창을 닫지 않고 등록 창으로 돌아가게 함
+                return; // 메서드 종료
+            }
+            
     		String sql = "INSERT INTO showmovie(movie_id, title, runtime, rating, movietype, poster) VALUES(?,?,?,?,?,?)";
     		PreparedStatement pstmt = con.prepareStatement(sql);
     		pstmt.setInt(1, selectedMovieId);
