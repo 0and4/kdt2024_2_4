@@ -223,8 +223,8 @@ public class EasyTime implements Initializable{
 			timeline.getKeyFrames().add(keyFrame);
 			timeline.play();//애니메이션 실행
 			
-			Scene scene = EasyTimePane.getScene();
-			scene.getStylesheets().add(getClass().getResource("/fxml/css/choiseMovie.css").toExternalForm());
+//			Scene scene = EasyTimePane.getScene();
+//			scene.getStylesheets().add(getClass().getResource("/fxml/css/choiseMovie.css").toExternalForm());
             // // 현재 창의 Stage를 가져옴
             // Stage stage = (Stage) home.getScene().getWindow();
             // Scene scene = new Scene(homeRoot); // 홈화면으로 전환

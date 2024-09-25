@@ -39,7 +39,7 @@ public class Server {
             ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
 
             //ServerSocketChannel 포트 바인딩
-            serverSocketChannel.bind(new InetSocketAddress("127.0.0.1",50001));
+            serverSocketChannel.bind(new InetSocketAddress("10.2.16.14",50001));
             System.out.println("[서버 시작]");
 
             executorService.execute(() -> {

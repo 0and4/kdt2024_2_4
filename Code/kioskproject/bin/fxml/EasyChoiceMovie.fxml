@@ -16,14 +16,30 @@
    <children>
       <BorderPane prefHeight="750.0" prefWidth="650.0">
          <top>
-      <HBox alignment="TOP_RIGHT" prefHeight="80.0" prefWidth="650.0" style="-fx-background-color: #ff6532;" BorderPane.alignment="CENTER">
+      <HBox alignment="TOP_RIGHT" prefHeight="80.0" prefWidth="650.0" style="-fx-background-color: FF5A5A;" BorderPane.alignment="CENTER">
          <children>
+			      <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+			         <image>
+			            <Image url="@icon/help.png" />
+			         </image>
+                     <HBox.margin>
+                        <Insets right="420.0" top="16.0" />
+                     </HBox.margin>
+			      </ImageView>
+         
+			<!-- 도움 버튼 -->
+			<Button fx:id="help" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: none;">
+			   <HBox.margin>
+			      <Insets left="10.0" top="5.0" />
+			   </HBox.margin>
+			</Button>
+         
             <Button fx:id="home" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: none;">
                <HBox.margin>
                   <Insets right="10.0" top="5.0" />
                </HBox.margin>
                <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="35.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@icon/home.png" />
                      </image>
@@ -34,9 +50,9 @@
       </HBox>
    </top>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #ff6532;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: FF5A5A;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="nextPage" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 24; -fx-font-family: 'Malgun Gothic'; -fx-background-color: white; -fx-background-radius: 20;" text="다음으로" />
+            <Button fx:id="nextPage" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 22; -fx-font-family: 'Malgun Gothic'; -fx-background-color: white; -fx-background-radius: 25;" text="다음으로" />
          </children></HBox>
    </bottom>
          <center>
@@ -53,8 +69,8 @@
                         </AnchorPane>
                     </content>
                   </ScrollPane>
-                  <HBox layoutX="-1.0" layoutY="91.0" prefHeight="11.0" prefWidth="651.0" style="-fx-background-color: gray;" />
-                  <Button fx:id="backBtn" layoutX="35.0" layoutY="27.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="152.0" style="-fx-background-color: #ff6532; -fx-background-radius: 30; -fx-font-size: 20; -fx-text-fill: white; -fx-font-family: B Batangcheatang;" text="이전으로" />
+                  <HBox layoutX="-1.0" layoutY="91.0" prefHeight="5.0" prefWidth="651.0" style="-fx-background-color: gray;" />
+                  <Button fx:id="backBtn" layoutX="35.0" layoutY="27.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="152.0" style="-fx-background-color: FF5A5A; -fx-background-radius: 30; -fx-font-size: 20; -fx-text-fill: white; -fx-font-family: 'Malgun Gothic';" text="이전으로" />
          </children>
       </AnchorPane>
          </center>

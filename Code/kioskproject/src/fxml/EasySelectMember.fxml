@@ -5,18 +5,32 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane fx:id="selectMemberPane" prefHeight="750.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EasySelectMember">
    <children>
-      <BorderPane prefHeight="750.0" prefWidth="650.0">
+      <BorderPane prefHeight="750.0" prefWidth="650.0" style="-fx-background-color: white;">
          <top>
-      <HBox alignment="TOP_RIGHT" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #ff6321;" BorderPane.alignment="CENTER">
+      <HBox alignment="TOP_RIGHT" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: FF5A5A;" BorderPane.alignment="CENTER">
          <children>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icon/help.png" />
+               </image>
+                     <HBox.margin>
+                        <Insets right="420.0" top="16.0" />
+                     </HBox.margin>
+            </ImageView>
+         
+         <!-- 도움 버튼 추가 -->
+            <Button fx:id="help" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: none;" />
+         
             <Button fx:id="home" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" style="-fx-background-color: none;">
                <HBox.margin>
                   <Insets right="10.0" top="5.0" />
@@ -33,36 +47,51 @@
       </HBox>
    </top>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: #ff6321;" BorderPane.alignment="CENTER" />
+      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="200.0" style="-fx-background-color: FF5A5A;" BorderPane.alignment="CENTER" />
    </bottom>
          <right>
-      <VBox alignment="TOP_CENTER" prefHeight="590.0" prefWidth="650.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="590.0" prefWidth="650.0" BorderPane.alignment="CENTER">
          <children>
-                  <Button fx:id="backBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 24; -fx-text-fill: white; -fx-font-family: 'Malgun Gothic'; -fx-background-color: #ff6321; -fx-background-radius: 20;" text="이전으로" />
-            <Label style="-fx-font-size: 28; -fx-text-fill: black;" text="관람 인원 수를 선택해 주세요" />
-            <Label style="-fx-font-size: 14; -fx-text-fill: black;" text="인원은 최대  10명까지 선택이 가능합니다.">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Label>
+                  <VBox prefHeight="73.0" prefWidth="650.0">
+                     <children>
+                        <AnchorPane>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <children>
+                              <Button fx:id="backBtn" layoutX="28.0" layoutY="25.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="152.0" style="-fx-font-size: 20; -fx-text-fill: white; -fx-font-family: 'Malgun Gothic'; -fx-background-color: FF5A5A; -fx-background-radius: 20;" text="이전으로">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+                  <AnchorPane prefHeight="77.0" prefWidth="650.0">
+                     <children>
+                  <Label layoutX="124.0" layoutY="29.0" style="-fx-font-size: 32; -fx-text-fill: black; -fx-font-family: 'Malgun Gothic';" text="관람 인원 수를 선택해 주세요" />
+                     </children>
+                  </AnchorPane>
+            <Label style="-fx-font-size: 17; -fx-text-fill: black; -fx-font-family: 'Malgun Gothic';" text="인원은 최대  10명까지 선택이 가능합니다." />
             <HBox alignment="CENTER" prefWidth="650.0" spacing="10.0" style="-fx-border-width: 0 0 1px 0; -fx-border-color: white;">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20;" text="일반 : " />
-                  <Button fx:id="adult" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="0" />
-                  <Button fx:id="adult1" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="1" />
-                  <Button fx:id="adult2" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="2" />
-                  <Button fx:id="adult3" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="3" />
-                  <Button fx:id="adult4" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="4">
+                  <Button fx:id="adult" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="0" />
+                  <Button fx:id="adult1" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="1" />
+                  <Button fx:id="adult2" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="2" />
+                  <Button fx:id="adult3" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="3" />
+                  <Button fx:id="adult4" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="4">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="adult5" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="5" />
-                  <Button fx:id="adult6" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="6" />
-                  <Button fx:id="adult7" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="7" />
-                  <Button fx:id="adult8" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="8" />
-                  <Button fx:id="adult9" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="9" />
-                  <Button fx:id="adult10" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif; -fx-text-fill: #352461;" styleClass="memBtn" text="10" />
+                  <Button fx:id="adult5" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="5" />
+                  <Button fx:id="adult6" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="6" />
+                  <Button fx:id="adult7" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="7" />
+                  <Button fx:id="adult8" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="8" />
+                  <Button fx:id="adult9" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="9" />
+                  <Button fx:id="adult10" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="10" />
                </children>
                <VBox.margin>
                   <Insets bottom="15.0" top="50.0" />
@@ -135,7 +164,11 @@
                   <Button fx:id="special10" mnemonicParsing="false" onAction="#handleMemberSelect" prefHeight="30.0" style="-fx-font-size: 15; -fx-font-family: Sans-Serif;" styleClass="memBtn" text="10" />
                </children>
             </HBox>
-                  <Button fx:id="nextPage" layoutX="11.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 24; -fx-text-fill: white; -fx-font-family: 'Malgun Gothic'; -fx-background-color: #ff6321; -fx-background-radius: 20;" text="다음으로" />
+                  <AnchorPane prefHeight="169.0" prefWidth="650.0">
+                     <children>
+                        <Button fx:id="nextPage" layoutX="225.0" layoutY="78.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 24; -fx-text-fill: white; -fx-font-family: 'Malgun Gothic'; -fx-background-color: FF5A5A; -fx-background-radius: 25;" text="다음으로" />
+                     </children>
+                  </AnchorPane>
          </children>
       </VBox>
          </right>

@@ -212,19 +212,19 @@ public class choiseMovieController implements Initializable {
 					movieInfo.setSpacing(10);
 					layout.setSpacing(20);
 					
-					//포스터 이미지 불러오기
-					ImageView posterImage = new ImageView();
-					posterImage.setFitWidth(180);
-					posterImage.setFitHeight(230);
+					Image image;
+		            if (movie.getPoster().startsWith("http://") || movie.getPoster().startsWith("https://")) {
+		                // URL인 경우
+		                image = new Image(movie.getPoster()); // URL로부터 이미지 로드
+		            } else {
+		                // 로컬 파일인 경우
+		                File file = new File(movie.getPoster());
+		                image = new Image(file.toURI().toString());
+		            }
+		            ImageView posterImage = new ImageView(image);
+		            posterImage.setFitHeight(230);
+		            posterImage.setFitWidth(180);
 					
-					if(movie.getRes_id() == 3) {
-						Image image = new Image(movie.getPoster()); // URL이 직접 들어온다고 가정
-					    posterImage.setImage(image);
-					}else {
-						File file = new File(movie.getPoster());
-						Image image = new Image(file.toURI().toString());
-						posterImage.setImage(image);
-					}
 					
 					
 					//영화정보 불러오기
@@ -265,102 +265,7 @@ public class choiseMovieController implements Initializable {
 		}//try
 		
 	}
-//	//영화 목록 출력
-//	private void loadMovieList(String selectedDate) {
-//		// 이전에 추가된 정보를 초기화
-//        movieList.getChildren().clear();
-//        //Play_info 테이블에서 상영정보를 가져와서 추가
-//		
-//		try {
-//			String sql = "SELECT sm.title, sm.runtime, sm.rating, sm.poster, sm.movietype, t.kind, t.section,t.seat,p.play_info_id, p.movie_date, p.start_time, p.end_time "+
-//   				 "FROM play_info p "+
-//   				 "JOIN showmovie sm ON p.movie_id = sm.movie_id "+
-//   				 "JOIN theater t ON p.theater_id = t.theater_id "+
-//   				 "where sm.movietype = t.kind AND p.movie_date = ? " +
-//   				 "ORDER BY sm.title, t.kind, p.movie_date";
-//			PreparedStatement pstmt = con.prepareStatement(sql);
-//			pstmt.setString(1, selectedDate);
-//			ResultSet rs = pstmt.executeQuery();
-//			// 영화 정보를 저장할 맵
-//            Map<String, Movie> movieMap = new HashMap<>();
-//			while(rs.next()) {
-//				Integer res_id = rs.getInt("play_info_id");
-//				String title = rs.getString("title");
-//                String runtime = rs.getString("runtime");
-//                String rating = rs.getString("rating");
-//                String poster = rs.getString("poster");
-//                String kind = rs.getString("kind");
-//                String section = rs.getString("section");
-//                Integer seat = rs.getInt("seat");
-//                LocalDate movieDate = rs.getDate("movie_date").toLocalDate();
-//                LocalTime startTimes = rs.getTime("start_time").toLocalTime();
-//                LocalTime endTime = rs.getTime("end_time").toLocalTime();
-//                
-//                // 시간을 받아와 문자열 및 형식 변환
-//                String date = movieDate.toString();
-//            	String stime = startTimes.format(DateTimeFormatter.ofPattern("HH:mm"));
-//            	String etime = endTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-//            	
-//            	String movieKey = title + "|" + rating + "|" + kind + "|" +runtime +"|" + poster;
-//            	
-//            	if (!movieMap.containsKey(movieKey)) {
-//                    movieMap.put(movieKey, new Movie(res_id,title, rating, runtime, poster, kind));
-//                }
-//
-//                movieMap.get(movieKey).addScreening(date, stime, etime, seat, section);
-//            	
-//			}
-//			for (Movie movie : movieMap.values()) {
-//                //MovieListViewCell movieCell = new MovieListViewCell(movie);
-//				HBox movieCell = new HBox();
-//				movieCell.setSpacing(20);
-//				VBox movieInfo = new VBox();
-//				HBox layout = new HBox();
-//				movieInfo.setSpacing(10);
-//				layout.setSpacing(20);
-//				
-//				//포스터 이미지 불러오기
-//				ImageView posterImage = new ImageView();
-//				posterImage.setFitWidth(200);
-//				posterImage.setFitHeight(150);
-//				
-//				File file = new File(movie.getPoster());
-//				Image image = new Image(file.toURI().toString());
-//				posterImage.setImage(image);
-//				
-//				//영화정보 불러오기
-//				Label titleLabel = new Label("["+movie.getRating()+"]"+movie.getTitle()+"("+ movie.getKind() +")"+movie.getRuntime()+"분");//영화 정보 가져오기
-//				
-//				// TablePane에 상영 시간 Button 추가
-//		        FlowPane timeFlow = new FlowPane();
-//		        timeFlow.setVgap(10);
-//		        timeFlow.setHgap(10);
-//		        timeFlow.setPrefWidth(200); // 가로 너비 고정
-//		        
-//		        // 상영 시간 버튼 생성
-//		        for (Movie.Screening screening : movie.getScreenings()) {
-//		        	VBox kind = new VBox();
-//		        	Label kindLabel = new Label(screening.getSection());
-//		        	Label seats = new Label(screening.getSeat()+"석");
-//		            Button timeButton = new Button(screening.getStartTime());
-//		            kind.getChildren().addAll(timeButton,kindLabel,seats);
-//		            timeButton.setOnAction(event -> {
-//		                // 이곳에 선택된 시간에 맞는 동작을 추가할 수 있음
-//		                handleTimeSelection(movie.getTitle(),movie.getRating(),movie.getKind(), movie.getRuntime(), movie.getPoster(),screening.getSeat(), screening.getSection(),screening.getDate(),screening.getStartTime(), screening.getEndTime());
-//		            });
-//		            timeFlow.getChildren().add(kind); // FlowPane에 버튼 추가
-//		        }
-//		        
-//		        layout.getChildren().addAll(posterImage, movieInfo);
-//		        movieInfo.getChildren().addAll(titleLabel, timeFlow);
-//		        layout.setStyle("-fx-border-width:0 0 2px 0; -fx-border-color:#ccc; ");
-//		        movieCell.getChildren().add(layout);
-//                movieList.getChildren().add(movieCell);
-//            }
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	
 	// 시간을 선택했을 때 처리하는 메서드
     private void handleTimeSelection(Integer play_Id, String movie, String rating,String kind, String runtime, String poster,Integer seat, String section, String date, String selectedTime, String selectedEndTime) {
         // 상영 시간을 선택했을 때의 동작을 여기에 구현합니다.

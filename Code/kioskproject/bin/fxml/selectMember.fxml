@@ -44,7 +44,7 @@
          <children>
             <HBox prefHeight="250.0" prefWidth="650.0">
                <children>
-                  <Pane maxHeight="200.0" prefHeight="200.0" prefWidth="170.0" style="-fx-background-color: #ccc;">
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="170.0" style="-fx-background-color: #ccc;">
                      <HBox.margin>
                         <Insets left="50.0" top="25.0" />
                      </HBox.margin>

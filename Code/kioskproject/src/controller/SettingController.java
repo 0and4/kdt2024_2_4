@@ -144,10 +144,20 @@ public class SettingController {
 				
 				HBox movieItem = new HBox();
 	            movieItem.setSpacing(10);
+	            
+	            Image image;
+	            if (poster.startsWith("http://") || poster.startsWith("https://")) {
+	                // URL인 경우
+	                image = new Image(poster); // URL로부터 이미지 로드
+	            } else {
+	                // 로컬 파일인 경우
+	                File file = new File(poster);
+	                image = new Image(file.toURI().toString());
+	            }
 
-	            // 이미지뷰 추가
-	            File file = new File(poster);
-				Image image = new Image(file.toURI().toString());
+//	            // 이미지뷰 추가
+//	            File file = new File(poster);
+//				Image image = new Image(file.toURI().toString());
 	            ImageView moviePoster = new ImageView(image);
 	            moviePoster.setFitWidth(100);
 	            moviePoster.setFitHeight(100);

@@ -186,11 +186,19 @@ public class selectMemberController implements Initializable {
 			selectTitle.setText("[" + selectedMovie.getSelectedMovieRating() +"] "+ selectedMovie.getSelectedMovieTitle()+" ("+ selectedMovie.getSelectedMovieType()+") "+selectedMovie.getSelectedMovieRuntime()+"분 "+"["+selectedMovie.getSelectedMovieSection()+"]");
 			selectTime.setText(selectedMovie.getSelectedMovieStartTime());
 			
-			File file = new File(selectedMovie.getSelectedMoviePoster());
-            Image image = new Image(file.toURI().toString());
+			Image image;
+            if (selectedMovie.getSelectedMoviePoster().startsWith("http://") || selectedMovie.getSelectedMoviePoster().startsWith("https://")) {
+                // URL인 경우
+                image = new Image(selectedMovie.getSelectedMoviePoster()); // URL로부터 이미지 로드
+            } else {
+                // 로컬 파일인 경우
+                File file = new File(selectedMovie.getSelectedMoviePoster());
+                image = new Image(file.toURI().toString());
+            }
             selectPoster.setImage(image);
-            selectPoster.setFitHeight(170);
-            selectPoster.setFitWidth(150);
+            selectPoster.setFitHeight(200);
+            selectPoster.setFitWidth(170);
+	
 		}
 	}
 	

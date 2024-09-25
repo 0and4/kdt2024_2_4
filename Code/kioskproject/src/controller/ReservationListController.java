@@ -39,30 +39,6 @@ public class ReservationListController {
     
     private ReservationDAO reservationDAO = new ReservationDAO();
     
-    // 예매 데이터를 화면에 표시하는 메서드
-    public void setReservationDetails(String reservationNumber) {
-//         예매 데이터를 DAO에서 가져옴
-//        ReservationDTO reservation = reservationDAO.getReservationByNumber(reservationNumber);
-//
-//        if (reservation != null) {
-//            // 가져온 데이터를 화면에 표시
-//            movieTitle.setText(reservation.getMovieTitle());
-//            rating.setText(reservation.getMovieRating());
-//            movieType.setText(reservation.getMovieType());
-//            runTime.setText(reservation.getMovieRuntime() + "분");
-//            movieDate.setText(reservation.getMovieDate().toString());
-//            movieTime.setText(reservation.getMovieStart().toString()+"~"+reservation.getMovieEnd().toString());
-//
-//            // 좌석 정보 및 섹션 정보 설정
-//            section.setText(reservation.getMovieTheater());
-//            seats.setText(String.join(", ", reservation.getSeatList()));  // 좌석 리스트를 쉼표로 구분하여 표시
-//
-//            // 기타 예매 정보
-//            resNum.setText(reservation.getRandomNumber());
-//            Details.setText("인원 수: " + String.join(", ", reservation.getPeopleList()));
-//        }
-    }
-    
  // 여러 예매 정보 표시 메서드
  // 예약 정보를 화면에 표시하는 메서드
     public void setReservationDetails(List<ReservationDTO> reservations) {

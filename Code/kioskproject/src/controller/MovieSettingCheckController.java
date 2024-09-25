@@ -105,15 +105,28 @@ public class MovieSettingCheckController {
             for (MovieInfo movie : movieMap.values()) {
                 HBox screeningBox = new HBox();
                 screeningBox.setSpacing(20);
+                
+                Image image;
+	            if (movie.getPosterUrl().startsWith("http://") || movie.getPosterUrl().startsWith("https://")) {
+	                // URL인 경우
+	                image = new Image(movie.getPosterUrl()); // URL로부터 이미지 로드
+	            } else {
+	                // 로컬 파일인 경우
+	                File file = new File(movie.getPosterUrl());
+	                image = new Image(file.toURI().toString());
+	            }
+	            ImageView imageview = new ImageView(image);
+	            imageview.setFitHeight(70);
+	            imageview.setFitWidth(100);
 
-                ImageView posterImageView = new ImageView();
-                posterImageView.setFitWidth(100);
-                posterImageView.setFitHeight(130);
-
-                // 포스터 이미지 설정
-                File file = new File(movie.getPosterUrl());
-                Image image = new Image(file.toURI().toString());
-                posterImageView.setImage(image);
+//                ImageView posterImageView = new ImageView();
+//                posterImageView.setFitWidth(100);
+//                posterImageView.setFitHeight(130);
+//
+//                // 포스터 이미지 설정
+//                File file = new File(movie.getPosterUrl());
+//                Image image = new Image(file.toURI().toString());
+//                posterImageView.setImage(image);
 
                 Label titleLabel = new Label(movie.getTitle() + " " + movie.getMovieType());
                 Label ratingLabel = new Label(movie.getRating().equals("all") ? movie.getRating() : movie.getRating() + "세 이상관람가");
@@ -140,7 +153,7 @@ public class MovieSettingCheckController {
                     timeBox.getChildren().add(timeDetailVBox);                  
                 }
                 infoBox.getChildren().add(timeBox);
-                screeningBox.getChildren().addAll(posterImageView, infoBox);
+                screeningBox.getChildren().addAll(imageview, infoBox);
                 screeningBox.setStyle("-fx-border-color:blue;");
                 screeningInfoVBox.getChildren().add(screeningBox);
             }

@@ -51,7 +51,7 @@
                   </ScrollPane>
                   <Button fx:id="backBtn" layoutX="35.0" layoutY="27.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="152.0" style="-fx-background-color: #ff6532; -fx-background-radius: 30; -fx-font-size: 20; -fx-text-fill: white; -fx-font-family: B Batangcheatang;" text="이전으로" />
             <Button fx:id="nextPage" layoutX="225.0" layoutY="497.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-font-size: 24; -fx-text-fill: white; -fx-font-family: 'Malgun Gothic'; -fx-background-color: #ff6532; -fx-background-radius: 30;" text="다음으로" />
-                  <Label fx:id="MovieInfo" layoutX="102.0" layoutY="94.0" prefHeight="37.0" prefWidth="171.0" style="-fx-font-size: 30;" text="Movie Name" />
+                  <Label fx:id="MovieInfo" layoutX="33.0" layoutY="94.0" prefHeight="37.0" prefWidth="292.0" style="-fx-font-size: 30;" text="Movie Name" />
                   <Label layoutX="325.0" layoutY="94.0" prefHeight="37.0" prefWidth="291.0" style="-fx-font-size: 30;" text="시간을 선택해주세요" />
          </children>
       </AnchorPane>

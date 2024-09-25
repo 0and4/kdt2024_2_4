@@ -34,7 +34,7 @@ CREATE TABLE `showmovie` (
   KEY `mname_idx` (`title`),
   KEY `resitmid_idx` (`movie_id`),
   CONSTRAINT `resitmid` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`movie_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `showmovie` (
 
 LOCK TABLES `showmovie` WRITE;
 /*!40000 ALTER TABLE `showmovie` DISABLE KEYS */;
-INSERT INTO `showmovie` VALUES (1,3,'베테랑2','118','15','2D','C:/Users/HP/JAVA/kioskproject/src/fxml/image/movie.png'),(2,3,'베테랑2','118','15','4D','C:/Users/HP/JAVA/kioskproject/src/fxml/image/movie.png'),(3,5,'트랜스포머 ONE','104','all','IMAX','C:/Users/HP/JAVA/kioskproject/src/fxml/image/movie.png'),(4,20,'탈주','94','12','3D','C:/Users/HP/JAVA/kioskproject/src/fxml/image/movie.png'),(5,31,'데드풀과 울버린','128','19','4DX','C:/Users/HP/JAVA/kioskproject/src/fxml/image/movie.png'),(6,5,'트랜스포머 ONE','104','all','3D','C:/Users/HP/JAVA/kioskproject/src/fxml/image/movie.png');
+INSERT INTO `showmovie` VALUES (1,3,'베테랑2','118','15','2D','https://www.kobis.or.kr/common/mast/movie/2024/08/thumb_x192/thn_886a61eb398d4cedb346d9ffbf3345c3.jpg'),(2,3,'베테랑2','118','15','4D','https://www.kobis.or.kr/common/mast/movie/2024/08/thumb_x192/thn_886a61eb398d4cedb346d9ffbf3345c3.jpg'),(3,5,'트랜스포머 ONE','104','all','IMAX','https://kobis.or.kr/common/mast/movie/2024/09/thumb_x640/thn_8465e850a5c34266ba484a4e67cb9c35.jpg'),(4,20,'탈주','94','12','3D','https://kobis.or.kr/common/mast/movie/2024/06/thumb_x640/thn_a5cdd86700c64be6b2ad93a68606497a.jpg'),(5,31,'데드풀과 울버린','128','19','4DX','https://kobis.or.kr/common/mast/movie/2024/07/thumb_x640/thn_8b6e20a95bc6477e88dc0d42f255539b.jpg'),(6,5,'트랜스포머 ONE','104','all','3D','https://kobis.or.kr/common/mast/movie/2024/09/thumb_x640/thn_8465e850a5c34266ba484a4e67cb9c35.jpg'),(7,30,'사랑의 하츄핑','86','all','4DX','https://www.kobis.or.kr/common/mast/movie/2024/07/thumb_x192/thn_802e82bdf0af47fcbdab6d012aeac2bb.jpg'),(9,3,'베테랑2','118','15','3D','https://www.kobis.or.kr/common/mast/movie/2024/08/thumb_x192/thn_886a61eb398d4cedb346d9ffbf3345c3.jpg'),(10,30,'사랑의 하츄핑','86','all','2D','https://www.kobis.or.kr/common/mast/movie/2024/07/thumb_x192/thn_802e82bdf0af47fcbdab6d012aeac2bb.jpg');
 /*!40000 ALTER TABLE `showmovie` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-24 18:51:37
+-- Dump completed on 2024-09-25 13:59:24

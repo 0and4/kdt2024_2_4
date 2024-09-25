@@ -16,26 +16,39 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `admin`
+-- Table structure for table `reservation_info`
 --
 
-DROP TABLE IF EXISTS `admin`;
+DROP TABLE IF EXISTS `reservation_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `admin` (
-  `admin_id` text,
-  `admin_password` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `reservation_info` (
+  `res_id` int NOT NULL AUTO_INCREMENT,
+  `play_info_id` int NOT NULL,
+  `seats` varchar(200) NOT NULL,
+  `people` varchar(100) NOT NULL,
+  `resNumber` varchar(45) NOT NULL,
+  `totalprice` int DEFAULT NULL,
+  `usepoint` int DEFAULT '0',
+  `savepoint` int DEFAULT '0',
+  `user_id` int DEFAULT NULL,
+  `status` varchar(45) DEFAULT 'available',
+  PRIMARY KEY (`res_id`),
+  KEY `play_id_idx` (`play_info_id`),
+  KEY `user_idx` (`user_id`),
+  CONSTRAINT `play_id` FOREIGN KEY (`play_info_id`) REFERENCES `play_info` (`play_info_id`),
+  CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `admin`
+-- Dumping data for table `reservation_info`
 --
 
-LOCK TABLES `admin` WRITE;
-/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES ('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4');
-/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
+LOCK TABLES `reservation_info` WRITE;
+/*!40000 ALTER TABLE `reservation_info` DISABLE KEYS */;
+INSERT INTO `reservation_info` VALUES (1,43,'A1','일반 1','7249472104383323',20000,0,0,NULL,'available'),(2,43,'A2, A3','일반 2','1003337308073043',40000,0,0,1,'available');
+/*!40000 ALTER TABLE `reservation_info` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -47,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-25 13:59:24
+-- Dump completed on 2024-09-25 13:59:25

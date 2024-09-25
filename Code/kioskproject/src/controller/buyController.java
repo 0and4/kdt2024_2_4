@@ -83,9 +83,16 @@ public class buyController implements Initializable {
             resNum.setText(randNum);
             System.out.println(selectMovieData.getSelectedMovieTitle());
             System.out.println(selectMovieData.getSelectedPlay_info_id());
-            // 포스터 이미지 설정
-            File file = new File(selectMovieData.getSelectedMoviePoster());
-            Image image = new Image(file.toURI().toString());
+            
+            Image image;
+            if (selectMovieData.getSelectedMoviePoster().startsWith("http://") || selectMovieData.getSelectedMoviePoster().startsWith("https://")) {
+                // URL인 경우
+                image = new Image(selectMovieData.getSelectedMoviePoster()); // URL로부터 이미지 로드
+            } else {
+                // 로컬 파일인 경우
+                File file = new File(selectMovieData.getSelectedMoviePoster());
+                image = new Image(file.toURI().toString());
+            }
             initPoster.setImage(image);
             initPoster.setFitHeight(230);
             initPoster.setFitWidth(180);

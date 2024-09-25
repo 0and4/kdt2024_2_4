@@ -66,8 +66,18 @@ public class reservationCheckController implements Initializable {
 			setPeople.setText(String.join(", ", Details));
 			setRandom.setText(randomNum);
 			
-			File file = new File(resMovie.getSelectedMoviePoster());
-			Image image = new Image(file.toURI().toString());
+			Image image;
+            if (resMovie.getSelectedMoviePoster().startsWith("http://") || resMovie.getSelectedMoviePoster().startsWith("https://")) {
+                // URL인 경우
+                image = new Image(resMovie.getSelectedMoviePoster()); // URL로부터 이미지 로드
+            } else {
+                // 로컬 파일인 경우
+                File file = new File(resMovie.getSelectedMoviePoster());
+                image = new Image(file.toURI().toString());
+            }
+			
+//			File file = new File(resMovie.getSelectedMoviePoster());
+//			Image image = new Image(file.toURI().toString());
 			setPoster.setImage(image);
 			setPoster.setFitHeight(230);
             setPoster.setFitWidth(180);

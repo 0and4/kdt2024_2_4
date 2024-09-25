@@ -24,6 +24,7 @@ import javafx.util.Duration;
 import java.util.List;
 import java.util.Set;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class EasyChoiceSelect implements Initializable{
@@ -33,6 +34,8 @@ public class EasyChoiceSelect implements Initializable{
     @FXML private Button home; // 홈버튼
     @FXML private Button nextPage; // 다음으로 버튼 
     @FXML private Button backBtn; // 이전으로 버튼
+    private boolean[] seatAvailable; // 좌석의 사용 가능 여부를 관리하는 배열
+    private static final int MAX_SEATS_PER_ROW = 10; // 한 행의 최대 좌석 수
     int a=0;
     
     private MovieData selectMovie;
@@ -119,15 +122,22 @@ public class EasyChoiceSelect implements Initializable{
         try {
             System.out.println("스위치 페이먼트 버튼 클릭작용");
             String randomNumber = generateRandomNumber();
-            
+            List<String> availableSeats = createSeats();
+            System.out.println(availableSeats);
 
-            // 좌석 정보를 랜덤하게 변환
+            // 랜덤으로 좌석 선택
             StringBuilder selectedSeatsString = new StringBuilder();
-            for (Button seat : selectedSeats) {
-                String randomSeat = getRandomSeat(seat.getText()); // 기존 좌석을 무작위 좌석으로 변환
+            Random random = new Random();
+            int numberOfSeatsToSelect = Math.min(availableSeats.size(), selectedPeople); // 선택할 좌석 수 결정
+
+            // System.out.println(numberOfSeatsToSelect);
+
+            for (int i = 0; i < numberOfSeatsToSelect; i++) {
+                String randomSeat = availableSeats.remove(random.nextInt(availableSeats.size())); // 랜덤 좌석 선택
                 selectedSeatsString.append(randomSeat).append(", ");
-            }
-            System.out.println("랜덤좌석"+selectedSeatsString.toString());
+        }
+            // System.out.println("랜덤좌석"+selectedSeatsString);
+
             // 마지막 ", " 제거
             if (selectedSeatsString.length() > 0) {
                 selectedSeatsString.setLength(selectedSeatsString.length() - 2);
@@ -152,6 +162,35 @@ public class EasyChoiceSelect implements Initializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private List<String> createSeats() {
+        ReservationDAO reservationDAO = new ReservationDAO();
+        Set<String> reservedSeats = reservationDAO.getReservedSeats(
+            selectMovie.getSelectedMovieTitle(),
+            selectMovie.getSelectedMovieDate(),
+            selectMovie.getSelectedMovieStartTime()
+        );
+
+        seatAvailable = new boolean[selectedMovieSeat]; // 좌석 배열 초기화
+
+        List<String> availableSeats = new ArrayList<>(); // 사용 가능한 좌석 목록
+
+        for (int i = 0; i < (selectedMovieSeat + MAX_SEATS_PER_ROW - 1) / MAX_SEATS_PER_ROW; i++) { // 필요한 행 수 계산
+            char rowLabel = (char) ('A' + i); // 행을 A, B, C로 설정
+            for (int j = 0; j < Math.min(MAX_SEATS_PER_ROW, selectedMovieSeat - i * MAX_SEATS_PER_ROW); j++) {
+                String seatName = rowLabel + String.valueOf(j + 1);
+                // System.out.println("seatN : " + seatName);
+                // 예약된 좌석인지 확인하고 배열 업데이트
+                int seatIndex = i * MAX_SEATS_PER_ROW + j;
+                if (reservedSeats.contains(seatName)) {
+                    seatAvailable[seatIndex] = false; // 예약된 좌석은 사용 불가능
+                } else {
+                    seatAvailable[seatIndex] = true; // 사용 가능한 좌석
+                    availableSeats.add(seatName); // 예약되지 않은 좌석만 추가
+                }
+            }
+        }
+        return availableSeats; // 사용 가능한 좌석 목록 반환
     }
 
     // 좌석 중복을 방지하는 로직

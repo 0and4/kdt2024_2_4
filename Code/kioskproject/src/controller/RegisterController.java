@@ -112,11 +112,18 @@ public class RegisterController {
 				movieBox.setPrefHeight(100);
 				movieBox.setPrefWidth(200);
 				
-				File file = new File(poster);
-				Image image = new Image(file.toURI().toString());
-				ImageView imageview = new ImageView(image);
-				imageview.setFitHeight(70);
-				imageview.setFitWidth(100);
+				Image image;
+	            if (poster.startsWith("http://") || poster.startsWith("https://")) {
+	                // URL인 경우
+	                image = new Image(poster); // URL로부터 이미지 로드
+	            } else {
+	                // 로컬 파일인 경우
+	                File file = new File(poster);
+	                image = new Image(file.toURI().toString());
+	            }
+	            ImageView imageview = new ImageView(image);
+	            imageview.setFitHeight(70);
+	            imageview.setFitWidth(100);
 				
 				Label movieTitle = new Label(title);
 				movieTitle.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");

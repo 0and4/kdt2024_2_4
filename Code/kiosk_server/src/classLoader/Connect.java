@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Connect {
-    private static final String url = "jdbc:mysql://localhost:3306/kiosk";
+    private static final String url = "jdbc:mysql://10.2.16.14:3306/kiosk";
     private static Connection connection = null;
 
     public static Connection getConnection() {

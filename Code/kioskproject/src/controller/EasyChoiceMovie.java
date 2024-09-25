@@ -173,14 +173,27 @@ public class EasyChoiceMovie implements Initializable{
 				movieInfo.setSpacing(10);
 				layout.setSpacing(20);
 				
-				//포스터 이미지 불러오기
-				ImageView posterImage = new ImageView();
-				posterImage.setFitWidth(200);
-				posterImage.setFitHeight(150);
+				Image image;
+	            if (movie.getPoster().startsWith("http://") || movie.getPoster().startsWith("https://")) {
+	                // URL인 경우
+	                image = new Image(movie.getPoster()); // URL로부터 이미지 로드
+	            } else {
+	                // 로컬 파일인 경우
+	                File file = new File(movie.getPoster());
+	                image = new Image(file.toURI().toString());
+	            }
+	            ImageView posterImage = new ImageView(image);
+	            posterImage.setFitHeight(70);
+	            posterImage.setFitWidth(100);
 				
-				File file = new File(movie.getPoster());
-				Image image = new Image(file.toURI().toString());
-				posterImage.setImage(image);
+//				//포스터 이미지 불러오기
+//				ImageView posterImage = new ImageView();
+//				posterImage.setFitWidth(200);
+//				posterImage.setFitHeight(150);
+//				
+//				File file = new File(movie.getPoster());
+//				Image image = new Image(file.toURI().toString());
+//				posterImage.setImage(image);
 				
 				//영화정보 불러오기
 				Label titleLabel = new Label("["+movie.getRating()+"]"+movie.getTitle()+"("+ movie.getKind() +")"+movie.getRuntime()+"분");//영화 정보 가져오기

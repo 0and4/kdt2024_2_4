@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 
 public class EasyDate implements Initializable {
     @FXML private StackPane EasyDateStackPane;
-	
+	@FXML private Button help;
     @FXML private Text EasyDateToday; // 오늘 날짜 설정
     @FXML private Button EasyDateHomeBtn; // 홈버튼
     @FXML private Button EasyDateNextBtn; // 다음페이지 버튼

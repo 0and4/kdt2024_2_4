@@ -20,7 +20,7 @@ public class AppMain extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		
-		kioskcontroller = new Kioskcontroller("127.0.0.1", 50001, root);
+		kioskcontroller = new Kioskcontroller("10.2.16.14", 50001, root);
 		kioskcontroller.connectServer();
 	}
 

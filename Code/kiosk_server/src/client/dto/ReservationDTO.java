@@ -14,7 +14,6 @@ public class ReservationDTO {
 	    //사용할 포인트 금액
 	    private Integer discount = 0;
 	    private Integer savePoint = 0;
-	    private String Point="null";
 		private Integer play_info_id;
 		private Integer res_id;
 		private String movieTitle;
@@ -60,15 +59,7 @@ public class ReservationDTO {
 		
 		
 		
-		public String getPoint() {
-			return Point;
-		}
 
-
-
-		public void setPoint(String point) {
-			Point = point;
-		}
 
 
 

@@ -139,9 +139,21 @@ public class MovieSettingEditController {
                 selectedMovieRuntime = rs.getString("runtime");
                 selectedMoviePoster = rs.getString("poster");
 
-                // 이미지 설정
-                File file = new File(selectedMoviePoster);
-                Image image = new Image(file.toURI().toString());
+                Image image;
+	            if (selectedMoviePoster.startsWith("http://") || selectedMoviePoster.startsWith("https://")) {
+	                // URL인 경우
+	                image = new Image(selectedMoviePoster); // URL로부터 이미지 로드
+	            } else {
+	                // 로컬 파일인 경우
+	                File file = new File(selectedMoviePoster);
+	                image = new Image(file.toURI().toString());
+	            }
+//	            ImageView imageview = new ImageView(image);
+//	            imageview.setFitHeight(70);
+//	            imageview.setFitWidth(100);
+//                // 이미지 설정
+//                File file = new File(selectedMoviePoster);
+//                Image image = new Image(file.toURI().toString());
                 movieImageView.setImage(image);
                 movieImageView.setFitHeight(60);
                 movieImageView.setFitWidth(100);
